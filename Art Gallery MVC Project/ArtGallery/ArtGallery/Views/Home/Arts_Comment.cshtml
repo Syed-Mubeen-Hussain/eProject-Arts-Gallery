@@ -1,0 +1,39 @@
+﻿@using ArtGallery.Models
+@model ArtGallery.ViewModels.SingleArtViewModel
+@{
+    Layout = null;
+}
+
+<ol class="review-list" style="margin-top:10px;">
+    @foreach (var comment in Model.comments)
+    {
+        <li class="review">
+            <div class="thumb">
+                @foreach (var customer_image in Model.customer)
+                {
+                    if (customer_image.c_id == comment.ac_fk_cus_id)
+                    {
+                <img src="@customer_image.c_image" style="border-radius: 50px;width: 50px;height: 50px;object-fit: cover;" alt="Image">
+                    }
+                }
+            </div>
+            <div class="text-wrap">
+                <div class="review-meta">
+                    @foreach (var customer_username in Model.customer)
+                    {
+                        if (customer_username.c_id == comment.ac_fk_cus_id)
+                        {
+                            <h5 class="name">@customer_username.c_userName</h5>
+                        }
+                    }
+                    <div class="flat-star style-1">
+                        @comment.ac_time_stamp
+                    </div>
+                </div>
+                <div class="review-text" style="font-size: 15px;font-weight: 400;">
+                    <p>@comment.ac_text.</p>
+                </div>
+            </div>
+        </li><!--  /.review    -->
+    }
+</ol><!-- /.review-list -->

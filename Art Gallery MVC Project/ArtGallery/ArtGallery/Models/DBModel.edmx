@@ -1,0 +1,1779 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="db_ArtGalleryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="ad_id" />
+          </Key>
+          <Property Name="ad_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ad_email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ad_username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ad_password" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Art">
+          <Key>
+            <PropertyRef Name="art_id" />
+          </Key>
+          <Property Name="art_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="art_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="art_price" Type="int" Nullable="false" />
+          <Property Name="art_description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="art_dateOfCreation" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="art_fk_ar" Type="int" />
+          <Property Name="Art_fk_soA_id" Type="int" />
+          <Property Name="art_image" Type="nvarchar(max)" />
+          <Property Name="art_status" Type="int" />
+          <Property Name="art_fk_cat" Type="int" />
+          <Property Name="art_isAuction" Type="bit" />
+          <Property Name="art_buy_status" Type="int" />
+        </EntityType>
+        <EntityType Name="Art_Comment">
+          <Key>
+            <PropertyRef Name="ac_id" />
+          </Key>
+          <Property Name="ac_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ac_text" Type="varchar(max)" Nullable="false" />
+          <Property Name="ac_time_stamp" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ac_fk_cus_id" Type="int" />
+          <Property Name="ac_fk_art_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Art_exhibition">
+          <Key>
+            <PropertyRef Name="ae_id" />
+          </Key>
+          <Property Name="ae_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ae_fk_e" Type="int" />
+          <Property Name="ae_fk_art_id" Type="int" />
+          <Property Name="ae_status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Art_Views">
+          <Key>
+            <PropertyRef Name="av_id" />
+          </Key>
+          <Property Name="av_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="av_fk_art_id" Type="int" />
+          <Property Name="av_veiws_count" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="ar_id" />
+          </Key>
+          <Property Name="ar_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ar_firstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ar_lastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ar_dateOfBirth" Type="nvarchar" MaxLength="50" />
+          <Property Name="ar_country" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ar_city" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ar_phone" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ar_fk_cat" Type="int" />
+          <Property Name="ar_image" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ar_email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ar_userName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ar_password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ar_confrim_pass" Type="nvarchar" MaxLength="50" />
+          <Property Name="Vault" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Auction">
+          <Key>
+            <PropertyRef Name="auc_id" />
+          </Key>
+          <Property Name="auc_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="auc_item" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="auc_start_date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="auc_end_date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="auc_amount" Type="int" Nullable="false" />
+          <Property Name="auc_increment" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="auc_status" Type="int" Nullable="false" />
+          <Property Name="auc_fk_art" Type="int" />
+        </EntityType>
+        <EntityType Name="Bids">
+          <Key>
+            <PropertyRef Name="bid_id" />
+          </Key>
+          <Property Name="bid_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="bid_fk_cus" Type="int" />
+          <Property Name="bid_amount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="bid_timeStamp" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="bid_fk_auc" Type="int" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="car_id" />
+          </Key>
+          <Property Name="car_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="art_id" Type="int" Nullable="false" />
+          <Property Name="cus_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cat_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cat_image" Type="nvarchar(max)" />
+          <Property Name="cat_status" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="ci_id" />
+          </Key>
+          <Property Name="ci_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ci_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ci_fk_con_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="cont_id" />
+          </Key>
+          <Property Name="cont_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cont_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cont_email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="cont_subject" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="cont_message" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="con_id" />
+          </Key>
+          <Property Name="con_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="con_name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="c_id" />
+          </Key>
+          <Property Name="c_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="c_firstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="c_lastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="c_phone" Type="bigint" Nullable="false" />
+          <Property Name="c_dateOfBirth" Type="date" Nullable="false" />
+          <Property Name="c_gender" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="c_address" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="c_country" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="c_city" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="c_image" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="c_email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="c_userName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="c_password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="c_zip" Type="int" />
+          <Property Name="register_date" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Customer_Gallery">
+          <Key>
+            <PropertyRef Name="cg_id" />
+          </Key>
+          <Property Name="cg_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cg_fk_customer" Type="int" />
+        </EntityType>
+        <EntityType Name="Customer_Gallery_Items">
+          <Key>
+            <PropertyRef Name="cgi_id" />
+          </Key>
+          <Property Name="cgi_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="cgi_fk_art_id" Type="int" />
+          <Property Name="cgi_fk_cg_id" Type="int" />
+        </EntityType>
+        <EntityType Name="Exhibition">
+          <Key>
+            <PropertyRef Name="e_id" />
+          </Key>
+          <Property Name="e_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="e_name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="e_image" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="e_start_date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="e_end_date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="e_country" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="e_city" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="e_status" Type="int" Nullable="false" />
+          <Property Name="e_zip_code" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="favourite_Arts">
+          <Key>
+            <PropertyRef Name="fa_id" />
+          </Key>
+          <Property Name="fa_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fa_fk_art_id" Type="int" />
+          <Property Name="fa_fk_cus" Type="int" />
+        </EntityType>
+        <EntityType Name="notifications">
+          <Key>
+            <PropertyRef Name="n_id" />
+          </Key>
+          <Property Name="n_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="n_text" Type="varchar(max)" Nullable="false" />
+          <Property Name="n_fk_c_id" Type="int" />
+          <Property Name="n_fk_o_id" Type="int" />
+          <Property Name="n_date" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="o_id" />
+          </Key>
+          <Property Name="o_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="o_fk_cus_id" Type="int" />
+          <Property Name="o_address" Type="varchar(max)" Nullable="false" />
+          <Property Name="o_phone" Type="bigint" Nullable="false" />
+          <Property Name="o_email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="o_zip" Type="int" Nullable="false" />
+          <Property Name="o_total_amout" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="o_status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="o_easyPaisa" Type="varchar" MaxLength="50" />
+          <Property Name="o_jazzCash" Type="varchar" MaxLength="50" />
+          <Property Name="o_credit_number" Type="varchar" MaxLength="50" />
+          <Property Name="o_pin" Type="varchar" MaxLength="50" />
+          <Property Name="o_hbl_bank_account_number" Type="varchar" MaxLength="50" />
+          <Property Name="o_cnic_number" Type="varchar" MaxLength="50" />
+          <Property Name="o_cashOnDelivery" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="order_details">
+          <Key>
+            <PropertyRef Name="od_id" />
+          </Key>
+          <Property Name="od_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="od_fk_art_id" Type="int" />
+          <Property Name="od_fk_o" Type="int" />
+        </EntityType>
+        <EntityType Name="Style_of_Art">
+          <Key>
+            <PropertyRef Name="soA_id" />
+          </Key>
+          <Property Name="soA_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="soA_name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Website_fund">
+          <Key>
+            <PropertyRef Name="f_id" />
+          </Key>
+          <Property Name="f_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="f_date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="f_amount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="f_fk_c_id" Type="int" />
+          <Property Name="f_fk_o_id" Type="int" />
+        </EntityType>
+        <Association Name="FK__Art__art_fk_ar__52593CB8">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="0..1" />
+          <End Role="Art" Type="Self.Art" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ar_id" />
+            </Principal>
+            <Dependent Role="Art">
+              <PropertyRef Name="art_fk_ar" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art__art_fk_cat__06CD04F7">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Art" Type="Self.Art" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="Art">
+              <PropertyRef Name="art_fk_cat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art__Art_fk_soA___73BA3083">
+          <End Role="Style_of_Art" Type="Self.Style_of_Art" Multiplicity="0..1" />
+          <End Role="Art" Type="Self.Art" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Style_of_Art">
+              <PropertyRef Name="soA_id" />
+            </Principal>
+            <Dependent Role="Art">
+              <PropertyRef Name="Art_fk_soA_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art_Comme__ac_fk__41B8C09B">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Art_Comment" Type="Self.Art_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Art_Comment">
+              <PropertyRef Name="ac_fk_cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art_Comme__ac_fk__42ACE4D4">
+          <End Role="Art" Type="Self.Art" Multiplicity="0..1" />
+          <End Role="Art_Comment" Type="Self.Art_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Art_Comment">
+              <PropertyRef Name="ac_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art_exhib__ae_fk__7755B73D">
+          <End Role="Exhibition" Type="Self.Exhibition" Multiplicity="0..1" />
+          <End Role="Art_exhibition" Type="Self.Art_exhibition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exhibition">
+              <PropertyRef Name="e_id" />
+            </Principal>
+            <Dependent Role="Art_exhibition">
+              <PropertyRef Name="ae_fk_e" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art_exhib__ae_fk__7849DB76">
+          <End Role="Art" Type="Self.Art" Multiplicity="0..1" />
+          <End Role="Art_exhibition" Type="Self.Art_exhibition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Art_exhibition">
+              <PropertyRef Name="ae_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art_Views__av_fk__32767D0B">
+          <End Role="Art" Type="Self.Art" Multiplicity="0..1" />
+          <End Role="Art_Views" Type="Self.Art_Views" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Art_Views">
+              <PropertyRef Name="av_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Artist__ar_fk_ca__4F7CD00D">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Artist" Type="Self.Artist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="Artist">
+              <PropertyRef Name="ar_fk_cat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Auction__auc_fk___5224328E">
+          <End Role="Art" Type="Self.Art" Multiplicity="0..1" />
+          <End Role="Auction" Type="Self.Auction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Auction">
+              <PropertyRef Name="auc_fk_art" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bids__bid_fk_auc__55F4C372">
+          <End Role="Auction" Type="Self.Auction" Multiplicity="0..1" />
+          <End Role="Bids" Type="Self.Bids" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Auction">
+              <PropertyRef Name="auc_id" />
+            </Principal>
+            <Dependent Role="Bids">
+              <PropertyRef Name="bid_fk_auc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bids__bid_fk_cus__55009F39">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Bids" Type="Self.Bids" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Bids">
+              <PropertyRef Name="bid_fk_cus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__art_id__1AD3FDA4">
+          <End Role="Art" Type="Self.Art" Multiplicity="1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__cus_id__1BC821DD">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__City__ci_fk_con___04E4BC85">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="con_id" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="ci_fk_con_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer___cg_fk__59C55456">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Customer_Gallery" Type="Self.Customer_Gallery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Customer_Gallery">
+              <PropertyRef Name="cg_fk_customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer___cgi_f__5CA1C101">
+          <End Role="Art" Type="Self.Art" Multiplicity="0..1" />
+          <End Role="Customer_Gallery_Items" Type="Self.Customer_Gallery_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Customer_Gallery_Items">
+              <PropertyRef Name="cgi_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer___cgi_f__5D95E53A">
+          <End Role="Customer_Gallery" Type="Self.Customer_Gallery" Multiplicity="0..1" />
+          <End Role="Customer_Gallery_Items" Type="Self.Customer_Gallery_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer_Gallery">
+              <PropertyRef Name="cg_id" />
+            </Principal>
+            <Dependent Role="Customer_Gallery_Items">
+              <PropertyRef Name="cgi_fk_cg_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__favourite__fa_fk__41EDCAC5">
+          <End Role="Art" Type="Self.Art" Multiplicity="0..1" />
+          <End Role="favourite_Arts" Type="Self.favourite_Arts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="favourite_Arts">
+              <PropertyRef Name="fa_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__favourite__fa_fk__42E1EEFE">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="favourite_Arts" Type="Self.favourite_Arts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="favourite_Arts">
+              <PropertyRef Name="fa_fk_cus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__notificat__n_fk___2EA5EC27">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="notifications" Type="Self.notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="notifications">
+              <PropertyRef Name="n_fk_c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__notificat__n_fk___2F9A1060">
+          <End Role="order" Type="Self.order" Multiplicity="0..1" />
+          <End Role="notifications" Type="Self.notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="o_id" />
+            </Principal>
+            <Dependent Role="notifications">
+              <PropertyRef Name="n_fk_o_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order__o_fk_cus___17C286CF">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="order" Type="Self.order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="o_fk_cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order_det__od_fk__1A9EF37A">
+          <End Role="Art" Type="Self.Art" Multiplicity="0..1" />
+          <End Role="order_details" Type="Self.order_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="order_details">
+              <PropertyRef Name="od_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order_det__od_fk__1B9317B3">
+          <End Role="order" Type="Self.order" Multiplicity="0..1" />
+          <End Role="order_details" Type="Self.order_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="o_id" />
+            </Principal>
+            <Dependent Role="order_details">
+              <PropertyRef Name="od_fk_o" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Website_f__f_fk___4589517F">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Website_fund" Type="Self.Website_fund" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Website_fund">
+              <PropertyRef Name="f_fk_c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Website_f__f_fk___467D75B8">
+          <End Role="order" Type="Self.order" Multiplicity="0..1" />
+          <End Role="Website_fund" Type="Self.Website_fund" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="o_id" />
+            </Principal>
+            <Dependent Role="Website_fund">
+              <PropertyRef Name="f_fk_o_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_ArtGalleryModelStoreContainer">
+          <EntitySet Name="Admin" EntityType="Self.Admin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Art" EntityType="Self.Art" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Art_Comment" EntityType="Self.Art_Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Art_exhibition" EntityType="Self.Art_exhibition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Art_Views" EntityType="Self.Art_Views" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Artist" EntityType="Self.Artist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Auction" EntityType="Self.Auction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bids" EntityType="Self.Bids" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contact" EntityType="Self.Contact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer_Gallery" EntityType="Self.Customer_Gallery" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer_Gallery_Items" EntityType="Self.Customer_Gallery_Items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Exhibition" EntityType="Self.Exhibition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="favourite_Arts" EntityType="Self.favourite_Arts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="notifications" EntityType="Self.notifications" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="order" EntityType="Self.order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="order_details" EntityType="Self.order_details" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Style_of_Art" EntityType="Self.Style_of_Art" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Website_fund" EntityType="Self.Website_fund" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Art__art_fk_ar__52593CB8" Association="Self.FK__Art__art_fk_ar__52593CB8">
+            <End Role="Artist" EntitySet="Artist" />
+            <End Role="Art" EntitySet="Art" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art__art_fk_cat__06CD04F7" Association="Self.FK__Art__art_fk_cat__06CD04F7">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Art" EntitySet="Art" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art__Art_fk_soA___73BA3083" Association="Self.FK__Art__Art_fk_soA___73BA3083">
+            <End Role="Style_of_Art" EntitySet="Style_of_Art" />
+            <End Role="Art" EntitySet="Art" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art_Comme__ac_fk__41B8C09B" Association="Self.FK__Art_Comme__ac_fk__41B8C09B">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Art_Comment" EntitySet="Art_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art_Comme__ac_fk__42ACE4D4" Association="Self.FK__Art_Comme__ac_fk__42ACE4D4">
+            <End Role="Art" EntitySet="Art" />
+            <End Role="Art_Comment" EntitySet="Art_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art_exhib__ae_fk__7755B73D" Association="Self.FK__Art_exhib__ae_fk__7755B73D">
+            <End Role="Exhibition" EntitySet="Exhibition" />
+            <End Role="Art_exhibition" EntitySet="Art_exhibition" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art_exhib__ae_fk__7849DB76" Association="Self.FK__Art_exhib__ae_fk__7849DB76">
+            <End Role="Art" EntitySet="Art" />
+            <End Role="Art_exhibition" EntitySet="Art_exhibition" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art_Views__av_fk__32767D0B" Association="Self.FK__Art_Views__av_fk__32767D0B">
+            <End Role="Art" EntitySet="Art" />
+            <End Role="Art_Views" EntitySet="Art_Views" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Artist__ar_fk_ca__4F7CD00D" Association="Self.FK__Artist__ar_fk_ca__4F7CD00D">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Artist" EntitySet="Artist" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Auction__auc_fk___5224328E" Association="Self.FK__Auction__auc_fk___5224328E">
+            <End Role="Art" EntitySet="Art" />
+            <End Role="Auction" EntitySet="Auction" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bids__bid_fk_auc__55F4C372" Association="Self.FK__Bids__bid_fk_auc__55F4C372">
+            <End Role="Auction" EntitySet="Auction" />
+            <End Role="Bids" EntitySet="Bids" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bids__bid_fk_cus__55009F39" Association="Self.FK__Bids__bid_fk_cus__55009F39">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Bids" EntitySet="Bids" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__art_id__1AD3FDA4" Association="Self.FK__Cart__art_id__1AD3FDA4">
+            <End Role="Art" EntitySet="Art" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__cus_id__1BC821DD" Association="Self.FK__Cart__cus_id__1BC821DD">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Cart" EntitySet="Cart" />
+          </AssociationSet>
+          <AssociationSet Name="FK__City__ci_fk_con___04E4BC85" Association="Self.FK__City__ci_fk_con___04E4BC85">
+            <End Role="Country" EntitySet="Country" />
+            <End Role="City" EntitySet="City" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer___cg_fk__59C55456" Association="Self.FK__Customer___cg_fk__59C55456">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Customer_Gallery" EntitySet="Customer_Gallery" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer___cgi_f__5CA1C101" Association="Self.FK__Customer___cgi_f__5CA1C101">
+            <End Role="Art" EntitySet="Art" />
+            <End Role="Customer_Gallery_Items" EntitySet="Customer_Gallery_Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer___cgi_f__5D95E53A" Association="Self.FK__Customer___cgi_f__5D95E53A">
+            <End Role="Customer_Gallery" EntitySet="Customer_Gallery" />
+            <End Role="Customer_Gallery_Items" EntitySet="Customer_Gallery_Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK__favourite__fa_fk__41EDCAC5" Association="Self.FK__favourite__fa_fk__41EDCAC5">
+            <End Role="Art" EntitySet="Art" />
+            <End Role="favourite_Arts" EntitySet="favourite_Arts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__favourite__fa_fk__42E1EEFE" Association="Self.FK__favourite__fa_fk__42E1EEFE">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="favourite_Arts" EntitySet="favourite_Arts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__notificat__n_fk___2EA5EC27" Association="Self.FK__notificat__n_fk___2EA5EC27">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="notifications" EntitySet="notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__notificat__n_fk___2F9A1060" Association="Self.FK__notificat__n_fk___2F9A1060">
+            <End Role="order" EntitySet="order" />
+            <End Role="notifications" EntitySet="notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order__o_fk_cus___17C286CF" Association="Self.FK__order__o_fk_cus___17C286CF">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="order" EntitySet="order" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order_det__od_fk__1A9EF37A" Association="Self.FK__order_det__od_fk__1A9EF37A">
+            <End Role="Art" EntitySet="Art" />
+            <End Role="order_details" EntitySet="order_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order_det__od_fk__1B9317B3" Association="Self.FK__order_det__od_fk__1B9317B3">
+            <End Role="order" EntitySet="order" />
+            <End Role="order_details" EntitySet="order_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Website_f__f_fk___4589517F" Association="Self.FK__Website_f__f_fk___4589517F">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Website_fund" EntitySet="Website_fund" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Website_f__f_fk___467D75B8" Association="Self.FK__Website_f__f_fk___467D75B8">
+            <End Role="order" EntitySet="order" />
+            <End Role="Website_fund" EntitySet="Website_fund" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="db_ArtGalleryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Admin">
+          <Key>
+            <PropertyRef Name="ad_id" />
+          </Key>
+          <Property Name="ad_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ad_email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ad_username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ad_password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Art">
+          <Key>
+            <PropertyRef Name="art_id" />
+          </Key>
+          <Property Name="art_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="art_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="art_price" Type="Int32" Nullable="false" />
+          <Property Name="art_description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="art_dateOfCreation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="art_fk_ar" Type="Int32" />
+          <Property Name="Art_fk_soA_id" Type="Int32" />
+          <Property Name="art_image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="art_status" Type="Int32" />
+          <Property Name="art_fk_cat" Type="Int32" />
+          <NavigationProperty Name="Artist" Relationship="Self.FK__Art__art_fk_ar__52593CB8" FromRole="Art" ToRole="Artist" />
+          <NavigationProperty Name="Category" Relationship="Self.FK__Art__art_fk_cat__06CD04F7" FromRole="Art" ToRole="Category" />
+          <NavigationProperty Name="Style_of_Art" Relationship="Self.FK__Art__Art_fk_soA___73BA3083" FromRole="Art" ToRole="Style_of_Art" />
+          <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__art_id__1AD3FDA4" FromRole="Art" ToRole="Cart" />
+          <NavigationProperty Name="favourite_Arts" Relationship="db_ArtGalleryModel.FK__favourite__fa_fk__41EDCAC5" FromRole="Art" ToRole="favourite_Arts" />
+          <Property Name="art_isAuction" Type="Boolean" />
+          <NavigationProperty Name="Auctions" Relationship="db_ArtGalleryModel.FK__Auction__auc_fk___5224328E" FromRole="Art" ToRole="Auction" />
+          <NavigationProperty Name="Customer_Gallery_Items" Relationship="db_ArtGalleryModel.FK__Customer___cgi_f__5CA1C101" FromRole="Art" ToRole="Customer_Gallery_Items" />
+          <NavigationProperty Name="order_details" Relationship="db_ArtGalleryModel.FK__order_det__od_fk__6AEFE058" FromRole="Art" ToRole="order_details" />
+          <NavigationProperty Name="Art_exhibition" Relationship="db_ArtGalleryModel.FK__Art_exhib__ae_fk__719CDDE7" FromRole="Art" ToRole="Art_exhibition" />
+          <Property Name="art_buy_status" Type="Int32" />
+          <NavigationProperty Name="Art_Views" Relationship="db_ArtGalleryModel.FK__Art_Views__av_fk__32767D0B" FromRole="Art" ToRole="Art_Views" />
+          <NavigationProperty Name="Art_Comment" Relationship="db_ArtGalleryModel.FK__Art_Comme__ac_fk__42ACE4D4" FromRole="Art" ToRole="Art_Comment" />
+        </EntityType>
+        <EntityType Name="Artist">
+          <Key>
+            <PropertyRef Name="ar_id" />
+          </Key>
+          <Property Name="ar_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ar_firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ar_lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ar_dateOfBirth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ar_country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ar_city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ar_phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ar_fk_cat" Type="Int32" />
+          <Property Name="ar_image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ar_email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ar_userName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ar_password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ar_confrim_pass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Arts" Relationship="Self.FK__Art__art_fk_ar__52593CB8" FromRole="Artist" ToRole="Art" />
+          <NavigationProperty Name="Category" Relationship="Self.FK__Artist__ar_fk_ca__4F7CD00D" FromRole="Artist" ToRole="Category" />
+          <Property Name="Vault" Type="Decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="car_id" />
+          </Key>
+          <Property Name="car_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="art_id" Type="Int32" Nullable="false" />
+          <Property Name="cus_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Art" Relationship="Self.FK__Cart__art_id__1AD3FDA4" FromRole="Cart" ToRole="Art" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK__Cart__cus_id__1BC821DD" FromRole="Cart" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="cat_id" />
+          </Key>
+          <Property Name="cat_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cat_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="cat_image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Arts" Relationship="Self.FK__Art__art_fk_cat__06CD04F7" FromRole="Category" ToRole="Art" />
+          <NavigationProperty Name="Artists" Relationship="Self.FK__Artist__ar_fk_ca__4F7CD00D" FromRole="Category" ToRole="Artist" />
+          <Property Name="cat_status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="ci_id" />
+          </Key>
+          <Property Name="ci_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ci_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ci_fk_con_id" Type="Int32" />
+          <NavigationProperty Name="Country" Relationship="Self.FK__City__ci_fk_con___04E4BC85" FromRole="City" ToRole="Country" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="con_id" />
+          </Key>
+          <Property Name="con_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="con_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Cities" Relationship="Self.FK__City__ci_fk_con___04E4BC85" FromRole="Country" ToRole="City" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="c_id" />
+          </Key>
+          <Property Name="c_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="c_firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_phone" Type="Int64" Nullable="false" />
+          <Property Name="c_dateOfBirth" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="c_gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_image" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_userName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="c_zip" Type="Int32" />
+          <NavigationProperty Name="Carts" Relationship="Self.FK__Cart__cus_id__1BC821DD" FromRole="Customer" ToRole="Cart" />
+          <NavigationProperty Name="favourite_Arts" Relationship="db_ArtGalleryModel.FK__favourite__fa_fk__42E1EEFE" FromRole="Customer" ToRole="favourite_Arts" />
+          <NavigationProperty Name="Bids" Relationship="db_ArtGalleryModel.FK__Bids__bid_fk_cus__4E53A1AA" FromRole="Customer" ToRole="Bid" />
+          <NavigationProperty Name="Customer_Gallery" Relationship="db_ArtGalleryModel.FK__Customer___cg_fk__59C55456" FromRole="Customer" ToRole="Customer_Gallery" />
+          <NavigationProperty Name="orders" Relationship="db_ArtGalleryModel.FK__order__o_fk_cus___17C286CF" FromRole="Customer" ToRole="order" />
+          <NavigationProperty Name="Website_fund" Relationship="db_ArtGalleryModel.FK__Website_f__f_fk___2334397B" FromRole="Customer" ToRole="Website_fund" />
+          <NavigationProperty Name="notifications" Relationship="db_ArtGalleryModel.FK__notificat__n_fk___2EA5EC27" FromRole="Customer" ToRole="notification" />
+          <Property Name="register_date" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Art_Comment" Relationship="db_ArtGalleryModel.FK__Art_Comme__ac_fk__41B8C09B" FromRole="Customer" ToRole="Art_Comment" />
+        </EntityType>
+        <EntityType Name="Style_of_Art">
+          <Key>
+            <PropertyRef Name="soA_id" />
+          </Key>
+          <Property Name="soA_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="soA_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Arts" Relationship="Self.FK__Art__Art_fk_soA___73BA3083" FromRole="Style_of_Art" ToRole="Art" />
+        </EntityType>
+        <Association Name="FK__Art__art_fk_ar__52593CB8">
+          <End Role="Artist" Type="Self.Artist" Multiplicity="0..1" />
+          <End Role="Art" Type="Self.Art" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artist">
+              <PropertyRef Name="ar_id" />
+            </Principal>
+            <Dependent Role="Art">
+              <PropertyRef Name="art_fk_ar" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art__art_fk_cat__06CD04F7">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Art" Type="Self.Art" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="Art">
+              <PropertyRef Name="art_fk_cat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art__Art_fk_soA___73BA3083">
+          <End Role="Style_of_Art" Type="Self.Style_of_Art" Multiplicity="0..1" />
+          <End Role="Art" Type="Self.Art" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Style_of_Art">
+              <PropertyRef Name="soA_id" />
+            </Principal>
+            <Dependent Role="Art">
+              <PropertyRef Name="Art_fk_soA_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__art_id__1AD3FDA4">
+          <End Role="Art" Type="Self.Art" Multiplicity="1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Artist__ar_fk_ca__4F7CD00D">
+          <End Role="Category" Type="Self.Category" Multiplicity="0..1" />
+          <End Role="Artist" Type="Self.Artist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="cat_id" />
+            </Principal>
+            <Dependent Role="Artist">
+              <PropertyRef Name="ar_fk_cat" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cart__cus_id__1BC821DD">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Cart" Type="Self.Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__City__ci_fk_con___04E4BC85">
+          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="con_id" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="ci_fk_con_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="db_ArtGalleryEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Admins" EntityType="Self.Admin" />
+          <EntitySet Name="Arts" EntityType="Self.Art" />
+          <EntitySet Name="Artists" EntityType="Self.Artist" />
+          <EntitySet Name="Carts" EntityType="Self.Cart" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Cities" EntityType="Self.City" />
+          <EntitySet Name="Countries" EntityType="Self.Country" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Style_of_Art" EntityType="Self.Style_of_Art" />
+          <AssociationSet Name="FK__Art__art_fk_ar__52593CB8" Association="Self.FK__Art__art_fk_ar__52593CB8">
+            <End Role="Artist" EntitySet="Artists" />
+            <End Role="Art" EntitySet="Arts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art__art_fk_cat__06CD04F7" Association="Self.FK__Art__art_fk_cat__06CD04F7">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Art" EntitySet="Arts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art__Art_fk_soA___73BA3083" Association="Self.FK__Art__Art_fk_soA___73BA3083">
+            <End Role="Style_of_Art" EntitySet="Style_of_Art" />
+            <End Role="Art" EntitySet="Arts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__art_id__1AD3FDA4" Association="Self.FK__Cart__art_id__1AD3FDA4">
+            <End Role="Art" EntitySet="Arts" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Artist__ar_fk_ca__4F7CD00D" Association="Self.FK__Artist__ar_fk_ca__4F7CD00D">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Artist" EntitySet="Artists" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cart__cus_id__1BC821DD" Association="Self.FK__Cart__cus_id__1BC821DD">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__City__ci_fk_con___04E4BC85" Association="Self.FK__City__ci_fk_con___04E4BC85">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
+          <EntitySet Name="favourite_Arts" EntityType="db_ArtGalleryModel.favourite_Arts" />
+          <AssociationSet Name="FK__favourite__fa_fk__41EDCAC5" Association="db_ArtGalleryModel.FK__favourite__fa_fk__41EDCAC5">
+            <End Role="Art" EntitySet="Arts" />
+            <End Role="favourite_Arts" EntitySet="favourite_Arts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__favourite__fa_fk__42E1EEFE" Association="db_ArtGalleryModel.FK__favourite__fa_fk__42E1EEFE">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="favourite_Arts" EntitySet="favourite_Arts" />
+          </AssociationSet>
+          <EntitySet Name="Auctions" EntityType="db_ArtGalleryModel.Auction" />
+          <EntitySet Name="Bids" EntityType="db_ArtGalleryModel.Bid" />
+          <AssociationSet Name="FK__Bids__bid_fk_auc__4F47C5E3" Association="db_ArtGalleryModel.FK__Bids__bid_fk_auc__4F47C5E3">
+            <End Role="Auction" EntitySet="Auctions" />
+            <End Role="Bid" EntitySet="Bids" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Bids__bid_fk_cus__4E53A1AA" Association="db_ArtGalleryModel.FK__Bids__bid_fk_cus__4E53A1AA">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Bid" EntitySet="Bids" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Auction__auc_fk___5224328E" Association="db_ArtGalleryModel.FK__Auction__auc_fk___5224328E">
+            <End Role="Art" EntitySet="Arts" />
+            <End Role="Auction" EntitySet="Auctions" />
+          </AssociationSet>
+          <EntitySet Name="Customer_Gallery" EntityType="db_ArtGalleryModel.Customer_Gallery" />
+          <EntitySet Name="Customer_Gallery_Items" EntityType="db_ArtGalleryModel.Customer_Gallery_Items" />
+          <AssociationSet Name="FK__Customer___cgi_f__5CA1C101" Association="db_ArtGalleryModel.FK__Customer___cgi_f__5CA1C101">
+            <End Role="Art" EntitySet="Arts" />
+            <End Role="Customer_Gallery_Items" EntitySet="Customer_Gallery_Items" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer___cg_fk__59C55456" Association="db_ArtGalleryModel.FK__Customer___cg_fk__59C55456">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Customer_Gallery" EntitySet="Customer_Gallery" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Customer___cgi_f__5D95E53A" Association="db_ArtGalleryModel.FK__Customer___cgi_f__5D95E53A">
+            <End Role="Customer_Gallery" EntitySet="Customer_Gallery" />
+            <End Role="Customer_Gallery_Items" EntitySet="Customer_Gallery_Items" />
+          </AssociationSet>
+          <EntitySet Name="order_details" EntityType="db_ArtGalleryModel.order_details" />
+          <AssociationSet Name="FK__order_det__od_fk__6AEFE058" Association="db_ArtGalleryModel.FK__order_det__od_fk__6AEFE058">
+            <End Role="Art" EntitySet="Arts" />
+            <End Role="order_details" EntitySet="order_details" />
+          </AssociationSet>
+          <EntitySet Name="Art_exhibition" EntityType="db_ArtGalleryModel.Art_exhibition" />
+          <EntitySet Name="Exhibitions" EntityType="db_ArtGalleryModel.Exhibition" />
+          <AssociationSet Name="FK__Art_exhib__ae_fk__719CDDE7" Association="db_ArtGalleryModel.FK__Art_exhib__ae_fk__719CDDE7">
+            <End Role="Art" EntitySet="Arts" />
+            <End Role="Art_exhibition" EntitySet="Art_exhibition" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art_exhib__ae_fk__70A8B9AE" Association="db_ArtGalleryModel.FK__Art_exhib__ae_fk__70A8B9AE">
+            <End Role="Exhibition" EntitySet="Exhibitions" />
+            <End Role="Art_exhibition" EntitySet="Art_exhibition" />
+          </AssociationSet>
+          <EntitySet Name="Contacts" EntityType="db_ArtGalleryModel.Contact" />
+          <EntitySet Name="orders" EntityType="db_ArtGalleryModel.order" />
+          <EntitySet Name="Website_fund" EntityType="db_ArtGalleryModel.Website_fund" />
+          <AssociationSet Name="FK__order__o_fk_cus___17C286CF" Association="db_ArtGalleryModel.FK__order__o_fk_cus___17C286CF">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="order" EntitySet="orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Website_f__f_fk___2334397B" Association="db_ArtGalleryModel.FK__Website_f__f_fk___2334397B">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Website_fund" EntitySet="Website_fund" />
+          </AssociationSet>
+          <AssociationSet Name="FK__order_det__od_fk__1B9317B3" Association="db_ArtGalleryModel.FK__order_det__od_fk__1B9317B3">
+            <End Role="order" EntitySet="orders" />
+            <End Role="order_details" EntitySet="order_details" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Website_f__f_fk___24285DB4" Association="db_ArtGalleryModel.FK__Website_f__f_fk___24285DB4">
+            <End Role="order" EntitySet="orders" />
+            <End Role="Website_fund" EntitySet="Website_fund" />
+          </AssociationSet>
+          <EntitySet Name="notifications" EntityType="db_ArtGalleryModel.notification" />
+          <AssociationSet Name="FK__notificat__n_fk___2EA5EC27" Association="db_ArtGalleryModel.FK__notificat__n_fk___2EA5EC27">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="notification" EntitySet="notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK__notificat__n_fk___2F9A1060" Association="db_ArtGalleryModel.FK__notificat__n_fk___2F9A1060">
+            <End Role="order" EntitySet="orders" />
+            <End Role="notification" EntitySet="notifications" />
+          </AssociationSet>
+          <EntitySet Name="Art_Views" EntityType="db_ArtGalleryModel.Art_Views" />
+          <AssociationSet Name="FK__Art_Views__av_fk__32767D0B" Association="db_ArtGalleryModel.FK__Art_Views__av_fk__32767D0B">
+            <End Role="Art" EntitySet="Arts" />
+            <End Role="Art_Views" EntitySet="Art_Views" />
+          </AssociationSet>
+          <EntitySet Name="Art_Comment" EntityType="db_ArtGalleryModel.Art_Comment" />
+          <AssociationSet Name="FK__Art_Comme__ac_fk__42ACE4D4" Association="db_ArtGalleryModel.FK__Art_Comme__ac_fk__42ACE4D4">
+            <End Role="Art" EntitySet="Arts" />
+            <End Role="Art_Comment" EntitySet="Art_Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Art_Comme__ac_fk__41B8C09B" Association="db_ArtGalleryModel.FK__Art_Comme__ac_fk__41B8C09B">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Art_Comment" EntitySet="Art_Comment" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="favourite_Arts">
+          <Key>
+            <PropertyRef Name="fa_id" />
+          </Key>
+          <Property Name="fa_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fa_fk_art_id" Type="Int32" />
+          <Property Name="fa_fk_cus" Type="Int32" />
+          <NavigationProperty Name="Art" Relationship="db_ArtGalleryModel.FK__favourite__fa_fk__41EDCAC5" FromRole="favourite_Arts" ToRole="Art" />
+          <NavigationProperty Name="Customer" Relationship="db_ArtGalleryModel.FK__favourite__fa_fk__42E1EEFE" FromRole="favourite_Arts" ToRole="Customer" />
+        </EntityType>
+        <Association Name="FK__favourite__fa_fk__41EDCAC5">
+          <End Type="db_ArtGalleryModel.Art" Role="Art" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.favourite_Arts" Role="favourite_Arts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="favourite_Arts">
+              <PropertyRef Name="fa_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__favourite__fa_fk__42E1EEFE">
+          <End Type="db_ArtGalleryModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.favourite_Arts" Role="favourite_Arts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="favourite_Arts">
+              <PropertyRef Name="fa_fk_cus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Auction">
+          <Key>
+            <PropertyRef Name="auc_id" />
+          </Key>
+          <Property Name="auc_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="auc_item" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="auc_start_date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="auc_end_date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="auc_amount" Type="Int32" Nullable="false" />
+          <Property Name="auc_increment" Type="Int64" />
+          <Property Name="auc_status" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Bids" Relationship="db_ArtGalleryModel.FK__Bids__bid_fk_auc__4F47C5E3" FromRole="Auction" ToRole="Bid" />
+          <Property Name="auc_fk_art" Type="Int32" />
+          <NavigationProperty Name="Art" Relationship="db_ArtGalleryModel.FK__Auction__auc_fk___5224328E" FromRole="Auction" ToRole="Art" />
+        </EntityType>
+        <EntityType Name="Bid">
+          <Key>
+            <PropertyRef Name="bid_id" />
+          </Key>
+          <Property Name="bid_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="bid_fk_cus" Type="Int32" />
+          <Property Name="bid_amount" Type="Int64" />
+          <Property Name="bid_timeStamp" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="bid_fk_auc" Type="Int32" />
+          <NavigationProperty Name="Auction" Relationship="db_ArtGalleryModel.FK__Bids__bid_fk_auc__4F47C5E3" FromRole="Bid" ToRole="Auction" />
+          <NavigationProperty Name="Customer" Relationship="db_ArtGalleryModel.FK__Bids__bid_fk_cus__4E53A1AA" FromRole="Bid" ToRole="Customer" />
+        </EntityType>
+        <Association Name="FK__Bids__bid_fk_auc__4F47C5E3">
+          <End Type="db_ArtGalleryModel.Auction" Role="Auction" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Bid" Role="Bid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Auction">
+              <PropertyRef Name="auc_id" />
+            </Principal>
+            <Dependent Role="Bid">
+              <PropertyRef Name="bid_fk_auc" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Bids__bid_fk_cus__4E53A1AA">
+          <End Type="db_ArtGalleryModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Bid" Role="Bid" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Bid">
+              <PropertyRef Name="bid_fk_cus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Auction__auc_fk___5224328E">
+          <End Type="db_ArtGalleryModel.Art" Role="Art" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Auction" Role="Auction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Auction">
+              <PropertyRef Name="auc_fk_art" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Customer_Gallery">
+          <Key>
+            <PropertyRef Name="cg_id" />
+          </Key>
+          <Property Name="cg_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cg_fk_customer" Type="Int32" />
+          <NavigationProperty Name="Customer" Relationship="db_ArtGalleryModel.FK__Customer___cg_fk__59C55456" FromRole="Customer_Gallery" ToRole="Customer" />
+          <NavigationProperty Name="Customer_Gallery_Items" Relationship="db_ArtGalleryModel.FK__Customer___cgi_f__5D95E53A" FromRole="Customer_Gallery" ToRole="Customer_Gallery_Items" />
+        </EntityType>
+        <EntityType Name="Customer_Gallery_Items">
+          <Key>
+            <PropertyRef Name="cgi_id" />
+          </Key>
+          <Property Name="cgi_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cgi_fk_art_id" Type="Int32" />
+          <Property Name="cgi_fk_cg_id" Type="Int32" />
+          <NavigationProperty Name="Art" Relationship="db_ArtGalleryModel.FK__Customer___cgi_f__5CA1C101" FromRole="Customer_Gallery_Items" ToRole="Art" />
+          <NavigationProperty Name="Customer_Gallery" Relationship="db_ArtGalleryModel.FK__Customer___cgi_f__5D95E53A" FromRole="Customer_Gallery_Items" ToRole="Customer_Gallery" />
+        </EntityType>
+        <Association Name="FK__Customer___cgi_f__5CA1C101">
+          <End Type="db_ArtGalleryModel.Art" Role="Art" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Customer_Gallery_Items" Role="Customer_Gallery_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Customer_Gallery_Items">
+              <PropertyRef Name="cgi_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer___cg_fk__59C55456">
+          <End Type="db_ArtGalleryModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Customer_Gallery" Role="Customer_Gallery" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Customer_Gallery">
+              <PropertyRef Name="cg_fk_customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Customer___cgi_f__5D95E53A">
+          <End Type="db_ArtGalleryModel.Customer_Gallery" Role="Customer_Gallery" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Customer_Gallery_Items" Role="Customer_Gallery_Items" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer_Gallery">
+              <PropertyRef Name="cg_id" />
+            </Principal>
+            <Dependent Role="Customer_Gallery_Items">
+              <PropertyRef Name="cgi_fk_cg_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="order_details">
+          <Key>
+            <PropertyRef Name="od_id" />
+          </Key>
+          <Property Name="od_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="od_fk_art_id" Type="Int32" />
+          <Property Name="od_fk_o" Type="Int32" />
+          <NavigationProperty Name="Art" Relationship="db_ArtGalleryModel.FK__order_det__od_fk__6AEFE058" FromRole="order_details" ToRole="Art" />
+          <NavigationProperty Name="order" Relationship="db_ArtGalleryModel.FK__order_det__od_fk__1B9317B3" FromRole="order_details" ToRole="order" />
+        </EntityType>
+        <Association Name="FK__order_det__od_fk__6AEFE058">
+          <End Type="db_ArtGalleryModel.Art" Role="Art" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.order_details" Role="order_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="order_details">
+              <PropertyRef Name="od_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Art_exhibition">
+          <Key>
+            <PropertyRef Name="ae_id" />
+          </Key>
+          <Property Name="ae_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ae_fk_e" Type="Int32" />
+          <Property Name="ae_fk_art_id" Type="Int32" />
+          <NavigationProperty Name="Art" Relationship="db_ArtGalleryModel.FK__Art_exhib__ae_fk__719CDDE7" FromRole="Art_exhibition" ToRole="Art" />
+          <NavigationProperty Name="Exhibition" Relationship="db_ArtGalleryModel.FK__Art_exhib__ae_fk__70A8B9AE" FromRole="Art_exhibition" ToRole="Exhibition" />
+          <Property Name="ae_status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Exhibition">
+          <Key>
+            <PropertyRef Name="e_id" />
+          </Key>
+          <Property Name="e_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="e_name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="e_start_date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="e_end_date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="e_country" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="e_city" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="e_zip_code" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Art_exhibition" Relationship="db_ArtGalleryModel.FK__Art_exhib__ae_fk__70A8B9AE" FromRole="Exhibition" ToRole="Art_exhibition" />
+          <Property Name="e_image" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="e_status" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Art_exhib__ae_fk__719CDDE7">
+          <End Type="db_ArtGalleryModel.Art" Role="Art" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Art_exhibition" Role="Art_exhibition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Art_exhibition">
+              <PropertyRef Name="ae_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art_exhib__ae_fk__70A8B9AE">
+          <End Type="db_ArtGalleryModel.Exhibition" Role="Exhibition" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Art_exhibition" Role="Art_exhibition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Exhibition">
+              <PropertyRef Name="e_id" />
+            </Principal>
+            <Dependent Role="Art_exhibition">
+              <PropertyRef Name="ae_fk_e" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Contact">
+          <Key>
+            <PropertyRef Name="cont_id" />
+          </Key>
+          <Property Name="cont_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cont_name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cont_email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cont_subject" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="cont_message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="order">
+          <Key>
+            <PropertyRef Name="o_id" />
+          </Key>
+          <Property Name="o_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="o_fk_cus_id" Type="Int32" />
+          <Property Name="o_address" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="o_phone" Type="Int64" Nullable="false" />
+          <Property Name="o_email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="o_zip" Type="Int32" Nullable="false" />
+          <Property Name="o_total_amout" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="o_status" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="o_easyPaisa" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="o_jazzCash" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="o_credit_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="o_pin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="o_hbl_bank_account_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="o_cnic_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="o_cashOnDelivery" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Customer" Relationship="db_ArtGalleryModel.FK__order__o_fk_cus___17C286CF" FromRole="order" ToRole="Customer" />
+          <NavigationProperty Name="order_details" Relationship="db_ArtGalleryModel.FK__order_det__od_fk__1B9317B3" FromRole="order" ToRole="order_details" />
+          <NavigationProperty Name="Website_fund" Relationship="db_ArtGalleryModel.FK__Website_f__f_fk___24285DB4" FromRole="order" ToRole="Website_fund" />
+          <NavigationProperty Name="notifications" Relationship="db_ArtGalleryModel.FK__notificat__n_fk___2F9A1060" FromRole="order" ToRole="notification" />
+        </EntityType>
+        <EntityType Name="Website_fund">
+          <Key>
+            <PropertyRef Name="f_id" />
+          </Key>
+          <Property Name="f_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="f_date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="f_amount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="f_fk_c_id" Type="Int32" />
+          <Property Name="f_fk_o_id" Type="Int32" />
+          <NavigationProperty Name="Customer" Relationship="db_ArtGalleryModel.FK__Website_f__f_fk___2334397B" FromRole="Website_fund" ToRole="Customer" />
+          <NavigationProperty Name="order" Relationship="db_ArtGalleryModel.FK__Website_f__f_fk___24285DB4" FromRole="Website_fund" ToRole="order" />
+        </EntityType>
+        <Association Name="FK__order__o_fk_cus___17C286CF">
+          <End Type="db_ArtGalleryModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.order" Role="order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="order">
+              <PropertyRef Name="o_fk_cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Website_f__f_fk___2334397B">
+          <End Type="db_ArtGalleryModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Website_fund" Role="Website_fund" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Website_fund">
+              <PropertyRef Name="f_fk_c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__order_det__od_fk__1B9317B3">
+          <End Type="db_ArtGalleryModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.order_details" Role="order_details" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="o_id" />
+            </Principal>
+            <Dependent Role="order_details">
+              <PropertyRef Name="od_fk_o" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Website_f__f_fk___24285DB4">
+          <End Type="db_ArtGalleryModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Website_fund" Role="Website_fund" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="o_id" />
+            </Principal>
+            <Dependent Role="Website_fund">
+              <PropertyRef Name="f_fk_o_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="notification">
+          <Key>
+            <PropertyRef Name="n_id" />
+          </Key>
+          <Property Name="n_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="n_text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="n_fk_c_id" Type="Int32" />
+          <Property Name="n_fk_o_id" Type="Int32" />
+          <Property Name="n_date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Customer" Relationship="db_ArtGalleryModel.FK__notificat__n_fk___2EA5EC27" FromRole="notification" ToRole="Customer" />
+          <NavigationProperty Name="order" Relationship="db_ArtGalleryModel.FK__notificat__n_fk___2F9A1060" FromRole="notification" ToRole="order" />
+        </EntityType>
+        <Association Name="FK__notificat__n_fk___2EA5EC27">
+          <End Type="db_ArtGalleryModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.notification" Role="notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="notification">
+              <PropertyRef Name="n_fk_c_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__notificat__n_fk___2F9A1060">
+          <End Type="db_ArtGalleryModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.notification" Role="notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="o_id" />
+            </Principal>
+            <Dependent Role="notification">
+              <PropertyRef Name="n_fk_o_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Art_Views">
+          <Key>
+            <PropertyRef Name="av_id" />
+          </Key>
+          <Property Name="av_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="av_fk_art_id" Type="Int32" />
+          <Property Name="av_veiws_count" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Art" Relationship="db_ArtGalleryModel.FK__Art_Views__av_fk__32767D0B" FromRole="Art_Views" ToRole="Art" />
+        </EntityType>
+        <Association Name="FK__Art_Views__av_fk__32767D0B">
+          <End Type="db_ArtGalleryModel.Art" Role="Art" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Art_Views" Role="Art_Views" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Art_Views">
+              <PropertyRef Name="av_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Art_Comment">
+          <Key>
+            <PropertyRef Name="ac_id" />
+          </Key>
+          <Property Name="ac_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ac_text" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ac_time_stamp" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ac_fk_cus_id" Type="Int32" />
+          <Property Name="ac_fk_art_id" Type="Int32" />
+          <NavigationProperty Name="Art" Relationship="db_ArtGalleryModel.FK__Art_Comme__ac_fk__42ACE4D4" FromRole="Art_Comment" ToRole="Art" />
+          <NavigationProperty Name="Customer" Relationship="db_ArtGalleryModel.FK__Art_Comme__ac_fk__41B8C09B" FromRole="Art_Comment" ToRole="Customer" />
+        </EntityType>
+        <Association Name="FK__Art_Comme__ac_fk__42ACE4D4">
+          <End Type="db_ArtGalleryModel.Art" Role="Art" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Art_Comment" Role="Art_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Art">
+              <PropertyRef Name="art_id" />
+            </Principal>
+            <Dependent Role="Art_Comment">
+              <PropertyRef Name="ac_fk_art_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Art_Comme__ac_fk__41B8C09B">
+          <End Type="db_ArtGalleryModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="db_ArtGalleryModel.Art_Comment" Role="Art_Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="c_id" />
+            </Principal>
+            <Dependent Role="Art_Comment">
+              <PropertyRef Name="ac_fk_cus_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="db_ArtGalleryModelStoreContainer" CdmEntityContainer="db_ArtGalleryEntities">
+          <EntitySetMapping Name="Admins">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Admin">
+              <MappingFragment StoreEntitySet="Admin">
+                <ScalarProperty Name="ad_id" ColumnName="ad_id" />
+                <ScalarProperty Name="ad_email" ColumnName="ad_email" />
+                <ScalarProperty Name="ad_username" ColumnName="ad_username" />
+                <ScalarProperty Name="ad_password" ColumnName="ad_password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Arts">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Art">
+              <MappingFragment StoreEntitySet="Art">
+                <ScalarProperty Name="art_buy_status" ColumnName="art_buy_status" />
+                <ScalarProperty Name="art_isAuction" ColumnName="art_isAuction" />
+                <ScalarProperty Name="art_id" ColumnName="art_id" />
+                <ScalarProperty Name="art_name" ColumnName="art_name" />
+                <ScalarProperty Name="art_price" ColumnName="art_price" />
+                <ScalarProperty Name="art_description" ColumnName="art_description" />
+                <ScalarProperty Name="art_dateOfCreation" ColumnName="art_dateOfCreation" />
+                <ScalarProperty Name="art_fk_ar" ColumnName="art_fk_ar" />
+                <ScalarProperty Name="Art_fk_soA_id" ColumnName="Art_fk_soA_id" />
+                <ScalarProperty Name="art_image" ColumnName="art_image" />
+                <ScalarProperty Name="art_status" ColumnName="art_status" />
+                <ScalarProperty Name="art_fk_cat" ColumnName="art_fk_cat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Artists">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Artist">
+              <MappingFragment StoreEntitySet="Artist">
+                <ScalarProperty Name="Vault" ColumnName="Vault" />
+                <ScalarProperty Name="ar_id" ColumnName="ar_id" />
+                <ScalarProperty Name="ar_firstName" ColumnName="ar_firstName" />
+                <ScalarProperty Name="ar_lastName" ColumnName="ar_lastName" />
+                <ScalarProperty Name="ar_dateOfBirth" ColumnName="ar_dateOfBirth" />
+                <ScalarProperty Name="ar_country" ColumnName="ar_country" />
+                <ScalarProperty Name="ar_city" ColumnName="ar_city" />
+                <ScalarProperty Name="ar_phone" ColumnName="ar_phone" />
+                <ScalarProperty Name="ar_fk_cat" ColumnName="ar_fk_cat" />
+                <ScalarProperty Name="ar_image" ColumnName="ar_image" />
+                <ScalarProperty Name="ar_email" ColumnName="ar_email" />
+                <ScalarProperty Name="ar_userName" ColumnName="ar_userName" />
+                <ScalarProperty Name="ar_password" ColumnName="ar_password" />
+                <ScalarProperty Name="ar_confrim_pass" ColumnName="ar_confrim_pass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carts">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="car_id" ColumnName="car_id" />
+                <ScalarProperty Name="art_id" ColumnName="art_id" />
+                <ScalarProperty Name="cus_id" ColumnName="cus_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="cat_status" ColumnName="cat_status" />
+                <ScalarProperty Name="cat_id" ColumnName="cat_id" />
+                <ScalarProperty Name="cat_name" ColumnName="cat_name" />
+                <ScalarProperty Name="cat_image" ColumnName="cat_image" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="ci_id" ColumnName="ci_id" />
+                <ScalarProperty Name="ci_name" ColumnName="ci_name" />
+                <ScalarProperty Name="ci_fk_con_id" ColumnName="ci_fk_con_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Country">
+              <MappingFragment StoreEntitySet="Country">
+                <ScalarProperty Name="con_id" ColumnName="con_id" />
+                <ScalarProperty Name="con_name" ColumnName="con_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="register_date" ColumnName="register_date" />
+                <ScalarProperty Name="c_id" ColumnName="c_id" />
+                <ScalarProperty Name="c_firstName" ColumnName="c_firstName" />
+                <ScalarProperty Name="c_lastName" ColumnName="c_lastName" />
+                <ScalarProperty Name="c_phone" ColumnName="c_phone" />
+                <ScalarProperty Name="c_dateOfBirth" ColumnName="c_dateOfBirth" />
+                <ScalarProperty Name="c_gender" ColumnName="c_gender" />
+                <ScalarProperty Name="c_address" ColumnName="c_address" />
+                <ScalarProperty Name="c_country" ColumnName="c_country" />
+                <ScalarProperty Name="c_city" ColumnName="c_city" />
+                <ScalarProperty Name="c_image" ColumnName="c_image" />
+                <ScalarProperty Name="c_email" ColumnName="c_email" />
+                <ScalarProperty Name="c_userName" ColumnName="c_userName" />
+                <ScalarProperty Name="c_password" ColumnName="c_password" />
+                <ScalarProperty Name="c_zip" ColumnName="c_zip" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Style_of_Art">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Style_of_Art">
+              <MappingFragment StoreEntitySet="Style_of_Art">
+                <ScalarProperty Name="soA_id" ColumnName="soA_id" />
+                <ScalarProperty Name="soA_name" ColumnName="soA_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="favourite_Arts">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.favourite_Arts">
+              <MappingFragment StoreEntitySet="favourite_Arts">
+                <ScalarProperty Name="fa_fk_cus" ColumnName="fa_fk_cus" />
+                <ScalarProperty Name="fa_fk_art_id" ColumnName="fa_fk_art_id" />
+                <ScalarProperty Name="fa_id" ColumnName="fa_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Auctions">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Auction">
+              <MappingFragment StoreEntitySet="Auction">
+                <ScalarProperty Name="auc_fk_art" ColumnName="auc_fk_art" />
+                <ScalarProperty Name="auc_status" ColumnName="auc_status" />
+                <ScalarProperty Name="auc_increment" ColumnName="auc_increment" />
+                <ScalarProperty Name="auc_amount" ColumnName="auc_amount" />
+                <ScalarProperty Name="auc_end_date" ColumnName="auc_end_date" />
+                <ScalarProperty Name="auc_start_date" ColumnName="auc_start_date" />
+                <ScalarProperty Name="auc_item" ColumnName="auc_item" />
+                <ScalarProperty Name="auc_id" ColumnName="auc_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bids">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Bid">
+              <MappingFragment StoreEntitySet="Bids">
+                <ScalarProperty Name="bid_fk_auc" ColumnName="bid_fk_auc" />
+                <ScalarProperty Name="bid_timeStamp" ColumnName="bid_timeStamp" />
+                <ScalarProperty Name="bid_amount" ColumnName="bid_amount" />
+                <ScalarProperty Name="bid_fk_cus" ColumnName="bid_fk_cus" />
+                <ScalarProperty Name="bid_id" ColumnName="bid_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customer_Gallery">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Customer_Gallery">
+              <MappingFragment StoreEntitySet="Customer_Gallery">
+                <ScalarProperty Name="cg_fk_customer" ColumnName="cg_fk_customer" />
+                <ScalarProperty Name="cg_id" ColumnName="cg_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customer_Gallery_Items">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Customer_Gallery_Items">
+              <MappingFragment StoreEntitySet="Customer_Gallery_Items">
+                <ScalarProperty Name="cgi_fk_cg_id" ColumnName="cgi_fk_cg_id" />
+                <ScalarProperty Name="cgi_fk_art_id" ColumnName="cgi_fk_art_id" />
+                <ScalarProperty Name="cgi_id" ColumnName="cgi_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="order_details">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.order_details">
+              <MappingFragment StoreEntitySet="order_details">
+                <ScalarProperty Name="od_fk_o" ColumnName="od_fk_o" />
+                <ScalarProperty Name="od_fk_art_id" ColumnName="od_fk_art_id" />
+                <ScalarProperty Name="od_id" ColumnName="od_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Art_exhibition">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Art_exhibition">
+              <MappingFragment StoreEntitySet="Art_exhibition">
+                <ScalarProperty Name="ae_status" ColumnName="ae_status" />
+                <ScalarProperty Name="ae_fk_art_id" ColumnName="ae_fk_art_id" />
+                <ScalarProperty Name="ae_fk_e" ColumnName="ae_fk_e" />
+                <ScalarProperty Name="ae_id" ColumnName="ae_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Exhibitions">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Exhibition">
+              <MappingFragment StoreEntitySet="Exhibition">
+                <ScalarProperty Name="e_status" ColumnName="e_status" />
+                <ScalarProperty Name="e_image" ColumnName="e_image" />
+                <ScalarProperty Name="e_zip_code" ColumnName="e_zip_code" />
+                <ScalarProperty Name="e_city" ColumnName="e_city" />
+                <ScalarProperty Name="e_country" ColumnName="e_country" />
+                <ScalarProperty Name="e_end_date" ColumnName="e_end_date" />
+                <ScalarProperty Name="e_start_date" ColumnName="e_start_date" />
+                <ScalarProperty Name="e_name" ColumnName="e_name" />
+                <ScalarProperty Name="e_id" ColumnName="e_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contacts">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Contact">
+              <MappingFragment StoreEntitySet="Contact">
+                <ScalarProperty Name="cont_message" ColumnName="cont_message" />
+                <ScalarProperty Name="cont_subject" ColumnName="cont_subject" />
+                <ScalarProperty Name="cont_email" ColumnName="cont_email" />
+                <ScalarProperty Name="cont_name" ColumnName="cont_name" />
+                <ScalarProperty Name="cont_id" ColumnName="cont_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="orders">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.order">
+              <MappingFragment StoreEntitySet="order">
+                <ScalarProperty Name="o_cashOnDelivery" ColumnName="o_cashOnDelivery" />
+                <ScalarProperty Name="o_cnic_number" ColumnName="o_cnic_number" />
+                <ScalarProperty Name="o_hbl_bank_account_number" ColumnName="o_hbl_bank_account_number" />
+                <ScalarProperty Name="o_pin" ColumnName="o_pin" />
+                <ScalarProperty Name="o_credit_number" ColumnName="o_credit_number" />
+                <ScalarProperty Name="o_jazzCash" ColumnName="o_jazzCash" />
+                <ScalarProperty Name="o_easyPaisa" ColumnName="o_easyPaisa" />
+                <ScalarProperty Name="o_status" ColumnName="o_status" />
+                <ScalarProperty Name="o_total_amout" ColumnName="o_total_amout" />
+                <ScalarProperty Name="o_zip" ColumnName="o_zip" />
+                <ScalarProperty Name="o_email" ColumnName="o_email" />
+                <ScalarProperty Name="o_phone" ColumnName="o_phone" />
+                <ScalarProperty Name="o_address" ColumnName="o_address" />
+                <ScalarProperty Name="o_fk_cus_id" ColumnName="o_fk_cus_id" />
+                <ScalarProperty Name="o_id" ColumnName="o_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Website_fund">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Website_fund">
+              <MappingFragment StoreEntitySet="Website_fund">
+                <ScalarProperty Name="f_fk_o_id" ColumnName="f_fk_o_id" />
+                <ScalarProperty Name="f_fk_c_id" ColumnName="f_fk_c_id" />
+                <ScalarProperty Name="f_amount" ColumnName="f_amount" />
+                <ScalarProperty Name="f_date" ColumnName="f_date" />
+                <ScalarProperty Name="f_id" ColumnName="f_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="notifications">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.notification">
+              <MappingFragment StoreEntitySet="notifications">
+                <ScalarProperty Name="n_date" ColumnName="n_date" />
+                <ScalarProperty Name="n_fk_o_id" ColumnName="n_fk_o_id" />
+                <ScalarProperty Name="n_fk_c_id" ColumnName="n_fk_c_id" />
+                <ScalarProperty Name="n_text" ColumnName="n_text" />
+                <ScalarProperty Name="n_id" ColumnName="n_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Art_Views">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Art_Views">
+              <MappingFragment StoreEntitySet="Art_Views">
+                <ScalarProperty Name="av_veiws_count" ColumnName="av_veiws_count" />
+                <ScalarProperty Name="av_fk_art_id" ColumnName="av_fk_art_id" />
+                <ScalarProperty Name="av_id" ColumnName="av_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Art_Comment">
+            <EntityTypeMapping TypeName="db_ArtGalleryModel.Art_Comment">
+              <MappingFragment StoreEntitySet="Art_Comment">
+                <ScalarProperty Name="ac_fk_art_id" ColumnName="ac_fk_art_id" />
+                <ScalarProperty Name="ac_fk_cus_id" ColumnName="ac_fk_cus_id" />
+                <ScalarProperty Name="ac_time_stamp" ColumnName="ac_time_stamp" />
+                <ScalarProperty Name="ac_text" ColumnName="ac_text" />
+                <ScalarProperty Name="ac_id" ColumnName="ac_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

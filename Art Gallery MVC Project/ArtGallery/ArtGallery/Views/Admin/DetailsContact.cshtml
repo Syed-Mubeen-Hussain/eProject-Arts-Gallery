@@ -1,0 +1,66 @@
+﻿@model ArtGallery.Models.Contact
+
+@{
+    Layout = null;
+}
+
+<h2 class="text-center">Detail Contact</h2>
+<div class="content-wrapper p-5">
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+
+                    <form id="formData" method="post">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Id</label>
+                                    <input class="form-control" name="cont_id" readonly value="@Model.cont_id" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Name</label>
+                                    <input class="form-control" name="cont_name" readonly value="@Model.cont_name" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Email</label>
+                                    <input type="text" class="form-control" readonly name="cont_email" value="@Model.cont_email" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Subject</label>
+                                    <input class="form-control" name="cont_subject" readonly value="@Model.cont_subject" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Message</label>
+                                    <textarea class="form-control" name="cont_message" readonly>@Model.cont_message</textarea>
+                                </div>
+                                <br />
+                                <div>
+                                    <button type="button" id="cancelBtn" class="cancelBtn btn btn-primary" data-id="@Model.cont_id">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+   $("#cancelBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("ContactTable", "Admin")'
+        })
+            .done(function (response) {
+                $("#actionContainer").html("");
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+</script>

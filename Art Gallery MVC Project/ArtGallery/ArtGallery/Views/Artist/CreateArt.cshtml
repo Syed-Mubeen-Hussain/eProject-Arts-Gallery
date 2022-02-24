@@ -1,0 +1,185 @@
+﻿@model ArtGallery.Models.Art
+
+@{
+    ViewBag.Title = "CreateArts";
+    Layout = null;
+}
+<style>
+    .error{
+        color:red;
+    }
+    #imageUpload-error {
+        position: absolute;
+        top: 48px;
+        left: 0px;
+    }
+</style>
+<h2 class="text-center">Create Art</h2>
+<div class="content-wrapper p-5">
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <form id="formData">
+                        <div class="form-group">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;">Name </label>
+                            <input type="text" style="padding:12px;" name="art_name" class="form-control" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Price </label>
+                            <input type="number" min="1" style="padding:12px;" name="art_price" class="form-control" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Description </label>
+                            <input type="text" style="padding:12px;" name="art_description" class="form-control" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Style of Art</label>
+
+                            @Html.DropDownListFor(x => x.Art_fk_soA_id, ViewBag.styleOfArt as SelectList, "---Select---", new { @class = "form-control", style = "padding: 12px;color:black;" })
+                        </div>
+
+                        <div class="form-group">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;">Type?</label>
+                            <div class="input-group">
+                                <div class="radio form-control">
+                                    <label><input type="radio" name="art_isAuction" value="True" /> Is Auction</label>
+                                </div>
+                                <div class="radio form-control">
+                                    <label><input type="radio" name="art_isAuction" value="False" checked /> Fixed Price</label>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="form-group">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Image </label>
+                            <img style="width: 220px;margin:20px;" class="img-fluid" id="ArtImage" src="" />
+                            <div class="form-control" style="position:relative;">
+                                <input type="hidden" id="ImageURL" name="art_image" />
+                                <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+                            </div>
+                        </div>
+                        
+                        <br />
+                        <br />
+                        <button class="btn btn-primary" id="saveBtn" type="button">Save</button>
+                        <button class="btn btn-primary" id="cancelBtn" type="button">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+       $("#imageUpload").change(function () {
+        var element = this;
+
+        var formData = new FormData();
+
+        var totalFiles = element.files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadImage", "Shared")',
+            dataType: 'json',
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                console.log(response);
+
+                if (response.Success) {
+                    $("#ImageURL").val(response.ImageURL);
+                    $("#ArtImage").attr("src", response.ImageURL);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+    $("#cancelBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("ArtsTable", "Artist")'
+        })
+            .done(function (response) {
+                $("#actionContainer").html("");
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $('#formData').validate({
+
+        rules: {
+            art_name: {
+                required: true,
+                maxlength: 50,
+            },
+            art_price: {
+                required: true
+            },
+            art_description: {
+                required: true,
+                maxlength: 500
+            },
+            Art_fk_soA_id: {
+                required: true,
+            },
+            Image: {
+                required: true,
+            }
+        },
+        messages: {
+            art_name: {
+                required: 'Name is required',
+                maxlength: 'Maximum Length is 50'
+            },
+            art_price: {
+                required: 'Price is required',  
+            },
+            art_description: {
+                required: 'Description is required',
+                maxlength: 'Maximum Length is 500'
+            },
+            Art_fk_soA_id: {
+                required: 'Style of Art is required',
+            },
+            Image: {
+                required: 'Image is required',
+            }
+        }
+    });
+
+
+
+
+    $("#saveBtn").click(function () {
+        if ($("#formData").valid()) {
+
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("CreateArt", "Artist")',
+            data: $("#formData").serialize()
+        })
+              .done(function (response) {
+                  $("#tableContainer").html(response);
+                  $("#actionContainer").html("");
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+                });
+
+        }
+    });
+</script>

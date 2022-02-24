@@ -1,0 +1,203 @@
+﻿@model ArtGallery.Models.Art
+
+@{
+    ViewBag.Title = "EditArt";
+    Layout = null;
+    var imgURL = !string.IsNullOrEmpty(Model.art_image) ? Model.art_image : string.Empty;
+    var trueChecked = Model.art_status == 1 ? "checked" : string.Empty;
+    var falseChecked = Model.art_status == 0 ? "checked" : string.Empty;
+
+    var AuctiontrueChecked = Model.art_isAuction == true ? "checked" : string.Empty;
+    var AuctionfalseChecked = Model.art_isAuction == false ? "checked" : string.Empty;
+}
+
+
+<style>
+    .error {
+        color: red;
+    }
+    #imageUpload-error {
+        position: absolute;
+        top: 48px;
+        left: 0px;
+    }
+</style>
+
+<h2 class="text-center">Edit Art</h2>
+<div class="content-wrapper p-5">
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+
+                    <form id="formData" method="post">
+                        <input name="art_id" type="hidden" value="@Model.art_id" />
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Name</label>
+                                    <input class="form-control" name="art_name" value="@Model.art_name" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Price</label>
+                                    <input type="number" min="1" class="form-control" name="art_price" value="@Model.art_price" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Description</label>
+                                    <input class="form-control" name="art_description" value="@Model.art_description" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Style of Art</label>
+
+                                    @Html.DropDownListFor(x => x.Art_fk_soA_id, ViewBag.styleOfArt as SelectList, "---Select---", new { @class = "form-control", style = "padding: 12px;color:black;" })
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Status</label>
+                                    <div class="input-group">
+                                        <div class="radio form-control">
+                                            <label><input type="radio" name="art_status" value="1" @trueChecked /> Active</label>
+                                        </div>
+                                        <div class="radio form-control">
+                                            <label><input type="radio" name="art_status" value="0" @falseChecked /> Deactive</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Is Auction?</label>
+                                    <div class="input-group">
+                                        <div class="radio form-control">
+                                            <label><input type="radio" name="art_isAuction" value="True" @AuctiontrueChecked/> True</label>
+                                        </div>
+                                        <div class="radio form-control">
+                                            <label><input type="radio" name="art_isAuction" value="False" @AuctionfalseChecked /> False</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Image</label>
+                                    <div class="form-control" style="position:relative;">
+                                        <input type="hidden" id="ImageURL" name="art_image" />
+                                        <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="button" id="editBtn" class="btn btn-primary">Update</button>
+                                <button type="button" id="cancelBtn" class="btn btn-primary">Cancel</button>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="thumb">
+                                    <img src="@imgURL" class="img-thumbnail img-fluid" alt="Art Image" id="ArtImage" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#imageUpload").change(function () {
+        var element = this;
+
+        var formData = new FormData();
+
+        var totalFiles = element.files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadImage", "Shared")',
+            dataType: 'json',
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                console.log(response);
+
+                if (response.Success) {
+                    $("#ImageURL").val(response.ImageURL);
+                    $("#ArtImage").attr("src", response.ImageURL);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+    $("#cancelBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("ArtsTable", "Artist")'
+        })
+            .done(function (response) {
+                $("#actionContainer").html("");
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $('#formData').validate({
+
+        rules: {
+            art_name: {
+                required: true,
+                maxlength: 50,
+            },
+            art_price: {
+                required: true
+            },
+            art_description: {
+                required: true,
+                maxlength: 500
+            },
+            Art_fk_soA_id: {
+                required: true,
+            },
+        },
+        messages: {
+            art_name: {
+                required: 'Name is required',
+                maxlength: 'Maximum Length is 50'
+            },
+            art_price: {
+                required: 'Price is required',
+            },
+            art_description: {
+                required: 'Description is required',
+                maxlength: 'Maximum Length is 500'
+            },
+            Art_fk_soA_id: {
+                required: 'Style of Art is required',
+            },
+        }
+    });
+
+    $("#editBtn").click(function () {
+        if ($("#formData").valid()) {
+
+        $.ajax({
+            type:"post",
+            url: '@Url.Action("EditArt", "Artist")',
+            data: $("#formData").serialize()
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+                $("#actionContainer").html("");
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+                });
+
+        }
+    });
+</script>

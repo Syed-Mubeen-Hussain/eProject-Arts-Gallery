@@ -1,0 +1,178 @@
+﻿@model ArtGallery.ViewModels.AdminContactViewModel
+@{
+    ViewBag.Title = "Arts";
+    Layout = "~/Views/Shared/_Layout _Admin.cshtml";
+}
+
+<div class="card my-4">
+    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3">Contacts</h6>
+        </div>
+    </div>
+
+    <div>
+        <form method="post">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input class="form-control" id="searchTxt" name="Search" value="@Model.SearchTerm" onkeypress="return event.keyCode != 13;" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Action</label>
+                        <div class="row">
+                            <div class="col-md-5 w-auto p-0" style="margin:0px 5px;">
+                                <button type="button" style="padding: 10px 26px;width:120px;" id="searchBtn" class="btn btn-primary">Search</button>
+                            </div>
+                            <div class="col-md-5 w-auto p-0" style="margin:0px 5px;">
+                                <button type="button" style="padding: 10px 26px; width:120px;" id="resetBtn" class="btn btn-primary">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="card-body px-0 pb-2 pt-0">
+        <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+                <thead>
+                    <tr style="text-align:center;">
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Name</span></th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"><span style="font-size:13px;">Email</span></th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Subject</span></th>
+                        <th class="text-secondary opacity-7"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Contact.Count > 0)
+                    {
+                        foreach (var item in Model.Contact)
+                        {
+                            <tr style="text-align:center;">
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0">@item.cont_name</p>
+                                </td>
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0">@item.cont_email</p>
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    <p class="text-xs font-weight-bold mb-0">@item.cont_subject</p>
+                                </td>
+                                <td class="align-middle">
+                                    <button class="detailsBtn" data-id="@item.cont_id">
+                                        Details
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="text-danger text-center font-weight-bold">No Contact found</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@if (Model != null && Model.page.TotalPages > 1)
+{
+    if (Model.page.CurrentPage > 1)
+    {
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="1">First</button>
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="@(Model.page.CurrentPage - 1)">Previous</button>
+    }
+    //total items
+    for (var page = Model.page.StartPage; page <= Model.page.EndPage; page++)
+    {
+        <button class="btn btn-danger page-buttons @(Model.pageNo == page ? "bg-info":string.Empty)" style="padding:7px 18px;" data-page="@page">@page</button>
+    }
+
+    if (Model.page.CurrentPage < Model.page.TotalPages)
+    {
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="@(Model.page.CurrentPage + 1)">Next</button>
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="@(Model.page.EndPage)">Last</button>
+    }
+}
+<script>
+    $(".page-buttons").click(function () {
+             $.ajax({
+            url: '@Url.Action("ContactTable", "Admin")',
+                 data : {
+                     pageNo : $(this).attr("data-page"),
+                     search : '@Model.SearchTerm'
+                 }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+       $(".detailsBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("DetailsContact", "Admin")',
+            data: {
+                Id : $(this).attr("data-id")
+            }
+        })
+            .done(function (response) {
+                $("#actionContainer").html(response);
+
+                foucusAction("actionContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $("#searchBtn").click(function () {
+        var searchValue = $("#searchTxt").val();
+
+
+        $.ajax({
+            url: '@Url.Action("ContactTable", "Admin")',//'/Category/CategoryTable',
+            data: {
+                search: searchValue
+            }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $("#resetBtn").click(function () {
+        var searchValue = '';
+
+
+        $.ajax({
+            url: '@Url.Action("ContactTable", "Admin")',//'/Category/CategoryTable',
+            data: {
+                search: searchValue
+            }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+
+
+</script>

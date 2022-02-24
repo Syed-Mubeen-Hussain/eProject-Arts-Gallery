@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewBag.Title = "Exhibition";
+    Layout = "~/Views/Shared/_Layout _Admin.cshtml";
+}
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div id="tableContainer">
+                    @{
+                        Html.RenderAction("ExhibitionTable");
+                    }
+                </div>
+                <div id="actionContainer" class="p-0"></div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    function foucusAction(contentToAction) {
+        $('html, body').animate({
+            scrollTop: $("#" + contentToAction).offset().top - 10
+        }, 500);
+    }
+</script>

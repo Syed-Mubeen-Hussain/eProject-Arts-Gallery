@@ -1,0 +1,11 @@
+﻿@model ArtGallery.Models.Artist
+
+<option>-- Select City --</option>
+@if (ViewBag.cityList != null)
+{
+    foreach (var item in ViewBag.cityList)
+    {
+        <option value="@item.ci_id">@item.ci_name</option>
+    }
+}
+

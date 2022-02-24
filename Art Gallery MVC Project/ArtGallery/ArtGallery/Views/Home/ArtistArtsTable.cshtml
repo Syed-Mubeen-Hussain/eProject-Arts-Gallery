@@ -1,0 +1,196 @@
+﻿@using ArtGallery.Models
+@model ArtGallery.ViewModels.CategoryArtsViewModel
+
+@{
+    ViewBag.Title = "Artist Arts";
+    Layout = null;
+}
+
+<div>
+    <form action="@Url.Action("ArtistArts", "Home")" method="post" style="display: flex;margin-bottom:25px;">
+        <input type="text" id="searchTxt"  onkeypress="return event.keyCode != 13;" placeholder="Search Here..." />
+        <button type="button" id="searchBtn">Search</button>
+    </form>
+</div>
+
+<div class="filter-shop bottom_68 clearfix">
+    <p class="showing-product font-weight-500">
+        <span style="display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 4px;
+    font-weight: 600;
+    background-color: #c8f8f6;
+    -ms-flex-item-align: start;
+    align-self: flex-start;
+    font-size:15px;">
+            Showing @(Model.Arts.Count) Arts
+        </span>
+    </p>
+</div><!-- /.filte-shop -->
+
+
+
+<div class="product-content product-fourcolumn clearfix">
+    <ul class="product style2">
+        @if (Model.Arts != null && Model.Arts.Count > 0)
+        {
+            foreach (var item in Model.Arts)
+            {
+                <li class="product-item">
+                    <div class="product-thumb clearfix">
+                        @if (item.art_isAuction.Value == true)
+                        {
+                            <a href="@Url.Action("SingleArtAuction","Home",new { id = item.art_id })" class="product-thumb">
+                                <img style="width: 200px;height: 215px;object-fit: cover;margin-bottom: 15px;" src="@item.art_image" alt="image">
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("SingleArt","Home",new { id = item.art_id })" class="product-thumb">
+                                <img style="width: 200px;height: 215px;object-fit: cover;margin-bottom: 15px;" src="@item.art_image" alt="image">
+                            </a>
+                        }
+                    </div>
+                    <div class="product-info clearfix">
+                        <span class="product-title">@item.art_name</span>
+                        <div class="price">
+                            <ins>
+                                <span class="amount">Rs @item.art_price</span>
+                            </ins>
+                        </div>
+                        @if (item.art_isAuction.Value == true)
+                        {
+                            <span style="display: inline-block;padding: 0.2rem 0.7rem;border-radius: 4px;font-weight: 600;background-color: #c8f8f6;-ms-flex-item-align: start;align-self: flex-start;font-size:15px;">
+                                Bid Now
+                            </span>
+                        }
+                        else
+                        {
+                            <span style="display: inline-block;padding: 0.2rem 0.7rem;border-radius: 4px;font-weight: 600;background-color: #c8f8f6;-ms-flex-item-align: start;align-self: flex-start;font-size:15px;">
+                                Fixed Price
+                            </span>
+                        }
+                    </div>
+                    <div class="add-to-cart text-center">
+                        <a href="@Url.Action("SingleArt", "Home", new { id = item.art_id })">MORE DETAILS</a>
+                    </div>
+                    @if (Session["customer_id"] != null)
+                    {
+                        <a data-id="@item.art_id" class="Add_Gallery like" style="position: absolute;top: 55px;right: 16px;cursor:pointer;"><img src="~/Content/photo-gallery (1).png" alt="Alternate Text" /></a>
+                        <a style="cursor:pointer;" data-id="@item.art_id" class="like favourite_art"><i class="fa fa-heart-o"></i></a>
+                    }
+                </li>
+            }
+        }
+        else
+        {
+            <li style="display:flex;justify-content:center;align-items:center;">
+                <img src="~/Content/images/No Arts Found (1).png" style="width:520px;" alt="Alternate Text" />
+            </li>
+        }
+
+    </ul><!-- /.product -->
+
+</div><!-- /.product-content -->
+@if (Model.numberOfArts > Model.Arts.Count)
+{
+
+}
+else
+{
+    <br />
+    <div>
+        <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+            <div id="loader" style="display:none;">
+                <img src="~/Content/spinner-icon-gif-28 (1).gif" width="50" alt="Alternate Text" />
+            </div>
+            <button type="button" id="LoadMore">Load More</button>
+        </div>
+    </div>
+}
+<div id="updateDiv"></div>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+        $("#LoadMore").click(function () {
+            $("#loader").show();
+                $.ajax({
+                    type:"post",
+                    url: '@Url.Action("ArtistArtsTable", "Home")',
+                    data: {
+                        numberOfArts: @(Model.numberOfArts + 8),
+                    },
+                })
+                    .done(function (response) {
+                        $("#artDIV").html(response);
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                    });
+
+
+     });
+    $("#searchBtn").click(function () {
+            $(this).html('<div class="spinner-border" style="width: 17px;height: 17px;border: 3px solid currentColor;border-right-color: transparent;" role="status"></div>');
+            $.ajax({
+                    type:"post",
+                    url: '@Url.Action("ArtistArtsTable", "Home")',
+                    data: {
+                        search: $("#searchTxt").val(),
+                        numberOfArts: @Model.numberOfArts,
+                    },
+                })
+                    .done(function (response) {
+                        $("#artDIV").html(response);
+                        $(this).html('Search');
+
+                        foucusAction("artDIV");
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                    });
+    });
+
+    $(".favourite_art").click(function () {
+        $.ajax({
+            url: '@Url.Action("Favourite_Art", "Home")',
+            data: {
+                id: $(this).attr('data-id')
+            },
+        })
+            .done(function (response) {
+                if (response.Success) {
+                    swal("Art Added To Favourite", "Check your Favourite Cart.", "success");
+
+                }
+                else {
+                    swal("Already Exist in Favourite Cart");
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+  $(".Add_Gallery").click(function () {
+        $.ajax({
+            url: '@Url.Action("AddCustomerGallery", "Home")',
+            data: {
+                id: $(this).attr('data-id')
+            },
+        })
+            .done(function (response) {
+                if (response.Success) {
+
+                    swal("Art Added to Gallery", "Check your Gallery.", "success");
+
+                } else {
+                    swal("Already Exist in Gallery Check your Gallery");
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    })
+</script>
+

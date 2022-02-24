@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8aec96170f75492ca69d5a92533cc6ca" Name="Diagram1">
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Admin" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Art" Width="1.5" PointX="5.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Artist" Width="1.5" PointX="3" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Cart" Width="1.5" PointX="7.5" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Category" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.City" Width="1.5" PointX="10" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Country" Width="1.5" PointX="7.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Customer" Width="1.5" PointX="2" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Style_of_Art" Width="1.5" PointX="2.375" PointY="8.375" IsExpanded="true" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Art__art_fk_ar__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Art__art_fk_cat__06CD04F7" ManuallyRouted="false" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Art__Art_fk_soA___73BA3083" ManuallyRouted="false" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Cart__art_id__1AD3FDA4" ManuallyRouted="false" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Artist__ar_fk_ca__4F7CD00D" ManuallyRouted="false" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Cart__cus_id__1BC821DD" ManuallyRouted="false" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__City__ci_fk_con___04E4BC85" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.favourite_Arts" Width="1.5" PointX="11.75" PointY="7" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__favourite__fa_fk__41EDCAC5" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__favourite__fa_fk__42E1EEFE" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Auction" Width="1.5" PointX="10.375" PointY="3.75" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Bid" Width="1.5" PointX="12.625" PointY="3.75" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Bids__bid_fk_auc__4F47C5E3" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Bids__bid_fk_cus__4E53A1AA" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Auction__auc_fk___5224328E" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Customer_Gallery" Width="1.5" PointX="4.25" PointY="0.75" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Customer_Gallery_Items" Width="1.5" PointX="10.5" PointY="10.375" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Customer___cgi_f__5CA1C101" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Customer___cg_fk__59C55456" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Customer___cgi_f__5D95E53A" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.order_details" Width="1.5" PointX="7.5" PointY="13.375" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__order_det__od_fk__6AEFE058" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Art_exhibition" Width="1.5" PointX="10.5" PointY="13.25" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Exhibition" Width="1.5" PointX="8.25" PointY="16.875" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Art_exhib__ae_fk__719CDDE7" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Art_exhib__ae_fk__70A8B9AE" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Contact" Width="1.5" PointX="4.375" PointY="3.75" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.order" Width="1.5" PointX="4.25" PointY="15.875" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Website_fund" Width="1.5" PointX="7.5" PointY="6.25" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__order__o_fk_cus___17C286CF" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Website_f__f_fk___2334397B" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__order_det__od_fk__1B9317B3" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Website_f__f_fk___24285DB4" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.notification" Width="1.5" PointX="10.5" PointY="16.375" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__notificat__n_fk___2EA5EC27" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__notificat__n_fk___2F9A1060" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Art_Views" Width="1.5" PointX="7.5" PointY="21.5" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Art_Views__av_fk__32767D0B" />
+        <EntityTypeShape EntityType="db_ArtGalleryModel.Art_Comment" Width="1.5" PointX="13.5" PointY="10.25" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Art_Comme__ac_fk__42ACE4D4" />
+        <AssociationConnector Association="db_ArtGalleryModel.FK__Art_Comme__ac_fk__41B8C09B" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

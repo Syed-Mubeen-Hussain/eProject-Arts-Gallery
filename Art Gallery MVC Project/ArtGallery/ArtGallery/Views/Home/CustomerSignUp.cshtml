@@ -1,0 +1,462 @@
+﻿@model ArtGallery.Models.Customer
+
+@{
+    Layout = null;
+}
+
+<link href="~/Content/images/favicon.png" rel="shortcut icon">
+<style>
+    body {
+        background: #59C173; /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #5D26C1, #a17fe0, #59C173); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #5D26C1, #a17fe0, #59C173); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+
+    .frame {
+        background-color: #fff;
+    }
+
+    .padded {
+        padding: 0 2rem;
+    }
+
+    .level.fill-height {
+        -webkit-box-align: stretch;
+        -ms-flex-align: stretch;
+        align-items: stretch;
+        display: -ms-flexbox;
+        display: flex;
+    }
+
+    .col-6:first-child {
+        padding-left: 0;
+    }
+
+    .col-6:last-child {
+        padding-right: 0;
+    }
+
+    ul {
+        display: flex;
+        list-style: none;
+    }
+
+    li {
+        padding: 0 0.5rem;
+    }
+
+    .btn-info {
+        margin-left: 1rem;
+    }
+
+    body > div > div > div > form > div > div > div.col > div.padded > div:nth-child(n) > div:nth-child(n) {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        font-weight: bold;
+    }
+
+    .error, #usernameError {
+        color: red;
+        font-weight: 500;
+    }
+
+    #submitBtn {
+        margin-left: 32px;
+        width: 10%;
+        font-size: 17px;
+        font-weight: bold;
+        margin-bottom: 50px;
+    }
+</style>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta charset="UTF-8" />
+    <title>SignUp</title>
+
+    <link href="https://unpkg.com/cirrus-ui"
+          type="text/css"
+          rel="stylesheet" />
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,600,700"
+          rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700"
+          rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Oswald"
+          rel="stylesheet" />
+
+    <link rel="stylesheet"
+          href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+          crossorigin="anonymous" />
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="hero fullscreen">
+        <div class="w-100 m-2">
+            <div style="margin: auto">
+                @using (Html.BeginForm("CustomerSignUp", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "frame p-0", id = "formData" }))
+                {
+                    <div class="frame__body p-0">
+                        <div class="row p-0 level fill-height">
+                            <div class="col">
+                                <div class="space xlarge"></div>
+                                <div class="padded">
+                                    <h2 class="u-text-center u-font-alt">SignUp</h2>
+
+                                    <div class="section-body row">
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                First Name
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(x => x.c_firstName, new { @class = "form-group-input" })
+                                                @Html.ValidationMessageFor(x => x.c_firstName, null, new { @class = "text-danger" })
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                Last Name
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(x => x.c_lastName, new { @class = "form-group-input" })
+                                                @Html.ValidationMessageFor(x => x.c_lastName, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="section-body row">
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                Date of Birth
+                                            </div>
+                                            <div>
+                                                <input type="date" name="c_dateOfBirth" id="c_dateOfBirth" value="" />
+                                                @Html.ValidationMessageFor(x => x.c_dateOfBirth, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                Country
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(x => x.c_country, ViewBag.Country as SelectList, "-- Select Country --", new { @class = "form-group-input" })
+                                                @Html.ValidationMessageFor(x => x.c_country, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="section-body row">
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                City
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(x => x.c_city, new SelectList(""), "-- Select City --", new { @class = "form-group-input" })
+                                                @Html.ValidationMessageFor(x => x.c_city, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 pl-0">
+                                            <div style="display:flex;">
+                                                Phone
+                                            </div>
+                                            <div>
+                                                @Html.EditorFor(x => x.c_phone, null, new { @class = "form-group-input" })
+                                                @Html.ValidationMessageFor(x => x.c_phone, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="section-body row">
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                Address
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(x => x.c_address, new { @class = "form-group-input" })
+                                                @Html.ValidationMessageFor(x => x.c_address, null, new { @class = "text-danger" })
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                Zip Code
+                                            </div>
+                                            <div>
+                                                @Html.TextBoxFor(x => x.c_zip, new { @class = "form-group-input" })
+                                                @Html.ValidationMessageFor(x => x.c_zip, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="section-body row">
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                Type of Art
+                                            </div>
+                                            <div>
+                                                @Html.DropDownListFor(x => x.c_gender, new SelectList(new[] { "Male", "Female" }), "-- Select Gender --", new { @class = "form-group-input" })
+                                                @Html.ValidationMessageFor(x => x.c_gender, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                Image
+                                            </div>
+                                            <input type="file" name="c_image" class="form-group-input" />
+                                        </div>
+                                    </div>
+
+                                    <div class="section-body row">
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                Email
+                                            </div>
+                                            <div>
+                                                @Html.EditorFor(x => x.c_email, new { htmlAttributes = new { @class = "form-group-input" } })
+                                                @Html.ValidationMessageFor(x => x.c_email, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                Username
+                                            </div>
+
+                                            <div>
+                                                @Html.TextBoxFor(x => x.c_userName, new { @class = "form-group-input", onkeyup = "onUserNameCheck()" })
+                                                @Html.ValidationMessageFor(x => x.c_userName, null, new { @class = "text-danger" })
+                                                <span id="usernameError" style="display:none">That username is taken. Try another.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="section-body row">
+                                        <div class="form-group col-12 pl-0">
+                                            <div>
+                                                Password
+                                            </div>
+
+                                            <div>
+                                                @Html.PasswordFor(x => x.c_password, new { htmlAttributes = new { @class = "form-group-input" } })
+                                                @Html.ValidationMessageFor(x => x.c_password, null, new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="register_date" value="@DateTime.Now.ToString()" />
+
+
+                                </div>
+
+                                <div>
+                                    <button class="btn btn-primary" id="submitBtn">Submit</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+@Html.Raw(ViewBag.extensionMsg)
+@Html.Raw(ViewBag.sizeMsg)
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+<script>
+    $("#c_country").change(function () {
+          $.ajax({
+              url: '@Url.Action("City", "Artist")',
+              data: {
+                  CountryID: $(this).val()
+              }
+        })
+              .done(function (response) {
+                $("#c_city").empty();
+                $("#c_city").append(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Please Select a Country");
+            });
+    });
+
+    $('#formData').validate({
+
+        rules: {
+            c_firstName: {
+                required: true,
+                minlength: 3,
+                maxlength: 20,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            c_lastName: {
+                required: true,
+                minlength: 3,
+                maxlength: 20,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            c_dateOfBirth: {
+                required: true,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            c_city: {
+                required: true,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            c_country: {
+                required: true,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            c_phone: {
+                required: true,
+                minlength: 11,
+                maxlength: 11,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            c_gender: {
+                required: true,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            }
+            ,
+            c_address: {
+                required: true,
+                maxlength: 50,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            }
+            ,
+            c_zip: {
+                required: true,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            }
+            ,
+            c_email: {
+                required: true,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            c_userName: {
+                required: true,
+                maxlength: 50,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            c_password: {
+                required: true,
+                maxlength: 20,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+
+        },
+        messages: {
+            c_firstName: {
+                required: "First Name is Required",
+                minlength: "Minimum 3",
+                maxlength: "Maximum 20",
+            },
+            c_lastName: {
+                required: "Last Name is Required",
+                minlength: "Minimum 3",
+                maxlength: "Maximum 20",
+            },
+            c_dateOfBirth: {
+                required: "Date of Birth is Required",
+            },
+            c_city: {
+                required: "City is Required"
+            },
+            c_country: {
+                required: "Country is Required"
+
+            },
+            c_phone: {
+                required: "Phone Number is Requierd",
+                minlength: "Phone Number Min Length is 11",
+                maxlength: "Phone Number Max Length is 11",
+
+            },
+            c_gender: {
+                required: "Gender is Required",
+            }
+            ,
+            c_address: {
+                required: "Address is Required",
+                maxlength: "Maximum 50",
+            }
+            ,
+            c_zip: {
+                required: "Zip Code/Postal Code is Required",
+            },
+            c_email: {
+                required: "Email is Required",
+            },
+            c_userName: {
+                required: "Username is Required",
+                maxlength: "Maximum 20",
+            },
+            c_password: {
+                required: "Password is Required",
+                maxlength: "Maximum 20",
+            },
+
+        }
+    });
+
+
+
+    function onUserNameCheck() {
+        var u_name = $("#c_userName").val();
+         $.ajax({
+              url: '@Url.Action("UserNameCheck", "Home")',
+              data: {
+                  username: u_name
+              }
+         })
+             .done(function (response) {
+                 if (response == 1) {
+                     $("#usernameError").show();
+                 }
+                 else {
+                     $("#usernameError").hide();
+                 }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    }
+</script>

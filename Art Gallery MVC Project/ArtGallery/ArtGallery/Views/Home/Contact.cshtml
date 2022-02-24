@@ -1,0 +1,213 @@
+﻿@model ArtGallery.Models.Contact
+
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .wrap-contact .error {
+        color: red;
+        font-weight: 500;
+        font-size: 14px;
+    }
+</style>
+
+<section class="flat-row flat-iconbox">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title-section">
+                    <h2 class="title">
+                        Get In Touch
+                    </h2>
+                </div><!-- /.title-section -->
+            </div><!-- /.col-md-12 -->
+        </div><!-- /.row -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="iconbox text-center">
+                    <div class="box-header nomargin">
+                        <div class="icon">
+                            <i class="fa fa-map-marker"></i>
+                        </div>
+                    </div><!-- /.box-header -->
+                    <div class="box-content">
+                        <p>Art Gallery Karachi</p>
+                    </div><!-- /.box-content -->
+                </div><!-- /.iconbox -->
+            </div><!-- /.col-md-4 -->
+            <div class="col-md-4">
+                <div class="divider h0"></div>
+                <div class="iconbox text-center">
+                    <div class="box-header">
+                        <div class="icon">
+                            <i class="fa fa-phone"></i>
+                        </div>
+                    </div><!-- /.box-header -->
+                    <div class="box-content">
+                        <p>+23 122 345 678</p>
+                    </div><!-- /.box-content -->
+                </div><!-- /.iconbox -->
+            </div><!-- /.col-md-4 -->
+            <div class="col-md-4">
+                <div class="divider h0"></div>
+                <div class="iconbox text-center">
+                    <div class="box-header">
+                        <div class="icon">
+                            <i class="fa fa-envelope"></i>
+                        </div>
+                    </div><!-- /.box-header -->
+                    <div class="box-content">
+                        <p>ArtGallery@@gmail.com</p>
+                    </div><!-- /.box-content -->
+                </div><!-- /.iconbox -->
+            </div><!-- /.col-md-4 -->
+        </div><!-- /.row -->
+        <div class="divider h43"></div>
+    </div><!-- /.container -->
+</section><!-- /.flat-row -->
+<section class="flat-row flat-contact">
+    <div class="container">
+        <div class="row">
+            <div class="wrap-contact">
+                <form id="formData">
+                    <div class="form-text-wrap clearfix">
+                        <div class="contact-name clearfix">
+                            <label>Name</label>
+                            <input autocomplete="off" type="text" onkeypress="return event.keyCode != 13;" size="20" value="" name="cont_name">
+                        </div>
+                        <div class="contact-email">
+                            <label>Email</label>
+                            <input autocomplete="off"  type="email" onkeypress="return event.keyCode != 13;" size="30" value="" name="cont_email" id="email">
+                        </div>
+                        <div class="contact-subject">
+                            <label>Subject</label>
+                            <input autocomplete="off" type="text" onkeypress="return event.keyCode != 13;" aria-required="true" size="30" value="" name="cont_subject" id="subject">
+                        </div>
+                    </div>
+
+                    <div class="contact-message clearfix margin-top-40">
+                        <label>Message</label>
+                        <textarea autocomplete="off" onkeypress="return event.keyCode != 13;" class="" tabindex="4" name="cont_message"></textarea>
+                    </div>
+                    <div class="form-submit margin-top-32 ">
+                        <button class="contact-submit" type="button" id="sendBtn">SEND</button>
+                    </div>
+                </form>
+            </div><!-- /.wrap-contact -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</section><!-- /.flat-row -->
+<!-- Javascript -->
+<script src="~/Content/javascript/tether.min.js"></script>
+<script src="~/Content/javascript/bootstrap.min.js"></script>
+<script src="~/Content/javascript/jquery.easing.js"></script>
+<script src="~/Content/javascript/parallax.js"></script>
+<script src="~/Content/javascript/jquery-waypoints.js"></script>
+<script src="~/Content/javascript/jquery-countTo.js"></script>
+<script src="~/Content/javascript/jquery.countdown.js"></script>
+<script src="~/Content/javascript/jquery.flexslider-min.js"></script>
+<script src="~/Content/javascript/images-loaded.js"></script>
+<script src="~/Content/javascript/jquery.isotope.min.js"></script>
+<script src="~/Content/javascript/magnific.popup.min.js"></script>
+<script src="~/Content/javascript/jquery.hoverdir.js"></script>
+<script src="~/Content/javascript/owl.carousel.min.js"></script>
+<script src="~/Content/javascript/equalize.min.js"></script>
+<script src="~/Content/javascript/gmap3.min.js"></script>
+
+<script src="~/Content/javascript/jquery.cookie.js"></script>
+
+<!-- Revolution Slider -->
+<script src="~/Content/rev-slider/js/jquery.themepunch.tools.min.js"></script>
+<script src="~/Content/rev-slider/js/jquery.themepunch.revolution.min.js"></script>
+<script src="~/Content/javascript/rev-slider.js"></script>
+<!-- Load Extensions only on Local File Systems ! The following part can be removed on Server for On Demand Loading -->
+<script src="~/Content/rev-slider/js/extensions/revolution.extension.actions.min.js"></script>
+<script src="~/Content/rev-slider/js/extensions/revolution.extension.carousel.min.js"></script>
+<script src="~/Content/rev-slider/js/extensions/revolution.extension.kenburn.min.js"></script>
+<script src="~/Content/rev-slider/js/extensions/revolution.extension.layeranimation.min.js"></script>
+<script src="~/Content/rev-slider/js/extensions/revolution.extension.migration.min.js"></script>
+<script src="~/Content/rev-slider/js/extensions/revolution.extension.navigation.min.js"></script>
+<script src="~/Content/rev-slider/js/extensions/revolution.extension.parallax.min.js"></script>
+<script src="~/Content/rev-slider/js/extensions/revolution.extension.slideanims.min.js"></script>
+<script src="~/Content/rev-slider/js/extensions/revolution.extension.video.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script>
+    $('#formData').validate({
+
+        rules: {
+            cont_name: {
+                required: true,
+                minlength: 3,
+                maxlength: 20,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            cont_email: {
+                required: true,
+                minlength: 3,
+                email: true,
+                maxlength: 20,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            cont_subject: {
+                required: true,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            cont_message: {
+                required: true,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+        },
+        messages: {
+            cont_name: {
+                required: "Name is Required",
+                maxlength: "Maximum 20",
+                minlength: "Minimum 3",
+            },
+            cont_email: {
+                required: "Email is Required",
+                maxlength: "Maximum 20",
+                minlength: "Minimum 3",
+            },
+            cont_subject: {
+                required: "Subject is Required",
+            },
+            cont_message: {
+                required: "Message is Required",
+            },
+        }
+    });
+    $("#sendBtn").click(function () {
+            if ($("#formData").valid()) {
+                    $.ajax({
+                        type: "post",
+                        url: '@Url.Action("Contact", "Home")',
+                        data: $("#formData").serialize(),
+                        })
+                        .done(function (response) {
+                        if (response.Success) {
+                            swal("Thank You", "Form has been Submitted.", "success").then((value) => {
+                        window.location = '@Url.Action("Index", "Home")';
+                        });
+                        }
+                        else {
+                        swal("Error", "Unable To Submit Form.", "warning");
+                        }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                        });
+            }
+        })
+</script>

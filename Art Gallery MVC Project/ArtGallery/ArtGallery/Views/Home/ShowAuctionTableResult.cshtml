@@ -1,0 +1,59 @@
+﻿@using ArtGallery.ViewModels
+@model ArtGallery.ViewModels.SingleArtViewModel
+
+@if (Model.highestBid != null)
+{
+    <li style="display: flex;justify-content: space-between;align-items: center;">
+        <div style="font-size: 15px;font-weight: bold;">Highest Bid</div>
+        <div><h5 style="font-size:20px;color:#cd0acd;font-weight:600;" class="price m-0"><span style="color:black;">Rs</span> : <span id="Art_highest">@Model.highestBid.bid_amount</span></h5></div>
+    </li>
+        <hr />
+    <li class="header">
+        <div style="font-size:21px;display:flex;justify-content:center;align-items:center;" class="current">
+            <img src="@Model.highestBid.Customer.c_image" style="width: 80px;object-fit: cover;height: 80px;border-radius: 50%;" alt="Alternate Text" />
+            <div style="margin-left:15px;">
+                <div style="font-size:13px;font-weight:600">Current Highest Bidder</div>
+                <div style="font-size:20px;font-weight:700">@Model.highestBid.Customer.c_userName</div>
+                @foreach (var Country in Model.Country)
+                {
+                    if (int.Parse(Model.highestBid.Customer.c_country) == Country.con_id)
+                    {
+                        <div style="font-size:12px;font-weight:600"><b>Location : </b>@Country.con_name</div>
+                    }
+                }
+            </div>
+        </div>
+
+    </li>
+}
+@if (Model.highestBid != null)
+{
+    <li class="mt-2">
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <td><b>Bid</b></td>
+                    <td><b>User</b></td>
+                    <td><b>Time</b></td>
+                </tr>
+            </thead>
+            <tbody id="Art_body">
+
+                @foreach (var bid in Model.bids.OrderByDescending(x => x.bid_id).Take(8))
+                {
+                    <tr>
+                        <td style="font-weight:500;padding:2px;">@bid.bid_amount</td>
+                        <td style="font-weight:500;padding:2px;"><img style="width: 30px;height: 30px;object-fit: cover;border-radius: 50%;margin-right: 3px;" src="@bid.Customer.c_image" alt="Alternate Text" /> @bid.Customer.c_userName</td>
+                        <td style="font-weight:500;padding:2px;">@bid.bid_timeStamp</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </li>
+}
+else
+{
+    <li>No Bidders Yet</li>
+}
+

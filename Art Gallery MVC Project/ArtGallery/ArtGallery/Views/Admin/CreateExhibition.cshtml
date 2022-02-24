@@ -1,0 +1,163 @@
+﻿@model ArtGallery.Models.Art_exhibition
+@{
+    ViewBag.Title = "Create Category";
+    Layout = null;
+}
+<style>
+    .error {
+        color: red;
+    }
+</style>
+<h2 class="text-center">Create Exhibition</h2>
+<div class="content-wrapper p-5">
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <form id="formData">
+                        <div class="form-group">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;">Name</label>
+                            <input type="text" style="padding:12px;" name="e_name" class="form-control" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;">Country</label>
+                            <input type="text" style="padding:12px;" name="e_country" class="form-control" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;">City</label>
+                            <input type="text" style="padding:12px;" name="e_city" class="form-control" value="" />
+                        </div>
+                        <div class="form-group">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;">Zip Code</label>
+                            <input type="number" style="padding:12px;" name="e_zip_code" class="form-control" value="" />
+                        </div>
+                        <br />
+                        <div class="form-group  d-flex">
+                            <label style="font-size:15px;font-weight:bold;margin-top:10px;">Image</label>
+
+                            <img style="width: 220px;margin:20px;" class="img-fluid" id="ArtImage" src="" />
+                        </div>
+                        <div class="form-control">
+                            <input type="hidden" id="ImageURL" name="e_image" />
+                            <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+                        </div>
+                        <br />
+                        <button class="btn btn-primary" id="saveBtn" type="button">Save</button>
+                        <button class="btn btn-primary" id="cancelBtn" type="button">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+       $("#imageUpload").change(function () {
+        var element = this;
+
+        var formData = new FormData();
+
+        var totalFiles = element.files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadImage", "Shared")',
+            dataType: 'json',
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                console.log(response);
+
+                if (response.Success) {
+                    $("#ImageURL").val(response.ImageURL);
+                    $("#ArtImage").attr("src", response.ImageURL);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+    $("#cancelBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("ExhibitionTable", "Admin")'
+        })
+            .done(function (response) {
+                $("#actionContainer").html("");
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $('#formData').validate({
+
+        rules: {
+            e_name: {
+                required: true,
+                maxlength: 50,
+            },
+            e_country: {
+                required: true,
+            },
+            e_city: {
+                required: true,
+            },
+            e_zip_code: {
+                required: true,
+            },
+            Image: {
+                required: true,
+            },
+        },
+        messages: {
+            e_name: {
+                required: 'Name is required',
+                maxlength: 'Maximum Length is 50'
+            },
+            e_country: {
+                required: 'Country is required',
+            },
+            e_city: {
+                required: 'City is required',
+            },
+            e_zip_code: {
+                required: 'Zip Code is required',
+            },
+            Image: {
+                required: 'Image is required',
+            },
+        }
+    });
+
+
+
+
+    $("#saveBtn").click(function () {
+        if ($("#formData").valid()) {
+
+        $.ajax({
+            type: "post",
+            url: '@Url.Action("CreateExhibition", "Admin")',
+            data: $("#formData").serialize()
+        })
+              .done(function (response) {
+                  $("#tableContainer").html(response);
+                  $("#actionContainer").html("");
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+                });
+
+        }
+    });
+</script>

@@ -1,0 +1,190 @@
+﻿@model IEnumerable<ArtGallery.Models.Customer_Gallery_Items>
+
+@{ 
+    ViewBag.Title = "Gallery";
+}
+
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    .heading {
+        text-align: center;
+        font-size: 2.0em;
+        letter-spacing: 1px;
+        padding: 40px;
+        font-weight: bold;
+        color: black;
+    }
+
+    .gallery-image {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .gallery-image img {
+            height: 200px;
+            width: 200px;
+            object-fit: cover;
+            transform: scale(1.0);
+            transition: transform 0.4s ease;
+        }
+
+    .img-box {
+        box-sizing: content-box;
+        margin: 10px;
+        height: 250px;
+        width: 350px;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        color: white;
+        position: relative;
+        box-shadow: 0px 0px 3px #ddd6d6;
+        background-color: white;
+    }
+    .visitBtn{
+        display:none;
+    }
+    .caption {
+        position: absolute;
+        bottom: 5px;
+        left: 20px;
+        opacity: 0.0;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .transparent-box {
+        height: 250px;
+        width: 350px;
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: background-color 0.3s ease;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .img-box:hover img {
+        transform: scale(1.1);
+    }
+
+    .img-box:hover .transparent-box {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .img-box:hover .caption {
+        transform: translateY(-20px);
+        opacity: 1.0;
+    }
+
+    .img-box:hover .delete_item {
+        cursor: pointer;
+        z-index:9999999;
+    }
+    .img-box:hover .visitBtn{
+        display:block;
+    }
+    .caption > p:nth-child(1) {
+        font-size: 18px;
+    }
+
+    .caption > p:nth-child(2) {
+        font-size: 15px;
+    }
+
+    .opacity-low {
+        opacity: 0.5;
+    }
+</style>
+<html>
+<head>
+    <title>Gallery</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:600,900" rel="stylesheet">
+</head>
+<body>
+    <p class="heading" style="padding-top:40px;">Customer Gallery</p>
+    <div class="gallery-image">
+        @if (Model != null && Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                if (item.Art.art_isAuction == true)
+                {
+                    <div class="img-box">
+                        <div class="delete_item" data-id="@item.cgi_fk_art_id" style="width: 19px;height: 19px;object-fit: cover;position: absolute;z-index: 111;right: 8px;top: 5px;"><img src="~/Content/delete-button.png" style="width:100%;height:auto;" /></div>
+                        <img src="@item.Art.art_image" alt="" />
+                        <div class="transparent-box">
+                        <a href="@Url.Action("SingleArtAuction","Home",new { id = item.Art.art_id })" class="visitBtn themesflat-button has-padding-36 bg-accent">Visit</a>
+                            <div class="caption">
+                                <p style="color:white">@item.Art.art_name</p>
+                                <p style="color:white" class="opacity-low">Rs : @item.Art.art_price</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="img-box">
+                        <div class="delete_item" data-id="@item.cgi_fk_art_id" style="width: 19px;height: 19px;object-fit: cover;position: absolute;z-index: 111;right: 8px;top: 5px;"><img src="~/Content/delete-button.png" style="width:100%;height:auto;" /></div>
+                        <img src="@item.Art.art_image" alt="" />
+                        <div class="transparent-box">
+                            <a href="@Url.Action("SingleArt","Home",new { id = item.Art.art_id })" class="visitBtn themesflat-button has-padding-36 bg-accent">Visit</a>
+                            <div class="caption">
+                                <p style="color:white">@item.Art.art_name</p>
+                                <p style="color:white" class="opacity-low">Rs : @item.Art.art_price</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            }
+        }
+        else
+        {
+                    <div style="padding: 20px;display: flex;align-items: center;flex-direction: column;justify-content: center;">
+                        <video width="320" height="240" controls>
+                            <source src="~/Content/galleryVideo.mp4" type="video/mp4">
+                            <source src="~/Content/galleryVideo.mp4" type="video/ogg">
+                            Your browser does not support the video tag.
+                        </video>
+                        <a class="themesflat-button has-padding-36 bg-accent" style="margin-top:25px;" href="@Url.Action("Shop","Home")">
+                            Create Your Gallery
+                        </a>
+                    </div>
+        }
+    </div>
+</body>
+</html>
+<script>
+    $(".delete_item").click(function () {
+      $.ajax({
+            url: '@Url.Action("RemoveGalleryItem", "Home")',
+            data: {
+                id: $(this).attr('data-id')
+            },
+        })
+            .done(function (response) {
+                if (response.Success) {
+
+                    window.location.reload();
+
+                } else {
+                    swal("Art not Deleted in Gallery");
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+</script>

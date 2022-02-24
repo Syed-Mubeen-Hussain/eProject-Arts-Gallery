@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout _Artist.cshtml";
+}
+
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div style="font-size: 45px;font-weight: bold;text-align: center;margin-bottom: 65px;">Dashboard</div>
+        </div>
+        <div class="row">
+            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2" style="display: flex;justify-content: center;align-items: center;">
+                        <div class="text-end pt-1">
+                            <p class="mb-0 text-capitalize" style="font-size:25px;font-weight:500;text-align: center;">Total Arts</p>
+                            <h4 class="mb-0 text-center" style="font-size:35px;">@(Session["Total_Arts"] != null ? Session["Total_Arts"].ToString() : "0")</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2" style="display: flex;justify-content: center;align-items: center;">
+                        <div class="text-end pt-1">
+                            <p class="mb-0 text-capitalize" style="font-size:25px;font-weight:500;text-align: center;">Sold Arts</p>
+                            <h4 class="mb-0 text-center" style="font-size:35px;">@(Session["soldArts"] != null ? Session["soldArts"].ToString() : "0")</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2" style="display: flex;justify-content: center;align-items: center;">
+                        <div class="text-end pt-1">
+                            <p class="mb-0 text-capitalize" style="font-size:25px;font-weight:500;text-align: center;">InStock Arts</p>
+                            <h4 class="mb-0 text-center" style="font-size:35px;">@(Session["inStockArts"] != null ? Session["inStockArts"].ToString() : "0")</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2" style="display: flex;justify-content: center;align-items: center;">
+                        <div class="text-end pt-1">
+                            <p class="mb-0 text-capitalize" style="font-size:25px;font-weight:500;text-align: center;">Fixed Price Arts</p>
+                            <h4 class="mb-0 text-center" style="font-size:35px;">@(Session["FixedPrice_Arts"] != null ? Session["FixedPrice_Arts"].ToString() : "0")</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-6">
+                <div class="card">
+                    <div class="card-header p-3 pt-2" style="display: flex;justify-content: center;align-items: center;">
+                        <div class="text-end pt-1">
+                            <p class="mb-0 text-capitalize" style="font-size:25px;font-weight:500;text-align: center;">Auction Arts</p>
+                            <h4 class="mb-0 text-center" style="font-size:35px;">@(Session["Auction_Arts"] != null ? Session["Auction_Arts"].ToString() : "0")</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                <div class="card">
+                    <div class="card-header p-3 pt-2" style="display: flex;justify-content: center;align-items: center;">
+                        <div class="text-end pt-1">
+                            <p class="mb-0 text-capitalize" style="font-size:25px;font-weight:500;text-align: center;">Total Amount</p>
+                            <h4 class="mb-0 text-center" style="font-size:35px;">@(Session["totalAmount"] != null ? Session["totalAmount"].ToString() : "0")</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+</main>
+
+

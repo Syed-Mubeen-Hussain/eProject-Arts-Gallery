@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "About";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    @@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif !important;
+}
+</style>
+<div class="container-fluid">
+    <div class="row d-sm-flex align-items-center justify-content-between">
+        <div class="col-md-6 order-2 order-sm-1 p-3 p-sm-5">
+            <div class="p-0 p-sm-5">
+                <h1 class="mb-4 display-4" style="font-weight: 600;">Art Gallery <br /> <span style="color: red;font-size:36px;">About Us</span></h1>
+                <p class="text-secondary" style="line-height: 2;font-size: 16px;font-weight: 400;margin-bottom: 10px;">Art Gallery was initially opened in 2022 inspired by the diverse talent shown by artists in Pakistan from all regions of the country. We enjoyed a liaison with artists and the patrons whose presence initiated exhibitions here.</p>
+                <a href="@Url.Action("Shop","Home")" class="themesflat-button has-padding-36 bg-accent">
+                    <span>Buy Now</span>
+                </a>
+            </div>
+        </div>
+        <div class="w-100 col-md-6 order-1 order-sm-2" style="background-image: url('../../Content/images/AboutUs.jpg');
+        height: 100vh;
+        min-height: 400px;
+        background-position: center;
+        background-size: cover;"></div>
+    </div>
+</div>
+

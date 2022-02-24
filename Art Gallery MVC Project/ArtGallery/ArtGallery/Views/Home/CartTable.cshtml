@@ -1,0 +1,156 @@
+﻿@model List<ArtGallery.Models.Art>
+
+<section style="margin-top:35px;" id="updateDiv" class="shopping-cart spad">
+
+
+    <link rel="stylesheet" href="~/Content/AddToCart/css/style.css" type="text/css">
+
+    <style>
+        #main_div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 500px;
+        }
+
+            #main_div #title {
+                margin-bottom: 10px;
+                font-size: 18px;
+                font-weight: 500;
+            }
+    </style>
+    @if (Model != null && Model.Count() > 0)
+    {
+        var totalPrice = 0;
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <table id="updateDiv">
+                            <thead>
+                                <tr>
+                                    <th>Art</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var art in Model)
+                                {
+
+                                    <tr>
+                                        <td class="product__cart__item">
+                                            <div class="product__cart__item__pic">
+                                                <img style="width: 60px;border-radius: 50px;object-fit: cover;margin-right: 10px;height: 60px;" src="@art.art_image" alt="">
+                                            </div>
+                                            <div class="product__cart__item__text">
+                                                <h6 style="font-size:18px;color:gray;">@art.art_name</h6>
+                                            </div>
+                                        </td>
+
+                                        <td class="quantity__item">
+                                            <div class="quantity">
+                                                <div style="font-size:18px;font-weight:600;color:gray;" class="pro-qty-2">
+                                                    @art.art_price
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="font-size:18px;color:gray;" class="cart__price">@art.Category.cat_name</td>
+                                        <td class="cart__close"><i data-id="@art.art_id" class="ArtRemoveBtn clickme fa fa-close"></i></td>
+                                        <td style="display:none;"> @(totalPrice = totalPrice + art.art_price)</td>
+                                    </tr>
+
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="continue__btn">
+                                <a href="@Url.Action("Shop", "Home")">Continue Shopping</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+
+                    <div class="cart__total">
+                        <h6>Cart total</h6>
+                        <ul>
+                            <li>Subtotal <span>Rs @totalPrice</span></li>
+                            <li>Total <span>Rs @totalPrice</span></li>
+                        </ul>
+                        <a href="@Url.Action("Checkout","Home")" class="primary-btn">Proceed to checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hidden style="display:none;"> @(Session["totalAmount"] = totalPrice)</hidden>
+    }
+    else
+    {
+        <div id="main_div">
+            <div id="title">
+                There are no items in this cart
+            </div>
+            <div class="row">
+                <div>
+                    <div class="continue__btn">
+                        <a href="@Url.Action("Shop", "Home")">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+
+</section>
+
+<script>
+    $(".ArtRemoveBtn").click(function () {
+
+          swal({
+            title: "Confirm?",
+            text: "Are you sure you want to Remove this Art!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                 $.ajax({
+                  type:"post",
+            url: '@Url.Action("RemoveCartItem", "Home")',
+            data: {
+                id: $(this).attr('data-id')
+                 }
+        })
+            .done(function (response) {
+                $("#updateDiv").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+          $.ajax({
+            url: '@Url.Action("CartItemsCount", "Home")',
+        })
+            .done(function (response) {
+                    $("#CartItemsCountSpan").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+                }
+            });
+
+
+    });
+</script>

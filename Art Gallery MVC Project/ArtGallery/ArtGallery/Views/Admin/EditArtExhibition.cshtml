@@ -1,0 +1,147 @@
+﻿@model ArtGallery.Models.Art_exhibition
+
+@{
+    ViewBag.Title = "Edit Exhibition";
+    Layout = null;
+    var trueChecked = Model.ae_status== 1 ? "checked" : string.Empty;
+    var falseChecked = Model.ae_status == 0 ? "checked" : string.Empty;
+}
+
+
+<style>
+    .error {
+        color: red;
+    }
+</style>
+
+<h2 class="text-center">Edit Art Exhibition</h2>
+<div class="content-wrapper p-5">
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+
+                    <form id="formData" method="post">
+                        <input name="ae_id" type="hidden" value="@Model.ae_id" />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Art</label>
+                                    @Html.DropDownListFor(x => x.ae_fk_art_id, ViewBag.arts as SelectList, "Select Art", new { @class = "form-control" })
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Exhibition</label>
+                                    @Html.DropDownListFor(x => x.ae_fk_e, ViewBag.exhibitions as SelectList, "Select Exhibition", new { @class = "form-control" })
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Status</label>
+                                    <div class="input-group">
+                                        <div class="radio form-control">
+                                            <label><input type="radio" name="ae_status" value="1" @trueChecked /> Active</label>
+                                        </div>
+                                        <div class="radio form-control">
+                                            <label><input type="radio" name="ae_status" value="0" @falseChecked /> Deactive</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="button" id="editBtn" class="btn btn-primary">Update</button>
+                                <button type="button" id="cancelBtn" class="btn btn-primary">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#imageUpload").change(function () {
+        var element = this;
+
+        var formData = new FormData();
+
+        var totalFiles = element.files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadImage", "Shared")',
+            dataType: 'json',
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                console.log(response);
+
+                if (response.Success) {
+                    $("#ImageURL").val(response.ImageURL);
+                    $("#ArtImage").attr("src", response.ImageURL);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+    $("#cancelBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("ArtExhibitionTable", "Admin")'
+        })
+            .done(function (response) {
+                $("#actionContainer").html("");
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $('#formData').validate({
+
+        rules: {
+            ae_fk_art_id: {
+                required: true,
+            },
+            ae_fk_e: {
+                required: true,
+            },
+        },
+        messages: {
+            ae_fk_art_id: {
+                required: 'Art is required',
+            },
+            ae_fk_e: {
+                required: 'Exhibition is required',
+            },
+        }
+    });
+
+
+    $("#editBtn").click(function () {
+        if ($("#formData").valid()) {
+
+        $.ajax({
+            type:"post",
+            url: '@Url.Action("EditArtExhibition", "Admin")',
+            data: $("#formData").serialize()
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+                $("#actionContainer").html("");
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+                });
+
+        }
+    });
+</script>

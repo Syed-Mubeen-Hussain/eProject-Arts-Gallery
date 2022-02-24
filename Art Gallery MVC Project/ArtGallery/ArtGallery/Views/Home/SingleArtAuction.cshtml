@@ -1,0 +1,430 @@
+﻿@using ArtGallery.Models
+@using ArtGallery.ViewModels;
+@model ArtGallery.ViewModels.SingleArtViewModel
+
+@{
+    ViewBag.Title = Model.Art.art_name;
+}
+
+
+<style>
+    #addtoCartBtn:hover {
+        cursor: pointer;
+        color: white;
+    }
+
+    #tableContainer > section.flat-row.main-shop.shop-detail > div > div > div:nth-child(2) > div > div > div > div.add-to-cart.m-0 {
+        display: flex;
+        justify-content: center;
+    }
+
+    .price-table {
+        background: #ebf2ff;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .product-bid-area {
+        padding: 20px 0;
+    }
+
+    .product-bid-form {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+    }
+
+        .product-bid-form .search-icon {
+            width: 65px;
+            height: 65px;
+            margin: 15px;
+        }
+
+        .product-bid-form input {
+            flex-grow: 1;
+            height: 50px;
+            padding: 0px 30px;
+            background: transparent;
+        }
+
+        .product-bid-form button.custom-button {
+            text-transform: capitalize;
+            padding: 10px 20px;
+        }
+
+    #bidDiv > li.header {
+        position: relative;
+        box-shadow: none;
+        z-index: 99;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .user_data {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .flat-row.shop-detail {
+        padding: 20px 0px 34px 0px;
+    }
+</style>
+
+<div id="updateDiv">
+
+</div>
+
+<div id="tableContainer">
+
+    <section class="flat-row main-shop shop-detail">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+
+                    <h2 class="product-title" style="letter-spacing: 1px;font-size: 30px;font-weight: bold;margin-left:20px;">@Model.Art.art_name</h2>
+                    <div style="display: flex; align-items: center;">
+                        <p style="margin-top: 6px;font-size: 16px;font-weight: 500;margin-left:19px;">
+                            Initial Price is Rs : @Model.Art.art_price
+                        </p>
+                        <div class="box-like ml-3">
+                            @if (Session["customer_id"] != null)
+                            {
+                                <a style="cursor:pointer;" data-id="@Model.Art.art_id" class="like favourite_art"><i class="fa fa-heart-o"></i></a>
+                            }
+                        </div>
+                    </div>
+
+
+                    <div class="wrap-flexslider">
+                        <div class="inner">
+                            <div>
+                                <ul>
+                                    <li style="display:flex;justify-content:center;align-items:center;margin-top:14px;" data-thumb="@Model.Art.art_image">
+                                        <img style="width: 530px;height: 280px;object-fit: cover;" src="@Model.Art.art_image" alt="Image">
+
+                                    </li>
+                                    <li style="display: flex;align-items: center;padding-left: 20px;padding-top: 10px;"><img src="~/Content/images/views.png" style="width:20px;" alt="Alternate Text" /> <span style="margin-left: 6px;font-weight: 500;color: black;">@Model.artViews.av_veiws_count Views</span></li>
+
+                                </ul>
+                            </div><!-- /.flexslider -->
+                        </div>
+                    </div>
+                </div><!-- /.col-md-6 -->
+
+
+
+
+                <div class="col-md-6">
+                    <div class="product-detail">
+                        <div class="inner">
+                            <div class="content-detail">
+
+
+                                @{
+                                    SingleArtViewModel singleArtAuctiontableModel = new SingleArtViewModel();
+
+                                    singleArtAuctiontableModel.Art = Model.Art;
+                                    singleArtAuctiontableModel.auctionId = singleArtAuctiontableModel.Art.art_id;
+                                    singleArtAuctiontableModel.bids = Model.bids;
+                                    singleArtAuctiontableModel.Country = Model.Country;
+                                    if (Model.highestBid != null)
+                                    {
+                                        singleArtAuctiontableModel.highestBid = Model.highestBid;
+                                    }
+                                    else
+                                    {
+                                        singleArtAuctiontableModel.highestBid = null;
+                                    }
+                                    if (Model.endDate != null)
+                                    {
+                                        singleArtAuctiontableModel.endDate = Model.endDate;
+                                        singleArtAuctiontableModel.endDate.auc_end_date = Model.endDate.auc_end_date;
+                                    }
+                                    else
+                                    {
+                                        singleArtAuctiontableModel.endDate = null;
+                                    }
+
+
+                                    Html.RenderPartial("SingleArtAuctionTable", singleArtAuctiontableModel);
+                                }
+
+                                <div class="product-quantity m-0" style="display:flex;justify-content:center;align-items:center;">
+
+
+
+                                    <div class="add-to-cart m-0">
+                                        <br />
+                                        @if (Session["customer_id"] == null)
+                                        {
+                                            <button id="LoginBtn" data-id="@Model.Art.art_id" onkeypress="return event.keyCode != 13;">Bid Now</button>
+                                        }
+
+                                    </div>
+
+                                </div>
+                                <div class="product-categories" style="font-size:15px;">
+                                    <span><b>Categories :</b> </span><a href="@Url.Action("CategoryArts","Home",new { id = Model.Category.cat_id })">@Model.Category.cat_name</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div><!-- /.product-detail -->
+                </div>
+
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </section><!-- /.flat-row -->
+
+
+    <h2 class="text-center" style="font-size: 30px;font-weight: 600;margin-top: 65px;">Comments</h2>
+
+    <section class="flat-row shop-detail-content style-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="flat-tabs style-1 has-border">
+                        <div class="inner">
+                            <div class="content-tab">
+                                <div class="content-inner">
+                                    <div class="inner max-width-83 padding-top-33">
+                                        @if (Session["customer_id"] != null)
+                                        {
+                                            <div class="comment-respond review-respond" id="respond">
+                                                <form class="comment-form review-form" id="commentForm" method="post" action="#">
+                                                    <div class="comment-form-comment" style="display:flex;justify-content:center;align-items:center;">
+                                                        <input type="hidden" name="ac_fk_art_id" value="@Model.Art.art_id" />
+                                                        <input onkeypress="return event.keyCode != 13;" type="text" name="ac_text" id="ac_text" placeholder="Add a comment...." style="padding: 12px;border-radius: 0px;" class="form-control" autocomplete="off">
+                                                        <button id="commentBtn" type="button" style="padding: 10px 27px;" class="comment-submit">COMMENT</button>
+                                                    </div>
+                                                    <span style="color:red;font-size: 15px;font-weight: 500;display:none;" id="commentError">Please Enter Your Comment</span>
+                                                </form>
+                                            </div><!-- /.comment-respond -->
+                                        }
+                                        else
+                                        {
+                                            <div style="text-align:center;margin-bottom:20px;">
+                                                <a class="themesflat-button has-padding-36 bg-accent" href="@Url.Action("CustomerLogin","Home")">Add Comments</a>
+                                            </div>
+                                        }
+                                        <div id="commentBox">
+                                            @if (Model.comments != null && Model.comments.Count > 0)
+                                            {
+                                                <ol class="review-list" style="margin-top:10px;">
+                                                    @foreach (var comment in Model.comments)
+                                                    {
+                                                        <li class="review">
+                                                            <div class="thumb">
+                                                                @foreach (var customer_image in Model.customer)
+                                                                {
+                                                                    if (customer_image.c_id == comment.ac_fk_cus_id)
+                                                                    {
+                                                                        <img src="@customer_image.c_image" style="border-radius: 50px;width: 50px;height: 50px;object-fit: cover;" alt="Image">
+                                                                    }
+                                                                }
+                                                            </div>
+                                                            <div class="text-wrap">
+                                                                <div class="review-meta">
+                                                                    @foreach (var customer_username in Model.customer)
+                                                                    {
+                                                                        if (customer_username.c_id == comment.ac_fk_cus_id)
+                                                                        {
+                                                                            <h5 class="name">@customer_username.c_userName</h5>
+                                                                        }
+                                                                    }
+                                                                    <div class="flat-star style-1">
+                                                                        @comment.ac_time_stamp
+                                                                    </div>
+                                                                </div>
+                                                                <div class="review-text" style="font-size: 15px;font-weight: 400;">
+                                                                    <p>@comment.ac_text.</p>
+                                                                </div>
+                                                            </div>
+                                                        </li><!--  /.review    -->
+                                                    }
+                                                </ol><!-- /.review-list -->
+                                            }
+                                            else
+                                            {
+                                                <div style="text-align:center;font-size: 19px;font-weight: bold;">
+                                                    No Comments
+                                                </div>
+                                            }
+                                        </div>
+                                    </div><!-- /.content-inner -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section><!-- /.shop-detail-content -->
+    @if (Model.RelatedArts != null && Model.RelatedArts.Count > 0)
+    {
+            <section class="flat-row shop-related">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="title-section margin-bottom-55">
+                                <h2 class="title">Related Arts</h2>
+                            </div>
+
+                            <div class="product-content product-fourcolumn clearfix">
+                                <ul class="product style2">
+
+                                    @foreach (var art in Model.RelatedArts)
+                                    {
+                                        <li class="product-item">
+                                            <div class="product-thumb clearfix">
+                                                <a href="@Url.Action("SingleArt", "Home", new { id = art.art_id })">
+                                                    <img style="width: 200px;height: 215px;object-fit: cover;margin-bottom: 15px;" src="@art.art_image" alt="image">
+                                                </a>
+                                            </div>
+                                            <div class="product-info clearfix">
+                                                <span class="product-title">@art.art_name</span>
+                                                <div class="price">
+                                                    <ins>
+                                                        <span class="amount">Rs. @art.art_price</span>
+                                                    </ins>
+                                                </div>
+                                                @if (art.art_isAuction.Value == true)
+                                                {
+                                                    <span style="display: inline-block;padding: 0.2rem 0.7rem;border-radius: 4px;font-weight: 600;background-color: #c8f8f6;-ms-flex-item-align: start;align-self: flex-start;font-size:15px;">
+                                                        Bid Now
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="display: inline-block;padding: 0.2rem 0.7rem;border-radius: 4px;font-weight: 600;background-color: #c8f8f6;-ms-flex-item-align: start;align-self: flex-start;font-size:15px;">
+                                                        Fixed Price
+                                                    </span>
+                                                }
+                                            </div>
+                                            <div class="add-to-cart text-center">
+                                                @if (art.art_isAuction.Value == true)
+                                                {
+                                                    <a href="@Url.Action("SingleArtAuction", "Home", new { id = art.art_id })">MORE DETAILS</a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="@Url.Action("SingleArt", "Home", new { id = art.art_id })">MORE DETAILS</a>
+                                                }
+
+                                            </div>
+                                            @if (Session["customer_id"] != null)
+                                            {
+                                                <a data-id="@art.art_id" class="Add_Gallery like" style="position: absolute;top: 55px;right: 16px;cursor:pointer;"><img src="~/Content/photo-gallery (1).png" alt="Alternate Text" /></a>
+                                                <a style="cursor:pointer;" data-id="@art.art_id" class="like favourite_art"><i class="fa fa-heart-o"></i></a>
+                                            }
+                                            @if (Session["customer_id"] != null)
+                                            {
+                                                <a style="cursor:pointer;" data-id="@art.art_id" class="like favourite_art"><i class="fa fa-heart-o"></i></a>
+                                            }
+                                        </li>
+                                    }
+                                    </ul><!-- /.product -->
+                            </div><!-- /.product-content -->
+                        </div>
+                    </div><!-- /.row -->
+                </div>
+            </section>
+        }
+    </div>
+    <script>
+    $('#LoginBtn').click(function () {
+        $.ajax({
+                type:"post",
+                url: '@Url.Action("SingleArtAuction", "Home")',
+                data: {
+                    id : $(this).attr('data-id')
+                },
+            })
+            .done(function (response) {
+                $("#updateDiv").html(response);
+
+                $("#tableContainer").hide();
+
+
+                if (response == "True") {
+                    $("#updateDiv").html("");
+
+                    $("#tableContainer").show();
+                }
+                if (response == "False") {
+                    $("#updateDiv").html("");
+
+                    $("#tableContainer").show();
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("FAIL");
+            });
+
+    });
+
+        $(".favourite_art").click(function () {
+        $.ajax({
+            url: '@Url.Action("Favourite_Art", "Home")',
+            data: {
+                id: $(this).attr('data-id')
+            },
+        })
+            .done(function (response) {
+                if (response.Success) {
+                    swal("Art Added To Favourite", "Check your Favourite Cart.", "success");
+                }
+                else {
+                    swal("Already Exist in Favourite Cart");
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $("#commentBtn").click(function () {
+        if ($("#ac_text").val().trim() != "") {
+            $("#commentError").hide();
+
+            $.ajax({
+            url: '@Url.Action("Arts_Comment", "Home")',
+                data: $("#commentForm").serialize()
+        })
+            .done(function (response) {
+                $("#ac_text").val('');
+                $("#commentBox").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+
+        }
+        else {
+            $("#commentError").show();
+        }
+    });
+ $(".Add_Gallery").click(function () {
+        $.ajax({
+            url: '@Url.Action("AddCustomerGallery", "Home")',
+            data: {
+                id: $(this).attr('data-id')
+            },
+        })
+            .done(function (response) {
+                if (response.Success) {
+
+                    swal("Art Added to Gallery", "Check your Gallery.", "success");
+
+                } else {
+                    swal("Already Exist in Gallery Check your Gallery");
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+    </script>
+

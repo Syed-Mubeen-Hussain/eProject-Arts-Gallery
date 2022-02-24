@@ -1,0 +1,159 @@
+﻿@model ArtGallery.ViewModels.AdminOrder_detailsViewModel
+
+@{
+    Layout = null;
+
+}
+
+<h2 class="text-center">Detail Order</h2>
+<div class="content-wrapper p-5">
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <form id="formData" method="post">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Order Id : @Model.Order.o_id</label>
+                                </div>
+                                <h5>Customer Data</h5>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Id</label>
+                                    <input class="form-control" name="art_id" readonly value="@Model.Customer.c_id" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">UserName</label>
+                                    <input class="form-control" name="art_name" readonly value="@Model.Customer.c_userName" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Address</label>
+                                    <input class="form-control" name="art_name" readonly value="@Model.Order.o_address" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Phone</label>
+                                    <input class="form-control" name="art_name" readonly value="0@(Model.Order.o_phone)" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Country</label>
+                                    @foreach (var country in ViewBag.Country)
+                                    {
+                                        if (int.Parse(Model.Customer.c_country) == country.con_id)
+                                        {
+                                            <input class="form-control" name="art_description" readonly value="@country.con_name" />
+                                        }
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">City</label>
+                                    @foreach (var city in ViewBag.City)
+                                    {
+                                        if (int.Parse(Model.Customer.c_city) == city.ci_id)
+                                        {
+                                            <input class="form-control" name="art_description" readonly value="@city.ci_name" />
+                                        }
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Email</label>
+                                    <input class="form-control" name="art_description" readonly value="@Model.Order.o_email" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Zip/Postal Code</label>
+                                    <input class="form-control" name="" readonly value="@Model.Order.o_zip" />
+                                </div>
+                                <div style="text-align: center;margin-top: 10px;font-weight: bold;color: #997070;">Payment Mode</div>
+                                @if (Model.Order.o_easyPaisa != null)
+                                {
+                                    <div class="form-group">
+                                        <label style="font-size:15px;font-weight:bold;margin-top:10px;">Credit Easy Paisa</label>
+                                        <input class="form-control" name="" readonly value="@Model.Order.o_easyPaisa" />
+                                    </div>
+                                }
+                                @if (Model.Order.o_jazzCash != null)
+                                {
+                                    <div class="form-group">
+                                        <label style="font-size:15px;font-weight:bold;margin-top:10px;">Jazz Cash</label>
+                                        <input class="form-control" name="" readonly value="@Model.Order.o_jazzCash" />
+                                    </div>
+                                }
+                                @if (Model.Order.o_credit_number != null && Model.Order.o_pin != null)
+                                {
+                                    <div class="form-group">
+                                        <label style="font-size:15px;font-weight:bold;margin-top:10px;">Credit Card Number</label>
+                                        <input class="form-control" name="" readonly value="@Model.Order.o_credit_number" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-size:15px;font-weight:bold;margin-top:10px;">Pin Code</label>
+                                        <input class="form-control" name="" readonly value="@Model.Order.o_pin" />
+                                    </div>
+                                }
+                                @if (Model.Order.o_hbl_bank_account_number != null && Model.Order.o_cnic_number != null)
+                                {
+                                    <div class="form-group">
+                                        <label style="font-size:15px;font-weight:bold;margin-top:10px;">Hbl Account Number</label>
+                                        <input class="form-control" name="" readonly value="@Model.Order.o_hbl_bank_account_number" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-size:15px;font-weight:bold;margin-top:10px;">Cnic No.</label>
+                                        <input class="form-control" name="" readonly value="@Model.Order.o_cnic_number" />
+                                    </div>
+                                }
+                                @if (Model.Order.o_cashOnDelivery != null)
+                                {
+                                    <div class="form-group">
+                                        <label style="font-size:15px;font-weight:bold;margin-top:10px;">Cash On Delivery</label>
+                                        <input class="form-control" name="" readonly value="@Model.Order.o_cashOnDelivery" />
+                                    </div>
+                                }
+
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Total Amount</label>
+                                    <input class="form-control" name="" readonly value="@Model.Order.o_total_amout" />
+                                </div>
+                                <br />
+                                <div>
+                                    <button type="button" id="cancelBtn" class="cancelBtn btn btn-primary" data-id="@Model.Order.o_id">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <h5 style="margin: 35px 0px;text-align: left;">Arts</h5>
+                                @foreach (var item in Model.Order_Details)
+                                {
+                                    <div>
+                                        <div style="display:flex;align-items:center;">
+                                            <img src="@item.Art.art_image" style="width: 50px;height: 50px;border-radius:50px;object-fit: cover;" alt="Alternate Text" />
+                                            <b style="font-size: 18px;margin: 0px 10px;">@item.Art.art_name</b>
+                                            <b style="font-size:14px;">Rs : @item.Art.art_price</b>
+                                        </div>
+                                    </div>
+
+                                }
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+
+   $("#cancelBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("ArtTable", "Admin")'
+        })
+            .done(function (response) {
+                $("#actionContainer").html("");
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+</script>

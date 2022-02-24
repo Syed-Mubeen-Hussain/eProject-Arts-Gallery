@@ -1,0 +1,618 @@
+﻿@using ArtGallery.Models
+@model ArtGallery.ViewModels.HomeViewModel
+@{
+    ViewBag.Title = "Home";
+}
+
+
+<style>
+    .countdown-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    #bidDiv > li > div > div.countdown-el.days-c, #bidDiv > li > div > div.countdown-el.hour-c, #bidDiv > li > div > div.countdown-el.mins-c, #bidDiv > li > div > div.countdown-el.seconds-c {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0px 5px;
+    }
+</style>
+
+<!-- SLIDER -->
+<div class="rev_slider_wrapper fullwidthbanner-container">
+    <div id="rev-slider1" class="rev_slider fullwidthabanner">
+        <ul>
+            <!-- Slide 1 -->
+            <li data-transition="random">
+                <!-- Main Image -->
+                <img src="~/Content/images/slide1.jpg" alt="" data-bgposition="center center" data-no-retina>
+
+                <!-- Layers -->
+                <div class="tp-caption tp-resizeme text-white font-weight-300"
+                     data-x="['left','left','left','center']" data-hoffset="['0','0','0','0']"
+                     data-y="['middle','middle','middle','middle']" data-voffset="['-93','-93','-93','-93']"
+                     data-fontsize="['24','24','24','18']"
+                     data-lineheight="['72','72','72','36']"
+                     data-width="full"
+                     data-height="none"
+                     data-whitespace="normal"
+                     data-transform_idle="o:1;"
+                     data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
+                     data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                     data-mask_in="x:0px;y:[100%];"
+                     data-mask_out="x:inherit;y:inherit;"
+                     data-start="700"
+                     data-splitin="none"
+                     data-splitout="none"
+                     data-responsive_offset="on">
+                     NEW Arts 2022
+                </div>
+
+                <div class="tp-caption tp-resizeme text-white font-weight-500"
+                     data-x="['left','left','left','center']" data-hoffset="['0','0','0','0']"
+                     data-y="['middle','middle','middle','middle']" data-voffset="['-42','-42','-42','-42']"
+                     data-fontsize="['52','52','52','40']"
+                     data-lineheight="['60','60','60','40']"
+                     data-width="full"
+                     data-height="none"
+                     data-whitespace="normal"
+                     data-transform_idle="o:1;"
+                     data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
+                     data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                     data-mask_in="x:0px;y:[100%];"
+                     data-mask_out="x:inherit;y:inherit;"
+                     data-start="1000"
+                     data-splitin="none"
+                     data-splitout="none"
+                     data-responsive_offset="on">
+                    Art Gallery
+                </div>
+
+                <div class="tp-caption tp-resizeme text-white font-weight-400 "
+                     data-x="['left','left','left','center']" data-hoffset="['0','0','0','0']"
+                     data-y="['middle','middle','middle','middle']" data-voffset="['12','12','12','12']"
+                     data-fontsize="['18','18','18','16']"
+                     data-lineheight="['72','72','72','38']"
+                     data-width="full"
+                     data-height="none"
+                     data-whitespace="normal"
+                     data-transform_idle="o:1;"
+                     data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
+                     data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                     data-mask_in="x:0px;y:[100%];"
+                     data-mask_out="x:inherit;y:inherit;"
+                     data-start="1000"
+                     data-splitin="none"
+                     data-splitout="none"
+                     data-responsive_offset="on">
+                        Best Arts For This Year
+                </div>
+
+                <div class="tp-caption"
+                     data-x="['left','left','left','center']" data-hoffset="['0','0','0','0']"
+                     data-y="['middle','middle','middle','middle']" data-voffset="['80','80','80','80']"
+                     data-width="full"
+                     data-height="none"
+                     data-whitespace="normal"
+                     data-transform_idle="o:1;"
+                     data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
+                     data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                     data-mask_in="x:0px;y:[100%];"
+                     data-mask_out="x:inherit;y:inherit;"
+                     data-start="1000"
+                     data-splitin="none"
+                     data-splitout="none"
+                     data-responsive_offset="on">
+                    <a href="@Url.Action("Shop","Home")" class="themesflat-button has-padding-36 bg-accent has-shadow"><span>SHOP NOW</span></a>
+                </div>
+            </li>
+            <!-- /End Slide 1 -->
+            <!-- Slide 2 -->
+            <li data-transition="random">
+                <!-- Main Image -->
+                <img src="~/Content/images/slide.jpg" alt="" data-bgposition="center center" data-no-retina>
+
+                <!-- Layers -->
+                <div class="tp-caption tp-resizeme text-333 font-weight-400 text-right"
+                     data-x="['right','right','right','center']" data-hoffset="['33','33','33','0']"
+                     data-y="['middle','middle','middle','middle']" data-voffset="['-115','-115','-115','-115']"
+                     data-fontsize="['22','22','22','22']"
+                     data-lineheight="['60','60','60','60']"
+                     data-width="full"
+                     data-height="none"
+                     data-whitespace="normal"
+                     data-transform_idle="o:1;"
+                     data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
+                     data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                     data-mask_in="x:0px;y:[100%];"
+                     data-mask_out="x:inherit;y:inherit;"
+                     data-start="700"
+                     data-splitin="none"
+                     data-splitout="none"
+                     data-responsive_offset="on">
+                    <span class="text-line left"></span>Best Desgin Art<span class="text-line right"></span>
+                </div>
+
+                <div class="tp-caption tp-resizeme text-333 font-weight-500 letter-spacing-10 text-right"
+                     data-x="['right','right','right','center']" data-hoffset="['13','13','13','0']"
+                     data-y="['middle','middle','middle','middle']" data-voffset="['-39','-39','-39','-59']"
+                     data-fontsize="['130','130','130','60']"
+                     data-lineheight="['130','130','130','60']"
+                     data-width="full"
+                     data-height="none"
+                     data-whitespace="normal"
+                     data-transform_idle="o:1;"
+                     data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
+                     data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                     data-mask_in="x:0px;y:[100%];"
+                     data-mask_out="x:inherit;y:inherit;"
+                     data-start="1000"
+                     data-splitin="none"
+                     data-splitout="none"
+                     data-responsive_offset="on">
+                    Sale
+                </div>
+
+                <div class="tp-caption tp-resizeme text-333 font-weight-400 text-right"
+                     data-x="['right','right','right','center']" data-hoffset="['13','13','13','0']"
+                     data-y="['middle','middle','middle','middle']" data-voffset="['50','50','50','5']"
+                     data-fontsize="['48','48','48','28']"
+                     data-lineheight="['60','60','60','40']"
+                     data-width="full"
+                     data-height="none"
+                     data-whitespace="normal"
+                     data-transform_idle="o:1;"
+                     data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
+                     data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                     data-mask_in="x:0px;y:[100%];"
+                     data-mask_out="x:inherit;y:inherit;"
+                     data-start="1000"
+                     data-splitin="none"
+                     data-splitout="none"
+                     data-responsive_offset="on">
+                     Best Quality Arts
+                </div>
+
+                <div class="tp-caption text-right"
+                     data-x="['right','right','right','center']" data-hoffset="['105','105','105','0']"
+                     data-y="['middle','middle','middle','middle']" data-voffset="['138','138','138','80']"
+                     data-width="full"
+                     data-height="none"
+                     data-whitespace="normal"
+                     data-transform_idle="o:1;"
+                     data-transform_in="y:[100%];z:0;rX:0deg;rY:0;rZ:0;sX:1;sY:1;skX:0;skY:0;opacity:0;s:2000;e:Power4.easeInOut;"
+                     data-transform_out="y:[100%];s:1000;e:Power2.easeInOut;s:1000;e:Power2.easeInOut;"
+                     data-mask_in="x:0px;y:[100%];"
+                     data-mask_out="x:inherit;y:inherit;"
+                     data-start="1000"
+                     data-splitin="none"
+                     data-splitout="none"
+                     data-responsive_offset="on">
+                    <a href="@Url.Action("Shop","Home")" class="themesflat-button bg-accent has-shadow"><span>BUY NOW</span></a>
+                </div>
+            </li>
+            <!-- /End Slide 2 -->
+        </ul>
+    </div>
+</div>
+<!-- END SLIDER -->
+<!-- IMAGE BOX -->
+@if (Model != null && Model.Categories.Count() >= 4)
+{
+    var firstCategory = Model.Categories[0];
+    var secondCategory = Model.Categories[1];
+    var thirdCategory = Model.Categories[2];
+    var fourthCategory = Model.Categories[3];
+    <div class="title-section" style="margin:7px 0px;">
+        <h2 class="title">
+            Categories
+        </h2>
+    </div>
+    <section class="flat-row row-image-box">
+        <div class="container">
+            <div class="row gutter-10">
+                <div class="col-sm-6 col-md-4">
+                    <div class="flat-image-box style-1 data-effect div-h22 clearfix">
+                        <div class="item data-effect-item">
+                            <div class="inner">
+                                <div class="thumb">
+                                    <img style="width:375px;height:520px;object-fit:cover;" src="@firstCategory.cat_image" alt="Image">
+                                    <div class="elm-btn">
+                                        <a href="@Url.Action("CategoryArts", "Home", new { id = firstCategory.cat_id })" class="themesflat-button bg-white width-150">@firstCategory.cat_name</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.col-md-4 -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="flat-image-box style-1 row2 data-effect clearfix">
+                        <div class="item data-effect-item">
+                            <div class="inner">
+                                <div class="thumb">
+                                    <img style="width:380px;height:250px;object-fit:cover;" src="@secondCategory.cat_image" alt="Image">
+                                    <div class="elm-btn">
+                                        <a href="@Url.Action("CategoryArts", "Home", new { id = secondCategory.cat_id })" class="themesflat-button bg-white width-150">@secondCategory.cat_name</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="item data-effect-item">
+                            <div class="inner">
+                                <div class="thumb">
+                                    <img style="width:380px;height:250px;object-fit:cover;" src="@thirdCategory.cat_image" alt="Image">
+                                    <div class="elm-btn">
+                                        <a href="@Url.Action("CategoryArts", "Home", new { id = thirdCategory.cat_id })" class="themesflat-button bg-white width-150">@thirdCategory.cat_name</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.col-md-4 -->
+                <div class="col-sm-6 col-md-4">
+                    <div class="flat-image-box style-1 data-effect div-h20 clearfix">
+                        <div class="item data-effect-item">
+                            <div class="inner">
+                                <div class="thumb">
+                                    <img style="width:375px;height:520px;object-fit:cover;" src="@fourthCategory.cat_image" alt="Image">
+                                    <div class="elm-btn">
+                                        <a href="@Url.Action("CategoryArts", "Home", new { id = fourthCategory.cat_id })" class="themesflat-button bg-white width-150">@fourthCategory.cat_name</a>
+                                    </div>
+                                    <div class="overlay-effect bg-color-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.col-md-4 -->
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </section>
+
+}
+<!-- END IMAGE BOX -->
+<!-- PRODUCT NEW -->
+<section class="flat-row row-product-new">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="title-section margin-bottom-52">
+                    <h2 class="title">
+                        New Arts
+                    </h2>
+                </div>
+                <div class="product-content product-fourcolumn clearfix">
+                    <ul class="product style2 clearfix">
+                        @if (Model.Arts != null && Model.Arts.Count > 0)
+                        {
+                            foreach (var art in Model.Arts.Take(4))
+                            {
+                                <li class="product-item">
+                                    <div class="product-thumb clearfix">
+                                        @if (art.art_isAuction.Value == true)
+                                        {
+                                            <a href="@Url.Action("SingleArtAuction", "Home", new { id = art.art_id })" class="product-thumb">
+                                                <img style="width: 200px;height: 215px;object-fit: cover;margin-bottom: 15px;" src="@art.art_image" alt="image">
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("SingleArt", "Home", new { id = art.art_id })" class="product-thumb">
+                                                <img style="width: 200px;height: 215px;object-fit: cover;margin-bottom: 15px;" src="@art.art_image" alt="image">
+                                            </a>
+                                        }
+                                        <span class="new">New</span>
+                                    </div>
+                                    <div class="product-info text-center clearfix">
+                                        <span class="product-title">@art.art_name</span>
+                                        <div class="price">
+                                            <ins>
+                                                <span class="amount">Rs @art.art_price</span>
+                                            </ins>
+                                        </div>
+                                        @if (art.art_isAuction.Value == true)
+                                        {
+                                            <span style="display: inline-block;padding: 0.2rem 0.7rem;border-radius: 4px;font-weight: 600;background-color: #c8f8f6;-ms-flex-item-align: start;align-self: flex-start;font-size:15px;">
+                                                Bid Now
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span style="display: inline-block;padding: 0.2rem 0.7rem;border-radius: 4px;font-weight: 600;background-color: #c8f8f6;-ms-flex-item-align: start;align-self: flex-start;font-size:15px;">
+                                                Fixed Price
+                                            </span>
+                                        }
+                                    </div>
+                                    <div class="add-to-cart text-center">
+                                        @if (art.art_isAuction.Value == true)
+                                        {
+                                            <a href="@Url.Action("SingleArtAuction", "Home", new { id = art.art_id })">MORE DETAILS</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("SingleArt", "Home", new { id = art.art_id })">MORE DETAILS</a>
+                                        }
+
+                                    </div>
+                                    @if (Session["customer_id"] != null)
+                                    {
+                                        <a data-id="@art.art_id" class="Add_Gallery like" style="position: absolute;top: 45px;right: 16px;cursor:pointer;"><img src="~/Content/photo-gallery (1).png" alt="Alternate Text" /></a>
+                                        <a style="cursor:pointer;" data-id="@art.art_id" class="like favourite_art"><i class="fa fa-heart-o"></i></a>
+                                    }
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li>
+                                <h3 class="text-center text-danger">No Arts found</h3>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div><!-- /.row -->
+        <div style="display:flex;justify-content:center;">
+            <a class="visitBtn themesflat-button has-padding-36 bg-accent mt-2" href="@Url.Action("Shop", "Home")">View All</a>
+        </div>
+    </div><!-- /.container -->
+</section>
+<!-- END PRODUCT NEW -->
+<!-- PRODUCT -->
+<section class="flat-row row-product-project style-1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @if (Model.Arts != null && Model.Arts.Count > 0)
+                {
+                    <div class="title-section margin-bottom-41">
+                        <h2 class="title">Arts</h2>
+                    </div>
+
+                    <ul class="flat-filter style-1 text-center max-width-682 clearfix" style="display: flex;justify-content: center;align-items: center;margin-bottom:10px;">
+                        <li class="active"><a href="#" data-filter="*">All Arts</a></li>
+                        @foreach (var category in Model.Arts.OrderByDescending(x => x.art_id).Take(8).Select(x => x.Category.cat_name.ToLower()).Distinct())
+                        {
+                            <li><a href="#" data-filter=".@category"><span style="text-transform:capitalize;">@category</span></a></li>
+                        }
+                    </ul>
+                }
+
+                <div class="product-content product-fourcolumn clearfix">
+                    <ul class="product style2 isotope-product clearfix">
+                        @foreach (var art in Model.Arts.Take(8).OrderByDescending(x => x.art_id))
+                        {
+                            if (art.art_status == 1)
+                            {
+                                <li class="product-item @art.Category.cat_name.ToLower()">
+                                    <div class="product-thumb clearfix">
+                                        @if (art.art_isAuction.Value == true)
+                                        {
+                                            <a href="@Url.Action("SingleArtAuction", "Home", new { id = art.art_id })" class="product-thumb">
+                                                <img style="width: 200px;height: 215px;object-fit: cover;margin-bottom: 15px;" src="@art.art_image" alt="image">
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("SingleArt", "Home", new { id = art.art_id })" class="product-thumb">
+                                                <img style="width: 200px;height: 215px;object-fit: cover;margin-bottom: 15px;" src="@art.art_image" alt="image">
+                                            </a>
+                                        }
+                                    </div>
+                                    <div class="product-info clearfix">
+                                        <span class="product-title">@art.art_name</span>
+                                        <div class="price">
+                                            <ins>
+                                                <span class="amount">Rs.@art.art_price</span>
+                                            </ins>
+                                        </div>
+                                        @if (art.art_isAuction.Value == true)
+                                        {
+                                            <span style="display: inline-block;padding: 0.2rem 0.7rem;border-radius: 4px;font-weight: 600;background-color: #c8f8f6;-ms-flex-item-align: start;align-self: flex-start;font-size:15px;">
+                                                Bid Now
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span style="display: inline-block;padding: 0.2rem 0.7rem;border-radius: 4px;font-weight: 600;background-color: #c8f8f6;-ms-flex-item-align: start;align-self: flex-start;font-size:15px;">
+                                                Fixed Price
+                                            </span>
+                                        }
+                                    </div>
+                                    <div class="add-to-cart text-center">
+                                        @if (art.art_isAuction.Value == true)
+                                        {
+                                            <a href="@Url.Action("SingleArtAuction", "Home", new { id = art.art_id })">MORE DETAILS</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="@Url.Action("SingleArt", "Home", new { id = art.art_id })">MORE DETAILS</a>
+                                        }
+
+                                    </div>
+                                    @if (Session["customer_id"] != null)
+                                    {
+                                        <a data-id="@art.art_id" class="Add_Gallery like" style="position: absolute;top: 55px;right: 16px;cursor:pointer;"><img src="~/Content/photo-gallery (1).png" alt="Alternate Text" /></a>
+                                        <a style="cursor:pointer;" data-id="@art.art_id" class="like favourite_art"><i class="fa fa-heart-o"></i></a>
+                                    }
+                                </li>
+                            }
+                        }
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END PRODUCT -->
+<!-- ICON BOX -->
+<section class="flat-row row-icon-box bg-section bg-color-f5f">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="flat-icon-box icon-top style-1 clearfix text-center">
+                    <div class="inner no-margin">
+                        <div class="icon-wrap">
+                            <i class="fa fa-truck"></i>
+                        </div>
+                        <div class="text-wrap">
+                            <h5 class="heading"><a href="#">Shipping</a></h5>
+                            <p class="desc">Free Shipping on order</p>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.col-md-3 -->
+            <div class="col-md-3">
+                <div class="flat-icon-box icon-top style-1 clearfix text-center">
+                    <div class="inner">
+                        <div class="icon-wrap">
+                            <i class="fa fa-money"></i>
+                        </div>
+                        <div class="text-wrap">
+                            <h5 class="heading"><a href="#">Cash On Delivery</a></h5>
+                            <p class="desc">The Internet Trend To Repeat</p>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.col-md-3 -->
+            <div class="col-md-3">
+                <div class="flat-icon-box icon-top style-1 clearfix text-center">
+                    <div class="inner">
+                        <div class="icon-wrap">
+                            <i class="fa fa-gift"></i>
+                        </div>
+                        <div class="text-wrap">
+                            <h5 class="heading"><a href="#">Gift For All</a></h5>
+                            <p class="desc">Best Quality Art and low Price</p>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.col-md-3 -->
+            <div class="col-md-3">
+                <div class="flat-icon-box icon-top style-1 clearfix text-center">
+                    <div class="inner">
+                        <div class="icon-wrap">
+                            <i class="fa fa-clock-o"></i>
+                        </div>
+                        <div class="text-wrap">
+                            <h5 class="heading"><a href="#">Opening All Week</a></h5>
+                            <p class="desc">6.00 am - 12.00pm</p>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.col-md-3 -->
+        </div>
+    </div>
+</section>
+<!-- END ICON BOX -->
+<!-- NEW LATEST -->
+@{
+    db_ArtGalleryEntities db = new db_ArtGalleryEntities();
+
+    var exhibitionData = db.Exhibitions.Where(x => x.e_status == 1).OrderByDescending(x => x.e_id).ToList();
+
+    if (exhibitionData != null && exhibitionData.Count > 0)
+    {
+        <section class="flat-row row-new-latest style-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="title-section margin-bottom-51">
+                            <h2 class="title">New Exhibitions</h2>
+                        </div>
+                        <div class="new-latest-wrap">
+                            <div class="flat-new-latest post-wrap flat-carousel-box style4 data-effect clearfix" data-auto="false" data-column="3" data-column2="2" data-column3="1" data-gap="30">
+                                <div class="owl-carousel owl-theme">
+
+                                    @foreach (var item in exhibitionData)
+                                    {
+                                        <article class="post clearfix">
+                                            <div class="featured-post data-effect-item">
+                                                <img style="height: 310px;object-fit: cover;" src="@item.e_image" alt="image">
+                                                <div class="overlay-effect bg-overlay-black opacity02"></div>
+                                            </div>
+                                            <div class="content-post">
+                                                <ul class="meta-post">
+                                                    <li class="date" style="font-size: 14px;font-weight: 400;">
+                                                        End date : @item.e_end_date
+                                                    </li>
+                                                    <li class="author">
+                                                        <a href="#" style="font-size: 14px;font-weight: 400;"> By Admin</a>
+                                                    </li>
+                                                </ul><!-- /.meta-post -->
+                                                <div class="title-post">
+                                                    <h2><a href="@Url.Action("ExhibitionArts", "Home", new { id = item.e_id })">@item.e_name</a></h2>
+                                                </div><!-- /.title-post -->
+                                                <div class="entry-post">
+                                                    <div class="more-link">
+                                                        <a href="@Url.Action("ExhibitionArts", "Home", new { id = item.e_id })">Read More</a>
+                                                    </div>
+                                                </div>
+                                            </div><!-- /.content-post -->
+                                        </article><!-- /.post -->
+                                    }
+
+
+                                </div><!-- /.owl-carousel -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+}
+<script>
+
+       $(".favourite_art").click(function () {
+        $.ajax({
+            url: '@Url.Action("Favourite_Art", "Home")',
+            data: {
+                id: $(this).attr('data-id')
+            },
+        })
+            .done(function (response) {
+                if (response.Success) {
+
+                    swal("Art Added To Favourite", "Check your Favourite Cart.", "success");
+
+                } else {
+                    swal("Already Exist in Favourite Cart");
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $(".Add_Gallery").click(function () {
+        $.ajax({
+            url: '@Url.Action("AddCustomerGallery", "Home")',
+            data: {
+                id: $(this).attr('data-id')
+            },
+        })
+            .done(function (response) {
+                if (response.Success) {
+
+                    swal("Art Added to Gallery", "Check your Gallery.", "success");
+
+                } else {
+                    swal("Already Exist in Gallery Check your Gallery");
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    })
+</script>

@@ -1,0 +1,315 @@
+﻿@model ArtGallery.ViewModels.ArtistViewModel
+@{
+    ViewBag.Title = "Arts";
+    Layout = "~/Views/Shared/_Layout _Artist.cshtml";
+}
+
+<div class="card my-4">
+    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3">Arts</h6>
+        </div>
+    </div>
+
+    <div>
+        <form method="post">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input class="form-control" id="searchTxt" name="Search" value="@Model.SearchTerm" onkeypress="return event.keyCode != 13;" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Action</label>
+                        <div class="row">
+                            <div class="col-md-4 w-auto p-0" style="margin:0px 5px;">
+                                <button type="button" style="padding: 10px 26px;" id="searchBtn" class="btn btn-primary">Search</button>
+                            </div>
+                            <div class="col-md-4 w-auto p-0" style="margin:0px 5px;">
+                                <button type="button" style="padding: 10px 26px;" id="resetBtn" class="btn btn-primary">Reset</button>
+                            </div>
+                            <div class="col-md-4 w-auto p-0" style="margin:0px 5px;">
+                                <button id="newBtn" style="padding: 10px 26px;" class="btn btn-primary" type="button">New</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="card-body px-0 pb-2 pt-0">
+        <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+                <thead>
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Name</span></th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"><span style="font-size:13px;">Price</span></th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Status</span></th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Style of Art</span></th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">is Auction</span></th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Buy Status</span></th>
+                        <th class="text-secondary opacity-7"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @{
+                        int totalAmout = 0;
+                    }
+
+                    @if (Model != null && Model.Arts.Count > 0)
+                    {
+                        foreach (var item in Model.Arts)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex px-2 py-1">
+                                        <div>
+                                            <img src="@item.art_image" style="object-fit:cover;" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
+                                        </div>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm">@item.art_name</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0">@item.art_price</p>
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    @if (item.art_status == 1)
+                                    {
+                                        <span class="badge badge-sm bg-gradient-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-sm bg-gradient-danger">Deactive</span>
+                                    }
+                                </td>
+                                <td class="align-middle text-center">
+                                    @foreach (var styleOfArt in Model.Style_Of_Arts)
+                                    {
+                                        if (styleOfArt.soA_id == item.Art_fk_soA_id)
+                                        {
+                                            <span class="text-secondary text-xs font-weight-bold">@styleOfArt.soA_name</span>
+                                        }
+                                    }
+                                </td>
+                                <td class="align-middle text-center">
+                                    <p class="text-xs font-weight-bold mb-0">@(item.art_isAuction == true ? "True" : "False")</p>
+                                </td>
+                                <td class="align-middle text-center text-sm">
+                                    @if (item.art_buy_status == 1)
+                                    {
+                                        <span class="badge badge-sm bg-gradient-success">In Stock</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-sm bg-gradient-danger">Sold</span>
+                                    }
+
+
+                                    @if (item.art_buy_status == 0)
+                                    {
+                                        totalAmout += item.art_price - (item.art_price * 10 / 100);
+                                    }
+                                </td>
+                                <td class="align-middle">
+                                    <button class="editBtn" data-id="@item.art_id">
+                                        Edit
+                                    </button>
+                                    <button class="deleteBtn" data-id="@item.art_id">
+                                        Delete
+                                    </button>
+                                    <button class="detailsBtn" data-id="@item.art_id">
+                                        Details
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-danger text-center font-weight-bold">No Art found</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@if (Model != null && Model.page.TotalPages > 1)
+{
+    if (Model.page.CurrentPage > 1)
+    {
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="1">First</button>
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="@(Model.page.CurrentPage - 1)">Previous</button>
+    }
+    //total items
+    for (var page = Model.page.StartPage; page <= Model.page.EndPage; page++)
+    {
+        <button class="btn btn-danger page-buttons @(Model.pageNo == page ? "bg-info":string.Empty)" style="padding:7px 18px;" data-page="@page">@page</button>
+    }
+
+    if (Model.page.CurrentPage < Model.page.TotalPages)
+    {
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="@(Model.page.CurrentPage + 1)">Next</button>
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="@(Model.page.EndPage)">Last</button>
+    }
+}
+<script>
+    
+  $.ajax({
+            url: '@Url.Action("ArtistVault", "Artist")',//'/Category/CategoryTable',
+            data: {
+                total_Amount: @totalAmout,
+            }
+        })
+            .done(function (response) {
+              
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+        });
+
+    $(".page-buttons").click(function () {
+             $.ajax({
+            url: '@Url.Action("ArtsTable", "Artist")',
+                 data : {
+                     pageNo : $(this).attr("data-page"),
+                     search : '@Model.SearchTerm'
+                 }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $("#newBtn").click(function () {
+           $.ajax({
+            url: '@Url.Action("CreateArt", "Artist")',
+        })
+            .done(function (response) {
+                $("#actionContainer").html(response);
+
+                foucusAction("actionContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+    $(".editBtn").click(function () {
+        debugger;
+        $.ajax({
+            url: '@Url.Action("EditArt", "Artist")',
+            data: {
+                Id : $(this).attr("data-id")
+            }
+        })
+            .done(function (response) {
+                $("#actionContainer").html(response);
+
+                foucusAction("actionContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+       $(".detailsBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("detailsArt", "Artist")',
+            data: {
+                Id : $(this).attr("data-id")
+            }
+        })
+            .done(function (response) {
+                $("#actionContainer").html(response);
+
+                foucusAction("actionContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $(".deleteBtn").click(function () {
+        swal({
+            title: "Confirm?",
+            text: "Are you sure you want to delete this art!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                     $.ajax({
+                type:"post",
+            url: '@Url.Action("DeleteArt", "Artist")',
+            data: {
+                Id : $(this).attr("data-id")
+            }
+        })
+            .done(function (response) {
+
+                             swal("Your art is deleted", {
+                                 icon: "success",
+                             });
+
+                $("#tableContainer").html(response);
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+                }
+            });
+
+    });
+
+    $("#searchBtn").click(function () {
+        var searchValue = $("#searchTxt").val();
+
+
+        $.ajax({
+            url: '@Url.Action("ArtsTable", "Artist")',//'/Category/CategoryTable',
+            data: {
+                search: searchValue
+            }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $("#resetBtn").click(function () {
+        var searchValue = '';
+
+
+        $.ajax({
+            url: '@Url.Action("ArtsTable", "Artist")',//'/Category/CategoryTable',
+            data: {
+                search: searchValue
+            }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+</script>

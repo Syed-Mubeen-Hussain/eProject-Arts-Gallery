@@ -1,0 +1,54 @@
+﻿@model ArtGallery.ViewModels.AdminArtExhibitionViewModel
+
+@{
+    ViewBag.Title = TempData["ExhibitionName"]+" Arts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .filter-shop.bottom_68 {
+        margin-bottom: 10px;
+    }
+</style>
+<div class="page-title parallax parallax1">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="title">@TempData["ExhibitionName"]</h1>
+                </div><!-- /.page-title-heading -->
+            </div><!-- /.col-md-12 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</div><!-- /.page-title -->
+
+<section class="flat-row main-shop shop-4col">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="shop-search clearfix">
+                    <form role="search" method="get" class="search-form" action="#">
+                        <label>
+                            <input type="search" class="search-field" placeholder="Searching …" value="" name="s">
+                        </label>
+                    </form>
+                </div><!-- /.top-serach -->
+                <div id="artDIV">
+                    @{
+                        Html.RenderAction("ExhibitionArtsTable", "Home");
+                    }
+                </div>
+            </div><!-- /.col-md-12 -->
+        </div><!-- /.row -->
+    </div><!-- /.container -->
+</section><!-- /.flat-row -->
+
+<script>
+
+    function foucusAction(contentToAction) {
+        $('html, body').animate({
+            scrollTop: $("#" + contentToAction).offset().top - 100
+        }, 400)
+    }
+
+</script>

@@ -1,0 +1,265 @@
+﻿@model List<ArtGallery.Models.Artist>
+@{
+    Layout = null;
+}
+<style>
+    input,
+    textarea,
+    button {
+        height: 25px;
+        margin: 0;
+        padding: 10px;
+        font-family: Raleway, sans-serif;
+        font-weight: normal;
+        font-size: 12pt;
+        outline: none;
+        border-radius: 0;
+        background: none;
+        border: 1px solid #282b33;
+    }
+
+    button,
+    select {
+        height: 45px;
+        padding: 0 15px;
+        cursor: pointer;
+    }
+
+    button {
+        background: none;
+        border: 1px solid black;
+        margin: 25px 0;
+    }
+
+        button:hover {
+            background-color: #282b33;
+            color: white;
+        }
+
+    .tools {
+        overflow: auto;
+        zoom: 1;
+    }
+
+    .search-area {
+        float: left;
+        width: 60%;
+    }
+
+    .settings {
+        display: none;
+        float: right;
+        width: 40%;
+        text-align: right;
+    }
+
+    #view {
+        display: none;
+        width: auto;
+        height: 47px;
+    }
+
+    #searchbutton {
+        height: 50px;
+        background: #f63440;
+        font-weight: bold;
+        border: none;
+    }
+
+    input#search {
+        width: 30%;
+        width: calc(100% - 90px);
+        padding: 10px;
+        border: 1px solid #cacdd5;
+    }
+
+    @@media screen and (max-width: 400px) {
+        .search-area {
+            width: 100%;
+        }
+    }
+
+    .products {
+        width: 100%;
+        font-family: Raleway;
+        margin: 0px 75px;
+    }
+
+    .product {
+        display: inline-block;
+        width: calc(24% - 13px);
+        margin: 10px 10px 30px 10px;
+        vertical-align: top;
+    }
+
+        .product img {
+            display: block;
+            margin: 0 auto;
+            width: auto;
+            height: 200px;
+            max-width: calc(100% - 20px);
+            background-cover: fit;
+            box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.8);
+            border-radius: 2px;
+        }
+
+    .product-content {
+        text-align: center;
+    }
+
+    .product h3 {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 10px 0 0 0;
+    }
+
+        .product h3 small {
+            display: block;
+            font-size: 16px;
+            font-weight: 400;
+            font-style: italic;
+            margin: 7px 0 0 0;
+        }
+
+    .product .product-text {
+        margin: 7px 0 0 0;
+        color: #777;
+    }
+
+    .product .price {
+        font-family: sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .product .genre {
+        font-size: 14px;
+    }
+
+    @@media screen and (max-width: 1150px) {
+        .product {
+            width: calc(33% - 23px);
+        }
+    }
+
+    @@media screen and (max-width: 700px) {
+        .product {
+            width: calc(50% - 43px);
+        }
+    }
+
+    @@media screen and (max-width: 400px) {
+        .product {
+            width: 100%;
+        }
+    }
+
+    /* TABLE VIEW */
+    @@media screen and (min-width: 401px) {
+        .settings {
+            display: block;
+        }
+
+        #view {
+            display: inline;
+        }
+
+        .products-table .product {
+            display: block;
+            width: auto;
+            margin: 10px 10px 30px 10px;
+        }
+
+            .products-table .product .product-img {
+                display: inline-block;
+                margin: 0;
+                width: 120px;
+                height: 120px;
+                vertical-align: middle;
+            }
+
+            .products-table .product img {
+                width: auto;
+                height: 120px;
+                max-width: 120px;
+            }
+
+        .products-table .product-content {
+            text-align: left;
+            display: inline-block;
+            margin-left: 20px;
+            vertical-align: middle;
+            width: calc(100% - 145px);
+        }
+
+        .products-table .product h3 {
+            margin: 0;
+        }
+    }
+</style>
+
+<link href="https://fonts.googleapis.com/css?family=Raleway:400,600,700,800" rel='stylesheet' type='text/css'>
+
+<br />
+<h1 style="text-align:center;">Artists</h1>
+
+<p style="text-align: right;margin-right: 89px;margin-top: 13px;">
+    <a href="@Url.Action("Login","Artist")" style="background: #c19769;padding: 5px 10px;font-weight: 600;color: white;border-radius: 6px;">Join as a member</a>
+</p>
+
+<div class="tools text-center">
+    <form action="@Url.Action("ShowArtistTable","Home")" method="post">
+        <input type="text" style="width:80%" onkeypress="return event.keyCode != 13;" id="searchTxt" placeholder="Search" /> <button id="searchbutton" type="button" class="">Search</button>
+    </form>
+</div>
+@if (Model != null && Model.Count > 0)
+{
+
+    <div class="products products-table">
+        @foreach (var item in Model)
+        {
+            <a href="@Url.Action("ArtistArts","Home",new { id = item.ar_id })" class="product">
+                <div class="product-img">
+                    <img style="object-fit:cover;" src="@item.ar_image">
+                </div>
+                <div class="product-content">
+                    <h3>
+                        @item.ar_userName
+                        <small>Category : @item.Category.cat_name</small>
+                    </h3>
+                    @foreach (var country in ViewBag.country)
+                    {
+                        if (country.con_id == int.Parse(item.ar_country.ToString()))
+                        {
+                            <p class="product-text price">Country : @country.con_name</p>
+                        }
+                    }
+                    <p class="product-text price">Total Arts : @item.Arts.Count()</p>
+                </div>
+            </a>
+        }
+    </div>
+}
+else
+{
+    <div style="display:flex;justify-content:center;align-items:center;">
+        <img src="~/Content/images/No Arts Found.png" style="width:620px;" alt="Alternate Text" />
+    </div>
+}
+
+<script>
+    $("#searchbutton").click(function () {
+        $.ajax({
+                    url: '@Url.Action("ShowArtistTable", "Home")',
+                    data: {
+                         search : $("#searchTxt").val()
+                    },
+                })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+                    })
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                    });
+    });
+</script>

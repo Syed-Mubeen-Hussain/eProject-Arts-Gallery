@@ -1,0 +1,1451 @@
+﻿@using System.Data.Entity;
+@using ArtGallery.Models
+@{
+    Layout = null;
+
+}
+<!DOCTYPE html>
+<!--[if IE 8 ]><html class="ie" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!-->
+<html>
+<!--<![endif]-->
+<head>
+    <!-- Basic Page Needs -->
+    <meta charset="utf-8">
+    <title>Checkout - Art Gallery</title>
+
+    <!-- Mobile Specific Metas -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- Bootstrap  -->
+    <link rel="stylesheet" href="~/Content/AddToCart/css/style.css" type="text/css">
+
+    <link rel="stylesheet" type="text/css" href="~/Content/stylesheets/bootstrap.css">
+
+    <!-- Theme Style -->
+    <link rel="stylesheet" type="text/css" href="~/Content/stylesheets/style.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/stylesheets/responsive.css">
+
+    <!-- Colors -->
+    <link rel="stylesheet" type="text/css" href="~/Content/stylesheets/colors/color1.css" id="colors">
+
+    <!-- Animation Style -->
+    <link rel="stylesheet" type="text/css" href="~/Content/stylesheets/animate.css">
+
+
+    <script src="~/Content/javascript/jquery.min.js"></script>
+
+    <script src="~/Content/javascript/main.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <script src="~/Content/javascript/jquery-ui.js"></script>
+    <!-- Favicon and touch icons  -->
+    <link href="~/Content/images/favicon.png" rel="shortcut icon">
+    <style>
+        #site-header-inner > ul > li.box-search > a > i {
+            font-weight: bold;
+        }
+
+        #site-header-inner > ul > li.box-search > div > div > div:nth-child(n) > div:nth-child(n) > a:hover {
+            cursor: pointer;
+            text-decoration: none;
+            color: dimgray;
+        }
+
+        #site-header-inner > ul > li:nth-child(1) > div > div > div > div:nth-child(1) {
+            margin-top: 15px;
+        }
+
+        .dropdown-menu {
+            top: 70px;
+            right: 0px;
+            left: unset;
+            width: 460px;
+            box-shadow: 0px 5px 7px -1px #c1c1c1;
+            padding-bottom: 0px;
+            padding: 0px;
+        }
+
+            .dropdown-menu:before {
+                content: "";
+                position: absolute;
+                top: -20px;
+                right: 12px;
+                border: 10px solid #343A40;
+                border-color: transparent transparent #343A40 transparent;
+            }
+
+
+        .notification-box {
+            padding: 10px 0px;
+        }
+
+            .notification-box:hover {
+                background-color: #c8f8f6;
+            }
+
+
+        .bg-gray {
+            background-color: #eee;
+        }
+
+        @@media (max-width: 640px) {
+            .dropdown-menu {
+                top: 50px;
+                left: -16px;
+                width: 290px;
+            }
+
+            .nav {
+                display: block;
+            }
+
+                .nav .nav-item, .nav .nav-item a {
+                    padding-left: 0px;
+                }
+
+            .message {
+                font-size: 13px;
+            }
+        }
+
+        .artDiv {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px;
+            overflow: auto;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        #site-header-inner > ul > li.box-search > a > i {
+            font-weight: bold;
+        }
+
+        #site-header-inner > ul > li.box-search > div > div > div:nth-child(n) > div:nth-child(n) > a:hover {
+            cursor: pointer;
+            transition: 0s;
+            text-decoration: underline;
+            border-radius: 50%;
+        }
+
+        #site-header-inner > ul > li:nth-child(1) > div > div > div > div:nth-child(1) {
+            margin-top: 15px;
+        }
+
+        .dropdown-menu {
+            top: 70px;
+            right: 0px;
+            left: unset;
+            width: 460px;
+            box-shadow: 0px 5px 7px -1px #c1c1c1;
+            padding-bottom: 0px;
+            padding: 0px;
+        }
+
+            .dropdown-menu:before {
+                content: "";
+                position: absolute;
+                top: -20px;
+                right: 12px;
+                border: 10px solid #343A40;
+                border-color: transparent transparent #343A40 transparent;
+            }
+
+
+        .notification-box {
+            padding: 10px 0px;
+        }
+
+        .bg-gray {
+            background-color: #eee;
+        }
+
+        @@media (max-width: 640px) {
+            .dropdown-menu {
+                top: 50px;
+                left: -16px;
+                width: 290px;
+            }
+
+            .nav {
+                display: block;
+            }
+
+                .nav .nav-item, .nav .nav-item a {
+                    padding-left: 0px;
+                }
+
+            .message {
+                font-size: 13px;
+            }
+        }
+
+        #site-header-inner > ul > li.box-search > a > i {
+            font-weight: bold;
+        }
+
+        #site-header-inner > ul > li.box-search > div > div > div:nth-child(n) > div:nth-child(n) > a:hover {
+            cursor: pointer;
+            transition: 0s;
+            text-decoration: underline;
+            border-radius: 50%;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link {
+            border: 1px solid transparent;
+            border-top-right-radius: 0.25rem;
+            border-top-left-radius: 0.25rem;
+            margin: 0px 10px 0px 0;
+            width: 128px;
+            height: 128px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #f5f6f9;
+        }
+
+        .nav-tabs .nav-item a span {
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 20px;
+            margin-bottom: 4px;
+            color: #404040;
+        }
+
+        .nav-tabs .nav-item a img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 2px;
+        }
+
+        .title {
+            white-space: pre-line;
+            font-size: 14px;
+            font-weight: 500;
+            color: #212121;
+        }
+    </style>
+</head>
+<body class="header_sticky header-style-2 has-menu-extra">
+    <!-- Preloader -->
+    <div id="loading-overlay">
+        <div class="loader"></div>
+    </div>
+    <!-- Boxed -->
+    <div class="boxed">
+        <div id="site-header-wrap">
+            <!-- Header -->
+            <header id="header" class="header header-container clearfix">
+                <div class="container clearfix" id="site-header-inner">
+                    <div id="logo" class="logo float-left">
+                        <a href="@Url.Action("Index","Home")" title="logo">
+                            <img src="~/Content/images/logo (2).png" alt="image" style="width: 142px;margin-top: 8px;">
+                        </a>
+                    </div><!-- /.logo -->
+                    <div class="mobile-button"><span></span></div>
+
+                    <ul class="menu-extra">
+                        @{
+
+                            db_ArtGalleryEntities db = new db_ArtGalleryEntities();
+
+                        }
+                        @if (Session["customer_id"] != null)
+                        {
+                            var customer_id = int.Parse(Session["customer_id"].ToString());
+                            var orderId = db.orders.Where(x => x.o_fk_cus_id == customer_id).Select(x => x.o_id).ToList();
+
+                            if (orderId != null)
+                            {
+                                var register_uer_date = Convert.ToDateTime(Session["Customer_regsiterDate"].ToString());
+
+                                var notifications = db.notifications.Where(x => x.n_fk_c_id == customer_id || x.n_fk_c_id == null).OrderByDescending(x => x.n_id).Take(6).ToList();
+
+                                Session["notificationCount"] = notifications.Count();
+                                var notificationsCount = db.notifications.Where(x => x.n_fk_c_id == customer_id || x.n_fk_c_id == null).OrderByDescending(x => x.n_id).ToList();
+
+                                <li style="margin-left:10px;" class="box-search">
+                                    @{
+                                        var a = 0;
+
+                                        if (notificationsCount.Count >= 0)
+                                        {
+                                            var notificationsList = new List<notification>();
+                                            var notificationLi = db.notifications.Where(x => x.n_fk_c_id == customer_id || x.n_fk_c_id == null).ToList();
+                                            foreach (var item in notificationLi)
+                                            {
+
+                                                if (register_uer_date <= Convert.ToDateTime(item.n_date.ToString()))
+                                                {
+                                                    notificationsList.Add(item);
+                                                    a++;
+                                                }
+                                            }
+                                            if (a == 0)
+                                            {
+                                                <a class="notification active" style="cursor:pointer;"><i class="fa fa-bell-o"></i><span id="NotificationCount">0</span></a>
+                                            }
+
+                                        }
+                                        if (a > 0)
+                                        {
+                                            <a class="notification active" style="cursor:pointer;"><i class="fa fa-bell-o"></i><span id="NotificationCount">@a</span></a>
+                                        }
+
+
+                                    }
+                                    <ul class="dropdown-menu header-nofi-field Notification" style="line-height:23px;">
+
+                                        @{
+                                            var i = 0;
+                                        }
+
+                                        @if (notifications.Count >= 6)
+                                        {
+                                            notifications = db.notifications.Where(x => x.n_fk_c_id == customer_id || x.n_fk_c_id == null).OrderByDescending(x => x.n_id).Take(6).ToList();
+                                            foreach (var notification in notifications)
+                                            {
+                                                if (register_uer_date <= Convert.ToDateTime(notification.n_date.ToString()))
+                                                {
+                                                    if (notification.n_fk_o_id == null && notification.n_fk_c_id == null)
+                                                    {
+                                                        <li class="notification-box" style="display: flex;justify-content: center;align-items: center;line-height: 25px;">
+                                                            <div class="row">
+                                                                <div class="col-lg-2 col-sm-3 col-3 text-center">
+                                                                    <img src="~/Content/images/notification.png">
+                                                                </div>
+                                                                <div class="col-lg-10 col-sm-8 col-8" style="width:347px;padding:0px;">
+                                                                    <div style="font-weight:400;">
+                                                                        New Art Added <b style="font-weight:600;">@notification.n_text</b>
+                                                                    </div>
+                                                                    <small style="font-weight: 500;color:#523eff;">@notification.n_date</small>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <li class="notification-box" style="display: flex;justify-content: center;align-items: center;line-height: 25px;">
+                                                            <div class="row">
+                                                                <div class="col-lg-2 col-sm-3 col-3 text-center">
+                                                                    <img src="~/Content/images/notification.png">
+                                                                </div>
+                                                                <div class="col-lg-10 col-sm-8 col-8" style="width:347px;padding:0px;">
+                                                                    <div style="font-weight:400;">
+                                                                        Your Order is <b style="font-weight:600;">@notification.n_text</b> - Order Number is <b style="font-weight:600;">@notification.n_fk_o_id</b>
+                                                                    </div>
+                                                                    <small style="font-weight: 500;color:#523eff;">@notification.n_date</small>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    }
+
+                                                }
+
+                                                var notificationsList2 = new List<notification>();
+                                                var notificationLi2 = db.notifications.Where(x => x.n_fk_c_id == customer_id || x.n_fk_c_id == null).ToList();
+                                                foreach (var item in notificationLi2)
+                                                {
+
+                                                    if (register_uer_date <= Convert.ToDateTime(item.n_date.ToString()))
+                                                    {
+                                                        notificationsList2.Add(item);
+                                                    }
+                                                }
+                                                if (notificationsList2.Count > 6)
+                                                {
+                                                    i++;
+                                                }
+
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            foreach (var notification in notifications)
+                                            {
+
+                                                if (register_uer_date <= Convert.ToDateTime(notification.n_date.ToString()))
+                                                {
+
+                                                    if (notification.n_fk_o_id == null && notification.n_fk_c_id == null)
+                                                    {
+                                                        <li class="notification-box" style="display: flex;justify-content: center;align-items: center;line-height: 25px;">
+                                                            <div class="row">
+                                                                <div class="col-lg-2 col-sm-3 col-3 text-center">
+                                                                    <img src="~/Content/images/notification.png">
+                                                                </div>
+                                                                <div class="col-lg-10 col-sm-8 col-8" style="width:347px;padding:0px;">
+                                                                    <div style="font-weight:400;">
+                                                                        New Art Added <b style="font-weight:600;">@notification.n_text</b>
+                                                                    </div>
+                                                                    <small style="font-weight: 500;color:#523eff;">@notification.n_date</small>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    }
+                                                    else
+                                                    {
+
+                                                        <li class="notification-box" style="display: flex;justify-content: center;align-items: center;line-height: 25px;">
+                                                            <div class="row">
+                                                                <div class="col-lg-2 col-sm-3 col-3 text-center">
+                                                                    <img src="~/Content/images/notification.png">
+                                                                </div>
+                                                                <div class="col-lg-10 col-sm-8 col-8" style="width:347px;padding:0px;">
+                                                                    <div style="font-weight:400;">
+                                                                        Your Order is <b style="font-weight:600;">@notification.n_text</b> - Order Number is <b style="font-weight:600;">@notification.n_fk_o_id</b>
+                                                                    </div>
+                                                                    <small style="font-weight: 500;color:#523eff;">@notification.n_date</small>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    }
+                                                }
+                                            }
+
+                                        }
+
+
+
+                                        @{
+                                            int no = 0;
+                                            var notificationsList3 = new List<notification>();
+                                            var notificationLi3 = db.notifications.Where(x => x.n_fk_c_id == customer_id || x.n_fk_c_id == null).ToList();
+                                            foreach (var item in notificationLi3)
+                                            {
+
+                                                if (register_uer_date <= Convert.ToDateTime(item.n_date.ToString()))
+                                                {
+                                                    notificationsList3.Add(item);
+                                                    no++;
+                                                }
+                                            }
+
+                                            if (no == 0)
+                                            {
+                                                <li style="padding: 15px;background: white;font-weight: 400;border-radius:10px;" class="text-center">
+                                                    No Notifications
+                                                </li>
+                                            }
+                                        }
+
+                                        @if (i > 0)
+                                        {
+                                            <li style="padding: 15px;background: white;font-weight: 400;border-radius:10px;" class="text-center">
+                                                <a href="@Url.Action("ViewAllNotification","Home")">View All</a>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </li>
+                            }
+                        }
+
+
+                        @if (Session["customer_id"] != null)
+                        {
+                            <li style="margin-left:10px;" class="box-search">
+                                <a class="header-search-icon active" href="#"><i class="fa fa-heart-o"></i></a>
+                                <div role="search" method="get" class="header-search-form" action="#">
+                                    <div class="header-search-field">
+                                        @{
+                                            var ArtIds = db.Arts.Select(x => x.art_id).ToList();
+                                            var customer_id = int.Parse(Session["customer_id"].ToString());
+                                            var data = db.favourite_Arts.Where(x => ArtIds.Contains(x.fa_fk_art_id.Value) && x.fa_fk_cus == customer_id).ToList();
+
+
+                                            <div class="Main_art_div">
+                                                @foreach (var item in data)
+                                                {
+                                                    if (item.Art.art_isAuction == true)
+                                                    {
+                                                        <div class="artDiv"><a href="@Url.Action("SingleArtAuction","Home",new { id = item.fa_fk_art_id })" style="color:black;">@item.Art.art_name </a> <a href="@Url.Action("Favourite_Art_delete","Home",new { id = item.fa_fk_art_id })" class="revicon-cancel cancelBtn"></a></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="artDiv"><a href="@Url.Action("SingleArt","Home",new { id = item.fa_fk_art_id })" style="color:black;">@item.Art.art_name </a> <a href="@Url.Action("Favourite_Art_delete","Home",new { id = item.fa_fk_art_id })" class="revicon-cancel cancelBtn"></a></div>
+                                                    }
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </li>
+                        }
+                        @if (Session["customer_id"] == null)
+                        {
+                            <li style="margin-left:10px;">
+                                <a href="@Url.Action("CustomerLogin","Home")" style="background: #8181b1;padding: 5px 10px;color: white;font-weight:bold;">Login</a>
+                            </li>
+                            <li style="margin-left:10px;">
+                                <a href="@Url.Action("CustomerSignUp","Home")" style="background: #a5a5b9;padding: 5px 10px;color: white;font-weight:bold;">Register</a>
+                            </li>
+                        }
+
+                        <li style="margin-left:10px;" class="box-cart nav-top-cart-wrapper">
+                            <a class="icon_cart nav-cart-trigger active" href="@Url.Action("Cart","Home")"><span id="CartItemsCountSpan">0</span></a>
+                        </li>
+
+                        @if (Session["customer_id"] != null)
+                        {
+
+                            <li style="margin-left:10px;" class="box-login nav-top-cart-wrapper">
+                                <div><img style="width: 40px;height:40px;border-radius: 50%;object-fit: cover;cursor:pointer;" src="@Session["customer_image"].ToString()" alt="Alternate Text" /></div>
+                                <div class="nav-shop-cart">
+                                    <div class="widget_shopping_cart_content">
+                                        <div class="woocommerce-min-cart-wrap">
+                                            <ul class="woocommerce-mini-cart cart_list product_list_widget ">
+                                                <li class="woocommerce-mini-cart-item mini_cart_item text-center">
+                                                    <div style="font-size:18px;font-weight:bold;">@Session["customer_name"].ToString()</div>
+
+                                                    <div style="margin-top:5px;" class="profile_links"><a href="@Url.Action("CustomerProfile","Home",new { id =  int.Parse(Session["customer_id"].ToString())})" style="color:#d18c8c">View Profile</a></div>
+                                                    <div style="margin-top:5px;" class="profile_links"><a href="@Url.Action("ShowOrder","Home",new { id =  int.Parse(Session["customer_id"].ToString())})" style="color:#d18c8c">My Orders</a></div>
+
+                                                </li>
+                                                <li style="margin-top:10px;" class="woocommerce-mini-cart-item mini_cart_item text-center">
+                                                    <span><a style="background: aquamarine;padding: 6px 20px;" href="@Url.Action("CustomerLogout","Home")">Logout</a></span>
+                                                </li>
+                                            </ul>
+                                        </div><!-- /.widget_shopping_cart_content -->
+                                    </div>
+                                </div><!-- /.nav-shop-cart -->
+                            </li>
+                        }
+
+                    </ul><!-- /.menu-extra -->
+                    <div class="nav-wrap" style="width: 64%;text-align: center;">
+                        <nav id="mainnav" class="mainnav">
+                            <ul class="menu">
+                                <li class="active">
+                                    <a href="@Url.Action("Index","Home")">Home</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("About","Home")">About us</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Shop","Home")">Shop</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("ShowArtist","Home")">Artist</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Exhibition","Home")">Exhibitions</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Gallery","Home")">Gallery</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Cart","Home")">Cart</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Contact","Home")">Contact us</a>
+                                </li>
+                            </ul>
+                        </nav><!-- /.mainnav -->
+                    </div><!-- /.nav-wrap -->
+                </div><!-- /.container-fluid -->
+            </header><!-- /header -->
+        </div><!-- /#site-header-wrap -->
+        <!-- Checkout Section Begin -->
+        <section class="checkout spad">
+            <div class="container">
+                <div class="checkout__form">
+                    <div class="row" style="margin-top:10px;">
+                        <div class="col-lg-8 col-md-6">
+                            <h6 class="checkout__title">Billing Details</h6>
+                            <form action="@Url.Action("Checkout","Home")" id="formData" method="post">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <input type="hidden" id="o_fk_cus_id" name="o_fk_cus_id" value="@Model.customer.c_id" />
+                                        <div class="checkout__input">
+                                            <p>First Name<span>*</span></p>
+                                            <input type="text" readonly name="c_firstName" value="@Model.customer.c_firstName">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>Last Name<span>*</span></p>
+                                            <input type="text" readonly name="c_lastName" value="@Model.customer.c_lastName">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Country<span>*</span></p>
+                                    <input type="text" readonly name="c_country" value="@ViewBag.country">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Town/City<span>*</span></p>
+                                    <input type="text" readonly name="c_city" value="@ViewBag.city">
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Address<span>*</span></p>
+                                    <input type="text" name="o_address" style="border: 1px solid #c39797;" id="o_address" value="@Model.customer.c_address">
+
+                                </div>
+                                <div class="checkout__input">
+                                    <p>Postcode / ZIP<span>*</span></p>
+                                    <input type="text" name="o_zip" id="o_zip" style="border: 1px solid #c39797;" value="@Model.customer.c_zip">
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>Phone<span>*</span></p>
+                                            <input type="text" name="o_phone" id="o_phone" style="border: 1px solid #c39797;" value="0@(Model.customer.c_phone)">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="checkout__input">
+                                            <p>Email<span>*</span></p>
+                                            <input type="text" name="o_email" id="o_email" style="border: 1px solid #c39797;" value="@Model.customer.c_email">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            @*Payment Box Start*@
+                            <div class="container" id="Payment_Mode">
+                                <h2>Payment Mode</h2>
+                                <br>
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#EasyPaisa" style="display:flex;justify-content:center;align-items:center;flex-direction:column;">
+                                            <img src="~/Content/images/easypaisa.png" alt="Alternate Text" />
+                                            <span>EasyPaisa</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#JazzCash" style="display:flex;justify-content:center;align-items:center;flex-direction:column;">
+                                            <img src="~/Content/images/jazzcash.png" alt="Alternate Text" />
+                                            <span>JazzCash</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#Credit_DebitCard" style="display:flex;justify-content:center;align-items:center;flex-direction:column;">
+                                            <img src="~/Content/images/credit_Debit.png" alt="Alternate Text" />
+                                            <span>Credit/Debit Card</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#Hbl" style="display:flex;justify-content:center;align-items:center;flex-direction:column;">
+                                            <img src="~/Content/images/Hbl.png" alt="Alternate Text" />
+                                            <span>HBL Bank Account</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-toggle="tab" href="#cash" style="display:flex;justify-content:center;align-items:center;flex-direction:column;">
+                                            <img src="~/Content/images/cashDeleviery.png" alt="Alternate Text" />
+                                            <span>Cash On Delivery</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <!-- Tab panes -->
+                                <div class="tab-content">
+                                    <div id="EasyPaisa" class="container tab-pane">
+                                        <br>
+                                        <div>
+                                            <span class="title">
+                                                Experience easy payments – save your Easypaisa account as default method to pay!
+                                                Please ensure your Easypaisa account is Active and has sufficient balance.
+
+                                                To confirm your payment after providing OTP:
+
+                                                - USSD prompt for Telenor Customers Only
+                                                • Unlock your phone and enter 5 digit PIN in the prompt to pay
+                                            </span>
+                                            <span style="color: #757575;font-weight: 500;font-size: 13px;">Easypaisa Account Number</span>
+                                            <form class="mt-3" id="easyPaisa">
+                                                <input type="text" minlength="11" maxlength="11" onkeypress="return isNumberKey(event)" name="o_easyPaisa" id="o_easyPaisa" value="" style="" />
+                                                @*<div id="easyPaisaError" style="color:red;font-weight:500"></div>*@
+                                                <div>
+                                                    <button style="margin-top:5px;" type="button" id="easyPaisaBtn">Place Order</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div id="JazzCash" class="container tab-pane">
+                                        <br>
+                                        <div>
+                                            <span class="title">
+                                                ➊ FOR JAZZ/WARID
+                                                ↳ Unlock your phone and you will receive a MPIN Input Prompt
+
+                                                ➋ FOR OTHER NETWORKS
+                                                ↳ Log-in to your JazzCash App and enter your MPIN
+
+                                                Note: Ensure your JazzCash account is Active and has sufficient balance.
+                                            </span>
+                                            <span style="color: #757575;font-weight: 500;font-size: 13px;">Easypaisa Account Number</span>
+                                            <form class="mt-3" id="jazzCash">
+                                                <input type="text" minlength="11" maxlength="11" onkeypress="return isNumberKey(event)" id="o_jazzCash" name="o_jazzCash" value="" style="" />
+                                                <div>
+                                                    <button style="margin-top:5px;" type="button" id="jazzCashBtn">Place Order</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div id="Credit_DebitCard" class="container tab-pane">
+                                        <br>
+                                        <form id="creditNum" class="row">
+                                            <div class="col-lg-12">
+                                                <div class="checkout__input">
+                                                    <p>Credit Cart / Debit Card Number<span>*</span></p>
+                                                    <div>
+                                                        <input autocomplete="off" type="text" minlength="16" maxlength="16" onkeypress="return isNumberKey(event)" name="o_credit_number" id="o_credit_number">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="checkout__input">
+                                                    <p>Pin<span>*</span></p>
+                                                    <div>
+                                                        <input type="text" autocomplete="off" minlength="4" maxlength="4" onkeypress="return isNumberKey(event)" name="o_pin" id="o_pin">
+                                                    </div>
+                                                    <button type="button" style="margin-top:5px;" id="creditNumBtn">Place Order</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                    <div id="Hbl" class="container tab-pane">
+                                        <br>
+                                        <form id="Hbl_Bank_Number" class="row">
+                                            <div class="col-lg-12">
+                                                <div class="checkout__input">
+                                                    <p>Hbl Account Number<span>*</span></p>
+                                                    <div>
+                                                        <input autocomplete="off" type="text" minlength="16" maxlength="16" onkeypress="return isNumberKey(event)" name="o_hbl_bank_account_number" id="o_hbl_bank_account_number">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="checkout__input">
+                                                    <p>CNIC NO<span>*</span></p>
+                                                    <div>
+                                                        <input type="text" autocomplete="off" minlength="13" maxlength="13" onkeypress="return isNumberKey(event)" name="o_cnic_number" id="o_cnic_number">
+                                                    </div>
+                                                    <button type="button" style="margin-top:5px;" id="hblBankBtn">Place Order</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <form id="cash" class="container tab-pane">
+                                        <br>
+                                        <div style="display:flex;align-content:center;flex-direction:column;">
+                                            <span style="color:black;font-weight:500;text-align:center;">You can pay in cash to our courier when you receive the goods at your doorstep.</span>
+                                            <button id="cashBtn" style="margin-top:15px;">Place Order</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            @*Payment Box end*@
+
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="checkout__order">
+                                <h4 class="order__title">Your order</h4>
+                                <div class="checkout__order__products">Art <span>Price</span></div>
+                                <ul class="checkout__total__products">
+                                    @{
+                                        int sno = 1;
+                                    }
+                                    @foreach (var art in Model.Art)
+                                    {
+                                        <li style="font-weight:400"> @(sno++) ) @art.art_name<span>Rs @art.art_price</span></li>
+                                    }
+
+                                </ul>
+                                <ul class="checkout__total__all">
+                                    <li><b>Total </b><span>Rs @Model.totalAmount </span></li>
+                                </ul>
+                                <button type="button" id="selectPayment" class="site-btn">Select Payment Mode</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="widget widget-link">
+                            <ul>
+                                <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                                <li><a href="@Url.Action("About","Home")">About Us</a></li>
+                                <li><a href="@Url.Action("Contact","Home")">Contact Us</a></li>
+                                <li><a href="@Url.Action("Shop","Home")">Shop</a></li>
+                            </ul>
+                        </div><!-- /.widget -->
+                    </div><!-- /.col-md-3 -->
+                    <div class="col-sm-6 col-md-3">
+                        <div class="widget widget-link link-login">
+                            <ul>
+                                <li><a href="@Url.Action("CustomerLogin","Home")">Login</a></li>
+                                <li><a href="@Url.Action("CustomerSignUp","Home")">Register</a></li>
+                                <li><a href="@Url.Action("Cart","Home")">Your Cart</a></li>
+                                <li><a href="@Url.Action("Checkout","Home")">Checkout</a></li>
+                            </ul>
+                        </div><!-- /.widget -->
+                    </div><!-- /.col-md-3 -->
+                    <div class="col-sm-6 col-md-3">
+                        <div class="widget widget-link link-faq">
+                            <ul>
+                                <li><a href="@Url.Action("ShowArtist","Home")">Artists</a></li>
+                                <li><a href="@Url.Action("Exhibition","Home")">Exhibition</a></li>
+                                <li><a href="@Url.Action("Gallery","Home")">Gallery</a></li>
+                                <li><a href="@Url.Action("ShowArtist","Home")">Members</a></li>
+                            </ul>
+                        </div><!-- /.widget -->
+                    </div><!-- /.col-md-3 -->
+                    <div class="col-sm-6 col-md-3">
+                        <div class="widget widget-brand">
+                            <div class="logo logo-footer">
+                                <a href="@Url.Action("Index","Home")"><img src="~/Content/images/logo (2).png" alt="image" style="width:142px;"></a>
+                            </div>
+                            <ul class="flat-contact">
+                                <li class="phone">+12 345 678 910</li>
+                                <li class="email">ArtGallery@@gmail.com</li>
+                            </ul><!-- /.flat-contact -->
+                        </div><!-- /.widget -->
+                    </div><!-- /.col-md-3 -->
+                </div><!-- /.row -->
+            </div><!-- /.container -->
+        </footer><!-- /.footer -->
+
+        <div class="footer-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="copyright text-center">Copyright &copy; Syed Mubeen Hussain</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Go Top -->
+        <a class="go-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+
+    </div>
+
+    <!-- Javascript -->
+    <script src="~/Content/javascript/tether.min.js"></script>
+    <script src="~/Content/javascript/bootstrap.min.js"></script>
+    <script src="~/Content/javascript/jquery.easing.js"></script>
+    <script src="~/Content/javascript/parallax.js"></script>
+    <script src="~/Content/javascript/jquery-waypoints.js"></script>
+    <script src="~/Content/javascript/jquery-countTo.js"></script>
+    <script src="~/Content/javascript/jquery.countdown.js"></script>
+    <script src="~/Content/javascript/jquery.flexslider-min.js"></script>
+    <script src="~/Content/javascript/images-loaded.js"></script>
+    <script src="~/Content/javascript/jquery.isotope.min.js"></script>
+    <script src="~/Content/javascript/magnific.popup.min.js"></script>
+    <script src="~/Content/javascript/jquery.hoverdir.js"></script>
+    <script src="~/Content/javascript/owl.carousel.min.js"></script>
+    <script src="~/Content/javascript/equalize.min.js"></script>
+    <script src="~/Content/javascript/gmap3.min.js"></script>
+
+    <script src="~/Content/javascript/jquery.cookie.js"></script>
+
+    <!-- Revolution Slider -->
+    <script src="~/Content/rev-slider/js/jquery.themepunch.tools.min.js"></script>
+    <script src="~/Content/rev-slider/js/jquery.themepunch.revolution.min.js"></script>
+    <script src="~/Content/javascript/rev-slider.js"></script>
+    <!-- Load Extensions only on Local File Systems ! The following part can be removed on Server for On Demand Loading -->
+    <script src="~/Content/rev-slider/js/extensions/revolution.extension.actions.min.js"></script>
+    <script src="~/Content/rev-slider/js/extensions/revolution.extension.carousel.min.js"></script>
+    <script src="~/Content/rev-slider/js/extensions/revolution.extension.kenburn.min.js"></script>
+    <script src="~/Content/rev-slider/js/extensions/revolution.extension.layeranimation.min.js"></script>
+    <script src="~/Content/rev-slider/js/extensions/revolution.extension.migration.min.js"></script>
+    <script src="~/Content/rev-slider/js/extensions/revolution.extension.navigation.min.js"></script>
+    <script src="~/Content/rev-slider/js/extensions/revolution.extension.parallax.min.js"></script>
+    <script src="~/Content/rev-slider/js/extensions/revolution.extension.slideanims.min.js"></script>
+    <script src="~/Content/rev-slider/js/extensions/revolution.extension.video.min.js"></script>
+    @if (!Request.IsAjaxRequest())
+    {
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    }
+</body>
+</html>
+
+<script>
+    @*function start() {
+     @Session["notificationCount"];
+        window.setInterval(start, 10000);
+    }*@
+    @{
+        if (Session["customer_id"] != null)
+        {
+            db_ArtGalleryEntities main_db = new db_ArtGalleryEntities();
+            int customer_id = int.Parse(Session["customer_id"].ToString());
+            var CartCount = main_db.Carts.Where(x => x.cus_id == customer_id).ToList();
+            Session["cartItemsCount"] = CartCount.Count;
+        }
+    }
+    $(document).ready(function () {
+        $("#CartItemsCountSpan").html(@(Session["cartItemsCount"] != null ? Session["cartItemsCount"] : 0));
+    });
+    function login() {
+        window.location.assign("/Home/CustomerLogin");
+    }
+    function signup() {
+        window.location.assign("/Home/CustomerSignUp");
+    }
+    function isEmpty(el) {
+        return !$.trim(el.html())
+    }
+
+    $(".header-search-icon").click(function () {
+
+    $.ajax({
+        url: '@Url.Action("ShowFavouriteitems", "Home")',
+    })
+        .done(function (response) {
+            $(".Main_art_div").html(response);
+            if (isEmpty($('.Main_art_div'))) {
+                $(".Main_art_div").html('<div class="NoArtDiv" style="text-align: center;"><b> No Favourite Arts</b </div>');
+            }
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("FAIL");
+        });
+
+    });
+    $(".notification").click(function () {
+        $(".header-nofi-field").toggle();
+    });
+</script>
+@{
+    //this work is deleting the timeUp Auction Arts
+    //Start
+
+    var auction = db.Auctions.Where(x => x.auc_status == 1).ToList();
+    foreach (var item in auction)
+    {
+        if (Convert.ToDateTime(item.auc_end_date) <= DateTime.Now)
+        {
+            var auction_id = db.Auctions.Where(x => x.auc_fk_art == item.Art.art_id).FirstOrDefault();
+            var art_id = db.Arts.Where(x => x.art_id == item.Art.art_id).FirstOrDefault();
+            auction_id.auc_status = 0;
+            art_id.art_status = 0;
+            db.SaveChanges();
+
+            var bids = db.Bids.ToList();
+            foreach (var bid in bids)
+            {
+                if (bids.Count > 0 && bid != null)
+                {
+                    var winAuction = db.Bids.OrderByDescending(x => x.bid_amount).FirstOrDefault();
+                    var Art_Id = db.Arts.Where(x => x.art_id == winAuction.Auction.Art.art_id).FirstOrDefault();
+                    if (winAuction.Customer.c_id > 0 && Art_Id.art_id > 0)
+                    {
+                        var data = db.Carts.Where(x => x.art_id == Art_Id.art_id && x.cus_id == winAuction.Customer.c_id).FirstOrDefault();
+                        if (data == null)
+                        {
+                            Cart c = new Cart();
+                            c.art_id = Art_Id.art_id;
+                            c.cus_id = winAuction.Customer.c_id;
+                            db.Carts.Add(c);
+                            db.SaveChanges();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    //End
+    //this work is deleting the exhibition with end date
+    //start
+    var exhibition = db.Exhibitions.ToList();
+    if (exhibition != null && exhibition.Count > 0)
+    {
+        foreach (var e in exhibition)
+        {
+            if (Convert.ToDateTime(e.e_end_date) <= DateTime.Now)
+            {
+                e.e_status = 0;
+                db.Entry(e).State = EntityState.Modified;
+                db.SaveChanges();
+
+                var art_exhibition = db.Art_exhibition.Where(x => x.ae_fk_e == e.e_id).ToList();
+                foreach (var ArtExhibition in art_exhibition)
+                {
+                    ArtExhibition.ae_status = 0;
+                    db.Entry(ArtExhibition).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+        }
+    }
+    //end
+}
+
+<noscript>
+    alert("Please Open Your Javascript");
+</noscript>
+<script>
+    @{
+        if (Session["customer_id"] != null)
+        {
+            db_ArtGalleryEntities main_db = new db_ArtGalleryEntities();
+            int customer_id = int.Parse(Session["customer_id"].ToString());
+            var CartCount = main_db.Carts.Where(x => x.cus_id == customer_id).ToList();
+            Session["cartItemsCount"] = CartCount.Count;
+        }
+    }
+    $(document).ready(function () {
+        $("#CartItemsCountSpan").html(@(Session["cartItemsCount"] != null ? Session["cartItemsCount"] : 0));
+    });
+    function login() {
+        window.location.assign("/Home/CustomerLogin");
+    }
+    function signup() {
+        window.location.assign("/Home/CustomerSignUp");
+    }
+    $(".header-search-icon").click(function () {
+
+    $.ajax({
+        url: '@Url.Action("ShowFavouriteitems", "Home")',
+    })
+        .done(function (response) {
+            console.log(response);
+            $("#Main_art_div").html(response);
+
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("FAIL");
+        });
+
+    });
+    $(".notification").click(function () {
+        $(".header-nofi-field").toggle();
+    });
+
+
+    function start() {
+     @Session["notificationCount"];
+        window.setInterval(start, 10000);
+    }
+
+      $(".header-search-icon").click(function () {
+
+            $.ajax({
+                url: '@Url.Action("ShowFavouriteitems", "Home")',
+            })
+                .done(function (response) {
+                    console.log(response);
+                    $("#Main_art_div").html(response);
+
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("FAIL");
+                });
+
+        });
+
+        function foucusAction(contentToAction) {
+            $('html, body').animate({
+                scrollTop: $("#" + contentToAction).offset().top - 100
+            }, 500);
+        }
+
+                function isNumberKey(evt) {
+                    var charCode = (evt.which) ? evt.which : evt.keyCode
+                    if (charCode > 31 && (charCode < 48 || charCode > 57))
+                        return false;
+                    return true;
+                }
+
+
+            @{
+                if (Session["customer_id"] != null)
+                {
+                    db_ArtGalleryEntities main_db = new db_ArtGalleryEntities();
+                    int customer_id = int.Parse(Session["customer_id"].ToString());
+                    var CartCount = main_db.Carts.Where(x => x.cus_id == customer_id).ToList();
+                    Session["cartItemsCount"] = CartCount.Count;
+                }
+            }
+            $(document).ready(function () {
+                $("#CartItemsCountSpan").html(@(Session["cartItemsCount"] != null ? Session["cartItemsCount"] : 0));
+            });
+            function login() {
+                window.location.assign("/Home/CustomerLogin");
+            }
+            function signup() {
+                window.location.assign("/Home/CustomerSignUp");
+            }
+           
+    $(".header-search-icon").click(function () {
+
+    $.ajax({
+        url: '@Url.Action("ShowFavouriteitems", "Home")',
+    })
+        .done(function (response) {
+            $(".Main_art_div").html(response);
+            if (isEmpty($('.Main_art_div'))) {
+                $(".Main_art_div").html('<div class="NoArtDiv" style="text-align: center;"><b> No Favourite Arts</b </div>');
+            }
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            alert("FAIL");
+        });
+
+    });
+    $(".notification").click(function () {
+        $(".header-nofi-field").toggle();
+    });
+        $("#selectPayment").click(function () {
+            if ($("#formData").valid()) {
+                foucusAction("Payment_Mode");
+            }
+        });
+
+            $('#formData').validate({
+
+                rules: {
+                    c_firstName: {
+                        required: true,
+                        normalizer: function (value) {
+                            return $.trim(value);
+                        }
+                    },
+                    c_lastName: {
+                        required: true,
+                        normalizer: function (value) {
+                            return $.trim(value);
+                        }
+                    },
+                    c_country: {
+                        required: true,
+                        normalizer: function (value) {
+                            return $.trim(value);
+                        }
+                    },
+                    c_city: {
+                        required: true,
+                        normalizer: function (value) {
+                            return $.trim(value);
+                        }
+                    },
+                    o_address: {
+                        required: true,
+                        maxlength: 50,
+                        normalizer: function (value) {
+                            return $.trim(value);
+                        }
+                    },
+                    o_phone: {
+                        required: true,
+                        maxlength: 11,
+                        normalizer: function (value) {
+                            return $.trim(value);
+                        }
+                    },
+                    o_zip: {
+                        required: true,
+                        normalizer: function (value) {
+                            return $.trim(value);
+                        }
+                    }
+                    ,
+                    o_email: {
+                        required: true,
+                        normalizer: function (value) {
+                            return $.trim(value);
+                        }
+                    },
+
+                },
+                messages: {
+                    c_firstName: {
+                        required: "First Name is Required",
+                        maxlength: "Maximum 20",
+                    },
+                    c_lastName: {
+                        required: "Last Name is Required",
+                        maxlength: "Maximum 20",
+                    },
+                    c_country: {
+                        required: "Country is Required",
+                    },
+                    c_city: {
+                        required: "City is Required"
+                    },
+                    o_address: {
+                        required: "Address is Required",
+                        maxlength: "Phone Number Max Length is 50",
+                    },
+                    o_phone: {
+                        required: "Phone Number is Requierd",
+                        maxlength: "Phone Number Max Length is 11",
+
+                    },
+                    o_zip: {
+                        required: "Gender is Required",
+                    },
+                    o_email: {
+                        required: "Email is Required",
+                    },
+                }
+        });
+
+        $('#easyPaisa').validate({
+
+            rules: {
+                o_easyPaisa: {
+                    required: true,
+                    minlength: 11,
+                    maxlength : 11,
+                    normalizer: function (value) {
+                        return $.trim(value);
+                    }
+                },
+            },
+            messages: {
+                o_easyPaisa: {
+                    required: "Please Enter the Your Easy Paisa Account Number",
+                    maxlength: "Enter 11 digits Number",
+                    minlength: "Enter 11 digits Number",
+                },
+            }
+        });
+
+        $("#easyPaisaBtn").click(function () {
+            if ($("#formData").valid()) {
+                if ($("#easyPaisa").valid()) {
+                    var SendData = { o_fk_cus_id: $("#o_fk_cus_id").val(), o_address: $("#o_address").val(), o_phone: $("#o_phone").val(), o_email: $("#o_email").val(), o_zip: $("#o_zip").val(), o_total_amout: @Model.totalAmount, o_easyPaisa: $("#o_easyPaisa").val()};
+                    $.ajax({
+                        type: "post",
+                        url: '@Url.Action("Checkout", "Home")',
+                        data: SendData,
+                        })
+                        .done(function (response) {
+                        if (response.Success) {
+                        swal("Done", "Your Order Has Been Placed.", "success").then((value) => {
+                        window.location = '@Url.Action("Shop", "Home")';
+                        });
+                        }
+                        else {
+                        swal("Failed", "Unable To Place Order.", "warning");
+                        }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                        });
+                }
+            }
+        })
+
+        $('#jazzCash').validate({
+
+            rules: {
+                o_jazzCash: {
+                    required: true,
+                    minlength: 11,
+                    maxlength: 11,
+                    normalizer: function (value) {
+                        return $.trim(value);
+                    }
+                },
+            },
+            messages: {
+                o_jazzCash: {
+                    required: "Please Enter Your Jazz Cash Account Number",
+                    maxlength: "Enter 11 digits Number",
+                    minlength: "Enter 11 digits Number",
+                },
+            }
+        });
+
+        $("#jazzCashBtn").click(function () {
+            if ($("#formData").valid()) {
+                if ($("#jazzCash").valid()) {
+                    var SendData = { o_fk_cus_id: $("#o_fk_cus_id").val(), o_address: $("#o_address").val(), o_phone: $("#o_phone").val(), o_email: $("#o_email").val(), o_zip: $("#o_zip").val(), o_total_amout: @Model.totalAmount, o_jazzCash: $("#o_jazzCash").val()};
+                    $.ajax({
+                        type: "post",
+                        url: '@Url.Action("Checkout", "Home")',
+                        data: SendData,
+                        })
+                        .done(function (response) {
+                        if (response.Success) {
+                        swal("Done", "Your Order Has Been Placed.", "success").then((value) => {
+                        window.location = '@Url.Action("Shop", "Home")';
+                        });
+                        }
+                        else {
+                        swal("Failed", "Unable To Place Order.", "warning");
+                        }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                        });
+                }
+            }
+        })
+
+        $('#creditNum').validate({
+
+            rules: {
+                o_credit_number: {
+                    required: true,
+                    minlength: 16,
+                    maxlength: 16,
+                    normalizer: function (value) {
+                        return $.trim(value);
+                    }
+                },
+                o_pin: {
+                    required: true,
+                    minlength: 4,
+                    maxlength: 4,
+                    normalizer: function (value) {
+                        return $.trim(value);
+                    }
+                },
+            },
+            messages: {
+                o_credit_number: {
+                    required: "Please Enter Your Credit/Debit Card Number",
+                    maxlength: "Enter 16 digits Number",
+                    minlength: "Enter 16 digits Number",
+                },
+                o_pin: {
+                    required: "Please Enter Your Pin Card Number",
+                    maxlength: "Enter 4 digits Number",
+                    minlength: "Enter 4 digits Number",
+                },
+            }
+        });
+
+        $("#creditNumBtn").click(function () {
+            if ($("#formData").valid()) {
+                if ($("#creditNum").valid()) {
+                    var SendData = { o_fk_cus_id: $("#o_fk_cus_id").val(), o_address: $("#o_address").val(), o_phone: $("#o_phone").val(), o_email: $("#o_email").val(), o_zip: $("#o_zip").val(), o_total_amout: @Model.totalAmount, o_credit_number: $("#o_credit_number").val(), o_pin: $("#o_pin").val()};
+                    $.ajax({
+                        type: "post",
+                        url: '@Url.Action("Checkout", "Home")',
+                        data: SendData,
+                        })
+                        .done(function (response) {
+                        if (response.Success) {
+                        swal("Done", "Your Order Has Been Placed.", "success").then((value) => {
+                        window.location = '@Url.Action("Shop", "Home")';
+                        });
+                        }
+                        else {
+                        swal("Failed", "Unable To Place Order.", "warning");
+                        }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                        });
+                }
+            }
+        })
+
+        $('#Hbl_Bank_Number').validate({
+
+            rules: {
+                o_hbl_bank_account_number: {
+                    required: true,
+                    minlength: 16,
+                    maxlength: 16,
+                    normalizer: function (value) {
+                        return $.trim(value);
+                    }
+                },
+                o_cnic_number: {
+                    required: true,
+                    minlength: 13,
+                    maxlength: 13,
+                    normalizer: function (value) {
+                        return $.trim(value);
+                    }
+                },
+            },
+            messages: {
+                o_hbl_bank_account_number: {
+                    required: "Please Enter Your Credit/Debit Card Number",
+                    maxlength: "Enter 16 digits Number",
+                    minlength: "Enter 16 digits Number",
+                },
+                o_cnic_number: {
+                    required: "Please Enter Your Pin Card Number",
+                    maxlength: "Enter 13 digits Number",
+                    minlength: "Enter 13 digits Number",
+                },
+            }
+        });
+
+        $("#hblBankBtn").click(function () {
+            if ($("#formData").valid()) {
+                if ($("#Hbl_Bank_Number").valid()) {
+                    var SendData = { o_fk_cus_id: $("#o_fk_cus_id").val(), o_address: $("#o_address").val(), o_phone: $("#o_phone").val(), o_email: $("#o_email").val(), o_zip: $("#o_zip").val(), o_total_amout: @Model.totalAmount, o_hbl_bank_account_number: $("#o_hbl_bank_account_number").val(), o_cnic_number: $("#o_cnic_number").val()};
+                    $.ajax({
+                        type: "post",
+                        url: '@Url.Action("Checkout", "Home")',
+                        data: SendData,
+                        })
+                        .done(function (response) {
+                        if (response.Success) {
+                        swal("Done", "Your Order Has Been Placed.", "success").then((value) => {
+                        window.location = '@Url.Action("Shop", "Home")';
+                        });
+                        }
+                        else {
+                        swal("Failed", "Unable To Place Order.", "warning");
+                        }
+                        })
+                        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                        });
+                }
+            }
+        })
+
+        $("#cashBtn").click(function () {
+            if ($("#formData").valid()) {
+                var SendData = { o_fk_cus_id: $("#o_fk_cus_id").val(), o_address: $("#o_address").val(), o_phone: $("#o_phone").val(), o_email: $("#o_email").val(), o_zip: $("#o_zip").val(), o_total_amout: @Model.totalAmount, o_cashOnDelivery: "true" };
+                $.ajax({
+                    type: "post",
+                    url: '@Url.Action("Checkout", "Home")',
+                    data: SendData,
+                })
+                    .done(function (response) {
+                        if (response.Success) {
+                        swal("Done", "Your Order has been placed.", "success").then((value) => {
+        			                window.location = '@Url.Action("Index", "Shop")';
+        		                });
+                        }
+                        else {
+                            swal("Failed", "Unable to place order.", "warning")
+                        }
+                    })
+
+
+                    .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                        alert("FAIL");
+                    });
+            }
+        });
+</script>

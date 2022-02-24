@@ -1,0 +1,184 @@
+﻿@model ArtGallery.Models.Exhibition
+
+@{
+    ViewBag.Title = "Edit Exhibition";
+    Layout = null;
+    var imgURL = !string.IsNullOrEmpty(Model.e_image) ? Model.e_image: string.Empty;
+    var trueChecked = Model.e_status == 1 ? "checked" : string.Empty;
+    var falseChecked = Model.e_status == 0 ? "checked" : string.Empty;
+}
+
+
+<style>
+    .error {
+        color: red;
+    }
+</style>
+
+<h2 class="text-center">Edit Exhibition</h2>
+<div class="content-wrapper p-5">
+
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+
+                    <form id="formData" method="post">
+                        <input name="e_id" type="hidden" value="@Model.e_id" />
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Name</label>
+                                    <input class="form-control" name="e_name" value="@Model.e_name" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Country</label>
+                                    <input class="form-control" name="e_country" value="@Model.e_country" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> City</label>
+                                    <input class="form-control" name="e_city" value="@Model.e_city" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Status</label>
+                                    <div class="input-group">
+                                        <div class="radio form-control">
+                                            <label><input type="radio" name="e_status" value="1" @trueChecked /> Active</label>
+                                        </div>
+                                        <div class="radio form-control">
+                                            <label><input type="radio" name="e_status" value="0" @falseChecked /> Deactive</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;">Zip Code</label>
+                                    <input class="form-control" name="e_zip_code" value="@Model.e_zip_code" />
+                                </div>
+                                <div class="form-group">
+                                    <label style="font-size:15px;font-weight:bold;margin-top:10px;"> Image</label>
+                                    <div class="form-control">
+                                        <input type="hidden" id="ImageURL" name="e_image" />
+                                        <input id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+                                    </div>
+                                </div>
+                                <br />
+                                <button type="button" id="editBtn" class="btn btn-primary">Update</button>
+                                <button type="button" id="cancelBtn" class="btn btn-primary">Cancel</button>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="thumb">
+                                    <img src="@imgURL" class="img-thumbnail img-fluid" alt="Art Image" id="ArtImage" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#imageUpload").change(function () {
+        var element = this;
+
+        var formData = new FormData();
+
+        var totalFiles = element.files.length;
+
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UploadImage", "Shared")',
+            dataType: 'json',
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+            .done(function (response) {
+                console.log(response);
+
+                if (response.Success) {
+                    $("#ImageURL").val(response.ImageURL);
+                    $("#ArtImage").attr("src", response.ImageURL);
+                }
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+    $("#cancelBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("ExhibitionTable", "Admin")'
+        })
+            .done(function (response) {
+                $("#actionContainer").html("");
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $('#formData').validate({
+
+        rules: {
+            e_name: {
+                required: true,
+                maxlength: 50,
+            },
+            e_country: {
+                required: true,
+            },
+            e_city: {
+                required: true,
+            },
+            e_zip_code: {
+                required: true,
+            },
+        },
+        messages: {
+            e_name: {
+                required: 'Name is required',
+                maxlength: 'Maximum Length is 50'
+            },
+            e_country: {
+                required: 'Country is required',
+            },
+            e_city: {
+                required: 'City is required',
+            },
+            e_zip_code: {
+                required: 'Zip Code is required',
+            },
+        }
+    });
+
+
+
+
+    $("#editBtn").click(function () {
+        if ($("#formData").valid()) {
+
+        $.ajax({
+            type:"post",
+            url: '@Url.Action("EditExhibition", "Admin")',
+            data: $("#formData").serialize()
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+                $("#actionContainer").html("");
+
+                foucusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+                });
+
+        }
+    });
+</script>

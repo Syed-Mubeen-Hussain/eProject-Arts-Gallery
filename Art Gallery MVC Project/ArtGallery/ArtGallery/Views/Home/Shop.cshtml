@@ -1,0 +1,231 @@
+﻿@using ArtGallery.Code
+@using ArtGallery.ViewModels
+@model ArtGallery.ViewModels.ShopViewModel
+
+@{
+    ViewBag.Title = "Shop";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .dataLink {
+        cursor: pointer;
+    }
+
+    .preloader {
+        border: 6px solid white;
+        border-radius: 50%;
+        border-top: 6px solid transparent;
+        width: 30px;
+        height: 30px;
+        -webkit-animation: spin 2s linear infinite;
+        animation: spin 1s linear infinite;
+    }
+
+    /* Safari */
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+@if (Model != null)
+{
+
+    <section class="flat-row main-shop shop-slidebar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="sidebar slidebar-shop">
+                        <div class="widget widget-search">
+                            <form style="display:flex;justify-content:center;">
+                                <label>
+                                    <input type="text" tabindex="1" class="search-field" id="searchTxt" placeholder="Search …" value="" style="color:black;font-size:16px;" onkeypress="return event.keyCode != 13;">
+                                </label>
+                                <div id="searchBtn" tabindex="2" style="width: 63px;background-color: #f63440;cursor:pointer;display: flex;justify-content: center;align-items: center;">
+                                    <img src="~/Content/searchIcon.png" style="width:70%;" accesskeyalt="Alternate Text" />
+                                </div>
+                            </form>
+                        </div><!-- /.widget-search -->
+                        <div class="widget widget-sort-by">
+                            <h5 class="widget-title" style="font-size: 22px;">
+                                Sort By
+                            </h5>
+                            <ul>
+                                <li><a class="@(Model.sortBy == (int)SortByEnum.Default ? "active font-weight-500" : string.Empty) dataLink sortByCls" data-href="@Url.Action("FilterArts","Home",new { sortBy = (int)SortByEnum.Default , categoryID = Model.categoryID})">Default</a></li>
+                                <li><a class="@(Model.sortBy == (int)SortByEnum.Popularity ? "active font-weight-500" : string.Empty) dataLink sortByCls" data-href="@Url.Action("FilterArts","Home",new { sortBy = (int)SortByEnum.Popularity , categoryID = Model.categoryID})">Popularity</a></li>
+                                <li><a class="@(Model.sortBy == (int)SortByEnum.PriceLowToHigh ? "active font-weight-500" : string.Empty) dataLink sortByCls" data-href="@Url.Action("FilterArts","Home",new { sortBy = (int)SortByEnum.PriceLowToHigh , categoryID = Model.categoryID})">Price: low to high</a></li>
+                                <li><a class="@(Model.sortBy == (int)SortByEnum.PriceHighToLow ? "active font-weight-500" : string.Empty) dataLink sortByCls" data-href="@Url.Action("FilterArts","Home",new { sortBy = (int)SortByEnum.PriceHighToLow , categoryID = Model.categoryID})">Price: high to low</a></li>
+                            </ul>
+                        </div><!-- /.widget-sort-by -->
+                        <div class="widget widget_tag">
+                            <h5 class="widget-title" style="font-size: 22px;">
+                                Categories
+                            </h5>
+                            <div class="tag-list" id="CategoryDIV">
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <a data-href="@Url.Action("FilterArts","Home",new { categoryID = category.cat_id ,sortBy = Model.sortBy })" class="dataLink categoryCls @(Model.categoryID == category.cat_id?"active":string.Empty)">@category.cat_name</a>
+                                }
+                            </div>
+                        </div><!-- /.widget -->
+                        <div class="widget widget-price">
+                            <h5 class="widget-title" style="font-size: 22px;">Filter by Price</h5>
+                            <div class="price-filter">
+                                <div id="slide-range"></div>
+                                <p class="amount">
+                                    <span style="font-weight:bold;font-size:16px;">Price  </span>:  <input type="text" value="Rs 0 - Rs @(Model.MaximumPrice)" id="amount" disabled="">
+                                </p>
+                            </div>
+                        </div>
+                        <button id="resetBtn">Reset Filters</button>
+                    </div><!-- /.col-md-3 -->
+                </div>
+                <div class="col-md-9" id="artDiv">
+
+                    @{
+                        var filterArts = new FilterArtsViewModel();
+                        filterArts.Arts = Model.Arts;
+                        filterArts.page = Model.page;
+                        filterArts.sortBy = Model.sortBy;
+                        filterArts.searchTerm = Model.searchTerm;
+                        filterArts.categoryID = Model.categoryID;
+                        Html.RenderPartial("FilterArts", filterArts);
+                    }
+
+                </div>
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </section><!-- /.flat-row -->
+
+
+}
+<script>
+    $("#resetBtn").click(function () {
+        window.location.assign("/Home/Shop");
+    });
+
+
+        var callTimout;
+    var priceSlider = $("#slide-range").slider({
+        range : true,
+        min : 0,
+        max  : @Model.MaximumPrice,
+        values : [0,@Model.MaximumPrice],
+        slide: function (event, ui) {
+            var minPrice = ui.values[0];
+            var maxPrice = ui.values[1];
+
+
+            $("#amount").val("Rs " + minPrice + " - " + "Rs " + maxPrice);
+
+            clearTimeout(callTimout)
+            callTimout = setTimeout(PriceSliderChanger, 500);
+        }
+    });
+
+    function PriceSliderChanger() {
+        debugger;
+          $.ajax({
+            url: '@Url.Action("FilterArts", "Home")',
+              data: {
+                  search: $("#searchTxt").val(),
+                  sortBy: $("#sortBy").val(),
+                  categoryID: $("#categoryID").val(),
+                  minimumPrice: priceSlider.slider("values", 0),
+                  maximumPrice: priceSlider.slider("values", 1)
+            }
+             })
+            .done(function (response) {
+                $("#artDiv").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    }
+    function foucusAction(contentToAction) {
+        $('html, body').animate({
+            scrollTop: $("#" + contentToAction).offset().top - 120
+        }, 500);
+    }
+    $(".dataLink").click(function () {
+        var url = $(this).attr("data-href");
+        if (url != null || url != undefined || url != "") {
+            GetData(url);
+            foucusAction("artDiv");
+        }
+    });
+
+    function GetData(dUrl) {
+        $("#loader").show();
+        $.ajax({
+            url: dUrl,
+            data: {
+                search: $("#searchTxt").val(),
+                sortBy: $("#sortBy").val(),
+                categoryID: $("#categoryID").val(),
+                minimumPrice: priceSlider.slider("values", 0),
+                maximumPrice: priceSlider.slider("values", 1)
+            }
+
+        })
+            .done(function (response) {
+                $("#artDiv").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            })
+         .always(function () {
+            console.log("always");
+        });
+    };
+
+    $(document).ready(function () {
+        $(".sortByCls").click(function () {
+            $(".sortByCls").removeClass("active");
+            $(this).addClass("active");
+        });
+    });
+    $(document).ready(function () {
+        $(".categoryCls").click(function () {
+            $(".categoryCls").removeClass("active");
+            $(this).addClass("active");
+        });
+    });
+
+    $("#searchBtn").click(function () {
+        $("#searchBtn").html('<div class="preloader"></div>')
+        $.ajax({
+            url: '@Url.Action("FilterArts", "Home")',
+            data: {
+                search:$("#searchTxt").val(),
+                sortBy: $("#sortBy").val(),
+                categoryID: $("#categoryID").val(),
+                minimumPrice: priceSlider.slider("values", 0),
+                maximumPrice: priceSlider.slider("values", 1)
+            }
+             })
+            .done(function (response) {
+                $("#searchBtn").html('<img src="/Content/searchIcon.png" style="width:70%;" accesskeyalt="Alternate Text" />');
+                $("#artDiv").html(response);
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            })
+    })
+
+</script>

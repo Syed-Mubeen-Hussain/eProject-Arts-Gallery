@@ -1,0 +1,171 @@
+﻿@model ArtGallery.ViewModels.ViewNotificationViewModel
+
+@{
+    Layout = null;
+}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<title>Notifications(@(Model.Notifications != null ? Model.Notifications.Count() : 0)) - Art Gallery</title>
+
+<link href="~/Content/images/favicon.png" rel="shortcut icon">
+<link rel="stylesheet" href="~/Content/AddToCart/css/style.css" type="text/css">
+<style>
+    #main_div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 500px;
+    }
+
+        #main_div #title {
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+
+    body {
+        background-color: #fcfcfc;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .row {
+        margin: auto;
+        padding: 30px;
+        width: 80%;
+        display: flex;
+        flex-flow: column;
+    }
+
+        .row .card {
+            width: 100%;
+            margin-bottom: 5px;
+            display: block;
+            transition: opacity 0.3s;
+        }
+
+    .card-body {
+        padding: 0.5rem;
+    }
+
+        .card-body table {
+            width: 100%;
+        }
+
+            .card-body table tr {
+                display: flex;
+            }
+
+                .card-body table tr td a.btn {
+                    font-size: 0.8rem;
+                    padding: 3px;
+                }
+
+
+                .card-body table tr td:nth-child(2) {
+                    text-align: right;
+                    justify-content: space-around;
+                }
+
+    .card-title:before {
+        display: inline-block;
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 1.1rem;
+        text-align: center;
+        border: 2px solid grey;
+        border-radius: 100px;
+        width: 30px;
+        height: 30px;
+        padding-bottom: 3px;
+        margin-right: 10px;
+    }
+
+
+    .notification-warning .card-body .card-title:before {
+        color: #ffe082;
+        border-color: #ffe082;
+        content: "";
+    }
+
+    .notification-danger .card-body .card-title:before {
+        color: #ffab91;
+        border-color: #ffab91;
+        content: "";
+    }
+
+    .notification-reminder .card-body .card-title:before {
+        color: #ce93d8;
+        border-color: #ce93d8;
+        content: "";
+    }
+
+    .card.display-none {
+        display: none;
+        transition: opacity 2s;
+    }
+</style>
+<div class="row notification-container">
+    <h2 style="text-align: center;font-size: 28px;">Notifications (@(Model.Notifications != null ? Model.Notifications.Count() : 0))</h2>
+    <div class="card notification-card notification-invitation">
+        <div class="card-body">
+            <table>
+                @if (Model.Notifications != null && Model.Notifications.Count > 0)
+                {
+                    foreach (var item in Model.Notifications)
+                    {
+                        if (item.n_fk_c_id == null && item.n_fk_o_id == null)
+                        {
+                            <tr>
+                                <td style="width: 100%;background: white;box-shadow: 0px 0px 3px 0px lightblue;padding: 10px 23px;border-radius: 12px;margin: 10px 0px;position:relative;">
+                                    <div class="card-title">
+                                        <div style="display: flex;align-items: center;">
+                                            <img src="~/Content/images/notification.png" style="width:38px;object-fit:cover;">
+                                            <span style="margin-left:10px;font-size:19px;width:100%;"> New Art Added <b style="font-weight:600;">@item.n_text</b></span>
+                                        </div>
+                                        <div style="color: #523eff;font-weight: 600;position: absolute;top: 18px;right: 21px;font-size: 14px;">@item.n_date</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td style="width: 100%;background: white;box-shadow: 0px 0px 3px 0px lightblue;padding: 10px 23px;border-radius: 12px;margin: 10px 0px;position:relative;">
+                                    <div class="card-title">
+                                        <div style="display: flex;align-items: center;">
+                                            <img src="~/Content/images/notification.png" style="width:38px;object-fit:cover;">
+                                            <span style="margin-left:10px;font-size:19px;"> Your Order is <b style="font-weight:600;">@item.n_text</b> - Order Number is <b style="font-weight:600;">@item.n_fk_o_id</b></span>
+                                        </div>
+                                        <div style="color: #523eff;font-weight: 600;position: absolute;top: 18px;right: 21px;font-size: 14px;">@item.n_date</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    }
+
+
+                }
+                else
+                {
+                    <tr id="main_div">
+                        <td id="title">
+                            There are no Notifications
+                        </td>
+                        <td class="row">
+                            <div>
+                                <div class="continue__btn">
+                                    <a href="@Url.Action("Index", "Home")">Thank You</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+</div>

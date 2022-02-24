@@ -1,0 +1,227 @@
+﻿@model ArtGallery.ViewModels.AdminOrderViewModel
+@{
+    ViewBag.Title = "Arts";
+    Layout = "~/Views/Shared/_Layout _Admin.cshtml";
+}
+<style>
+    #tableContainer > div.card.my-4 > div.card-body.px-0.pb-2.pt-0 > div > table > tbody > tr:nth-child(n) > td:nth-child(n) > button.editBtn, #tableContainer > div.card.my-4 > div.card-body.px-0.pb-2.pt-0 > div > table > tbody > tr:nth-child(n) > td:nth-child(n) > button.deleteBtn, #tableContainer > div.card.my-4 > div.card-body.px-0.pb-2.pt-0 > div > table > tbody > tr:nth-child(n) > td:nth-child(n) > button.statusBtn {
+        background: #e91e63;
+        border: none;
+        color: white;
+        border-color: #e91e63;
+        border-radius: 5px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+</style>
+<div class="card my-4">
+    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+            <h6 class="text-white text-capitalize ps-3">Orders</h6>
+        </div>
+    </div>
+
+    <div>
+        <form method="post">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input class="form-control" id="searchTxt" name="Search" value="@Model.SearchTerm" onkeypress="return event.keyCode != 13;" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Action</label>
+                        <div class="row">
+                            <div class="col-md-5 w-auto p-0" style="margin:0px 5px;">
+                                <button type="button" style="padding: 10px 26px;width:120px;" id="searchBtn" class="btn btn-primary">Search</button>
+                            </div>
+                            <div class="col-md-5 w-auto p-0" style="margin:0px 5px;">
+                                <button type="button" style="padding: 10px 26px; width:120px;" id="resetBtn" class="btn btn-primary">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+    <div class="card-body px-0 pb-2 pt-0">
+        <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+                <thead class="text-center">
+                    <tr>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Order Id</span></th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Customer Id</span></th>
+                        <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"><span style="font-size:13px;">Name</span></th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Total Amount</span></th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Website Fund</span></th>
+                        <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"><span style="font-size:13px;">Status</span></th>
+                        <th class="text-secondary opacity-7"></th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @if (Model != null && Model.Orders.Count > 0)
+                    {
+                        foreach (var item in Model.Orders)
+                        {
+                    <tr class="text-center">
+                        <td class="align-middle text-center text-sm">
+                            <p class="text-xs font-weight-bold mb-0">@item.o_id</p>
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                            <p class="text-xs font-weight-bold mb-0">@item.o_fk_cus_id</p>
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                            <p class="text-xs font-weight-bold mb-0">@item.Customer.c_userName</p>
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                            <p class="text-xs font-weight-bold mb-0">@item.o_total_amout</p>
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                            @foreach (var website_fund in Model.websiteFund)
+                            {
+                                if (website_fund.f_fk_c_id == item.o_fk_cus_id && website_fund.f_fk_o_id == item.o_id)
+                                {
+                                    <p class="text-xs font-weight-bold mb-0">@website_fund.f_amount</p>
+                                }
+                            }
+                        </td>
+                        <td class="align-middle text-center text-sm">
+                            <p class="text-xs font-weight-bold mb-0">@item.o_status</p>
+                        </td>
+                        <td class="align-middle">
+                            <button class="detailsBtn" data-id="@item.o_id">
+                                Details
+                            </button>
+                            <button class="statusBtn" data-id="@item.o_id">
+                                Change Status
+                            </button>
+                        </td>
+                    </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="text-danger text-center font-weight-bold">No Order found</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@if (Model != null && Model.page.TotalPages > 1)
+{
+    if (Model.page.CurrentPage > 1)
+    {
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="1">First</button>
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="@(Model.page.CurrentPage - 1)">Previous</button>
+    }
+    //total items
+    for (var page = Model.page.StartPage; page <= Model.page.EndPage; page++)
+    {
+        <button class="btn btn-danger page-buttons @(Model.pageNo == page ? "bg-info":string.Empty)" style="padding:7px 18px;" data-page="@page">@page</button>
+    }
+
+    if (Model.page.CurrentPage < Model.page.TotalPages)
+    {
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="@(Model.page.CurrentPage + 1)">Next</button>
+        <button class="btn btn-danger page-buttons" style="padding:7px 18px;" data-page="@(Model.page.EndPage)">Last</button>
+    }
+}
+<script>
+    $(".page-buttons").click(function () {
+             $.ajax({
+            url: '@Url.Action("OrderTable", "Admin")',
+                 data : {
+                     pageNo : $(this).attr("data-page"),
+                     search : '@Model.SearchTerm'
+                 }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $(".statusBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("ChangeStatus", "Admin")',
+            data: {
+                Id : $(this).attr("data-id")
+            }
+        })
+            .done(function (response) {
+                $("#actionContainer").html(response);
+
+                foucusAction("actionContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+       $(".detailsBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("DetailsOrder", "Admin")',
+            data: {
+                Id : $(this).attr("data-id")
+            }
+        })
+            .done(function (response) {
+                $("#actionContainer").html(response);
+
+                foucusAction("actionContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $("#searchBtn").click(function () {
+        var searchValue = $("#searchTxt").val();
+
+
+        $.ajax({
+            url: '@Url.Action("OrderTable", "Admin")',//'/Category/CategoryTable',
+            data: {
+                search: searchValue
+            }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+    $("#resetBtn").click(function () {
+        var searchValue = '';
+
+
+        $.ajax({
+            url: '@Url.Action("OrderTable", "Admin")',//'/Category/CategoryTable',
+            data: {
+                search: searchValue
+            }
+        })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("FAIL");
+            });
+    });
+
+
+
+</script>

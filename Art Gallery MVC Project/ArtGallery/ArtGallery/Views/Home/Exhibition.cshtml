@@ -1,0 +1,102 @@
+﻿@model IEnumerable<ArtGallery.Models.Exhibition>
+
+@{
+    ViewBag.Title = "Exhibition";
+}
+
+<link rel="stylesheet" href="~/Content/AddToCart/css/style.css" type="text/css">
+<style>
+    #main_div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 500px;
+    }
+
+        #main_div #title {
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: 500;
+        }
+    body > div > section > div > div > div.col-md-9 > div > article:nth-child(n) > div.title-post > h2 > a:hover{
+        color:red;
+    }
+</style>
+
+@if (Model != null && Model.Count() > 0)
+{
+
+    <section class="blog-posts style1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="post-wrap style1">
+                        @foreach (var exhibition in Model)
+                        {
+                            <article class="post clearfix">
+                                <div class="title-post">
+                                    <h2><a href="@Url.Action("ExhibitionArts", "Home", new { id = exhibition.e_id })">@exhibition.e_name</a></h2>
+                                </div><!-- /.title-post -->
+                                <div class="content-post">
+                                    <ul class="meta-post">
+                                        <li class="author padding-left-2">
+                                            <span>Posted By: </span><a href="#">Admin</a>
+                                        </li>
+                                        <li class="date">
+                                            <span>End date : @exhibition.e_end_date</span>
+                                        </li>
+                                    </ul><!-- /.meta-post -->
+                                    <div class="featured-post">
+                                        <img style="width: 100%;height: 450px;object-fit: cover;" src="@exhibition.e_image" alt="image">
+                                        <div class="more-link">
+                                            <a href="@Url.Action("ExhibitionArts", "Home", new { id = exhibition.e_id })">Read More</a>
+                                        </div>
+                                    </div>
+                                </div><!-- /.content-post -->
+                            </article><!-- /.post -->
+                        }
+                    </div><!-- /.post-wrap -->
+                </div><!-- /.col-md-9 -->
+                <div class="col-md-3">
+                    <div class="sidebar">
+                       
+                    <div class="widget widget-news-latest">
+                            <h5 class="widget-title" style="font-size: 20px;font-weight: 700;">New Latest</h5>
+                            <ul class="popular-news clearfix">
+                                @foreach (var exhibition_name in Model)
+                                {
+                                    <li>
+                                        <h6>
+                                            <a href="@Url.Action("ExhibitionArts", "Home", new { id = exhibition_name.e_id })" style="font-weight:600;">@exhibition_name.e_name</a>
+                                        </h6>
+                                        <a class="post_meta" style="color: #9b8d8d;font-weight: 500;">End date : @exhibition_name.e_end_date</a>
+                                    </li>
+                                }
+                            </ul><!-- /.popular-news -->
+                        </div><!-- /.widget-news-latest -->
+
+                        
+                        
+                    </div><!-- /.sidebar -->
+                </div><!-- /.col-md-3 -->
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </section><!-- /.blog posts -->
+
+}
+else
+{
+    <div id="main_div">
+        <div id="title">
+            There are no Exhibition
+        </div>
+        <div class="row">
+            <div>
+                <div class="continue__btn">
+                    <a href="@Url.Action("Index", "Home")">Thank You</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}

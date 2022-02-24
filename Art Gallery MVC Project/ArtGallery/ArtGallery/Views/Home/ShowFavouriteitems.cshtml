@@ -1,0 +1,25 @@
+﻿@using ArtGallery.Models
+
+@{
+    db_ArtGalleryEntities db = new db_ArtGalleryEntities();
+    var ArtIds = db.Arts.Select(x => x.art_id).ToList();
+
+    var customer_id = int.Parse(Session["customer_id"].ToString());
+    var data = db.favourite_Arts.Where(x => ArtIds.Contains(x.fa_fk_art_id.Value) && x.fa_fk_cus == customer_id).ToList();
+    if (data != null)
+    {
+        foreach (var item in data)
+        {
+            if (item.Art.art_isAuction == true)
+            {
+                <div class="artDiv"><a href="@Url.Action("SingleArtAuction","Home",new { id = item.fa_fk_art_id })" style="color:black;">@item.Art.art_name </a> <a href="@Url.Action("Favourite_Art_delete","Home",new { id = item.fa_fk_art_id })" class="revicon-cancel cancelBtn"></a></div>
+            }
+            else
+            {
+                <div class="artDiv"><a href="@Url.Action("SingleArt","Home",new { id = item.fa_fk_art_id })" style="color:black;">@item.Art.art_name </a> <a href="@Url.Action("Favourite_Art_delete","Home",new { id = item.fa_fk_art_id })" class="revicon-cancel cancelBtn"></a></div>
+            }
+        }
+
+    }
+}
+

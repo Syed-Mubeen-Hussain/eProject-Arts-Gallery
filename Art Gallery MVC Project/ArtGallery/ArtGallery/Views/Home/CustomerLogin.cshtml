@@ -1,0 +1,300 @@
+﻿@model ArtGallery.Models.Customer
+
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Login";
+}
+
+<title>Login</title>
+<link rel="stylesheet" type="text/css" href="~/Content/stylesheets/style.css">
+<style>
+    :root {
+        --color-white: #ffffff;
+        --color-light: #f1f5f9;
+        --color-black: #121212;
+        --color-night: #001632;
+        --color-red: #f44336;
+        --color-blue: #1a73e8;
+        --color-gray: #80868b;
+        --color-grayish: #dadce0;
+        --shadow-normal: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --shadow-large: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    body {
+        font-family: "Poppins", sans-serif !important;
+    }
+
+    a:hover {
+        text-decoration: none;
+    }
+
+
+    .text-large {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--color-black);
+    }
+
+    .text-normal {
+        font-size: 1rem;
+        font-weight: 400;
+        color: var(--color-black);
+    }
+
+    /*.text-links {
+        font-size: 1rem;
+        font-weight: 400;
+        color: var(--color-blue);
+    }*/
+
+    .text-links:hover {
+        text-decoration: underline;
+    }
+
+    .main .wrapper {
+        max-width: 28rem;
+        width: 100%;
+        margin: 2rem auto;
+        padding: 2rem 2.5rem;
+        border: none;
+        outline: none;
+        border-radius: 0.25rem;
+        color: var(--color-black);
+        background: var(--color-white);
+        box-shadow: var(--shadow-large);
+    }
+
+        .main .wrapper .form {
+            width: 100%;
+            height: auto;
+            margin-top: 2rem;
+        }
+
+            .main .wrapper .form .input-control {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 1.25rem;
+                flex-direction: column;
+            }
+
+            .main .wrapper .form .input-field {
+                font-family: inherit;
+                font-size: 1rem;
+                font-weight: 400;
+                line-height: inherit;
+                width: 100%;
+                height: auto;
+                padding: 0.75rem 1.25rem;
+                border: none;
+                outline: none;
+                border-radius: 2rem;
+                color: var(--color-black);
+                background: var(--color-light);
+                text-transform: unset;
+                text-rendering: optimizeLegibility;
+            }
+
+            .main .wrapper .form .input-submit {
+                font-family: inherit;
+                font-size: 1rem;
+                font-weight: 500;
+                line-height: inherit;
+                cursor: pointer;
+                min-width: 40%;
+                height: auto;
+                padding: 0.65rem 1.25rem;
+                border: none;
+                outline: none;
+                border-radius: 2rem;
+                color: var(--color-white);
+                background: var(--color-blue);
+                box-shadow: var(--shadow-medium);
+                text-transform: capitalize;
+                text-rendering: optimizeLegibility;
+            }
+
+        .main .wrapper .striped {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .main .wrapper .striped-line {
+            flex: auto;
+            flex-basis: auto;
+            border: none;
+            outline: none;
+            height: 2px;
+            background: var(--color-grayish);
+        }
+
+        .main .wrapper .striped-text {
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: inherit;
+            color: var(--color-black);
+            margin: 0 1rem;
+        }
+
+        .main .wrapper .method-control {
+            margin-bottom: 1rem;
+        }
+
+        .main .wrapper .method-action {
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            line-height: inherit;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: auto;
+            padding: 0.35rem 1.25rem;
+            outline: none;
+            border: 2px solid var(--color-grayish);
+            border-radius: 2rem;
+            color: var(--color-black);
+            background: var(--color-white);
+            text-transform: capitalize;
+            text-rendering: optimizeLegibility;
+            transition: all 0.35s ease;
+        }
+
+            .main .wrapper .method-action:hover {
+                background: var(--color-light);
+            }
+
+    #c_userName-error, #c_password-error {
+        color: red;
+    }
+
+    #mainnav > ul > li > a {
+        font-weight: 500;
+        color: #333333;
+        font-size: 15px;
+        line-height: 88px;
+        margin: 0px 16.8px;
+        display: block;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .error {
+        color: red;
+    }
+
+    #site-header-inner > ul > li.box-cart.nav-top-cart-wrapper > a.active, #site-header-inner > ul > li.box-login > a.active, #site-header-inner > ul > li.box-search > a.active {
+        background: #eeeeee;
+        color: #333;
+    }
+
+    #site-header-inner > ul > li:nth-child(1) > a {
+        background: #8181b1;
+        padding: 5px 10px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    #site-header-inner > ul > li:nth-child(2) > a {
+        background: #a5a5b9;
+        padding: 5px 10px;
+        text-decoration: none;
+        color: white;
+        font-weight: bold;
+    }
+</style>
+
+<link href="~/Content/stylesheets/bootstrap.css" rel="stylesheet" />
+<div class="main">
+    <div class="container" style="display: flex;justify-content: center;align-items: center;width: 100%;height: 85vh;">
+        <section class="wrapper" style="box-shadow: 0px 0px 2px lightslategrey;">
+            <div class="heading">
+                <h1 class="text text-large text-center font-weight-bold">Sign In</h1>
+
+            </div>
+            @using (Html.BeginForm())
+            {
+                <div class="form">
+                    @Html.AntiForgeryToken()
+                    <div class="input-control">
+                        @Html.EditorFor(model => model.c_userName, new { htmlAttributes = new { @class = "input-field", placeholder = "Enter Your Username" } })
+                        @Html.ValidationMessageFor(model => model.c_userName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="input-control">
+                        <label for="password" class="input-label" hidden>Password</label>
+                        @Html.PasswordFor(model => model.c_password, new { @class = "input-field", placeholder = "Enter Your Password" })
+                        @Html.ValidationMessageFor(model => model.c_password, "", new { @class = "text-danger" })
+
+                    </div>
+                    <div class="input-control">
+                        <input type="submit" id="submitBtn" style="width:100%;cursor:pointer;border-radius:2rem;" class="themesflat-button has-padding-36 bg-accent " value="Login">
+                    </div>
+                </div>
+            }
+            <p class="text text-normal">
+                Not Register Yet? <span><a href="@Url.Action("CustomerSignUp","Home")" class="text text-links">Create an account</a></span>
+            </p>
+
+        </section>
+    </div>
+</div>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+@if (ViewBag.error != null || TempData["error"] != null)
+{
+    <script>
+        swal({
+            title: "Error!",
+            text: "Invalid Username or Password!",
+            icon: "error",
+        });
+
+    </script>
+}
+@if (!Request.IsAjaxRequest())
+{
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+}   
+<script>
+    $('form').validate({
+
+        rules: {
+            c_userName: {
+                required: true,
+                maxlength: 20,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+            c_password: {
+                required: true,
+                maxlength: 30,
+                normalizer: function (value) {
+                    return $.trim(value);
+                }
+            },
+
+        },
+        messages: {
+            c_userName: {
+                required: "Username is Required",
+                maxlength: "Username maximum 20",
+            },
+            c_password: {
+                required: "Password is Required",
+                maxlength: "Password maximum 30",
+            },
+        }
+    });
+
+</script>
